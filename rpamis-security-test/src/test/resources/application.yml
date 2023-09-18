@@ -1,0 +1,33 @@
+# 端口及请求基础路径
+server:
+  port: 8080
+  servlet:
+    context-path: /rpamis-security
+# 应用信息
+spring:
+  application:
+    name: rpamis-security-test
+
+# mybaits-plus配置
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*/*.xml
+  configuration:
+    # 只在控制台打印sql，不输出到日志中
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 驼峰和下划线互转
+    map-underscore-to-camel-case: false
+  global-config:
+    db-config:
+      # 全局删除字段名
+      logic-delete-field: deleted
+      # 逻辑已删除值
+      logic-delete-value: 1
+      # 逻辑未删除值
+      logic-not-delete-value: 0
+
+# 日志配置
+logging:
+  config: classpath:log4j2.xml
+  level:
+    root: info
+    org.springframework: info

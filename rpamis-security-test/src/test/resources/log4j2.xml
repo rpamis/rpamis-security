@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="ERROR" monitorInterval="150">
+	
+	<properties>
+		<property name="LOG_HOME">/data/logs/home-log</property>
+		<property name="LOG_FILE_NAME">rpamis-security-test</property>
+		<property name="ERROR_LOG_FILE_NAME">rpamis-security-test-error</property>
+		<property name="DRUID_LOG_FILE_NAME">druid-sql</property>
+	</properties>
+	
+	<Appenders>
+		<File name="error" fileName="${LOG_HOME}/${ERROR_LOG_FILE_NAME}.log" append="true">
+			<Filters>
+				<ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL"/>
+				<ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+			</Filters>
+			<PatternLayout
+					pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p] projectName : rpamis-security-test %X{ip} [%traceId] [%t] (%c:%L) - %m%n"/>
+		</File>
+		<!-- Async Loggers will auto-flush in batches, so switch off immediateFlush. -->
+		<RollingRandomAccessFile name="file"
+								 fileName="${LOG_HOME}/${LOG_FILE_NAME}.log"
+								 filePattern="${LOG_HOME}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}-%i.log.gz"
+								 immediateFlush="false" append="true">
+			<PatternLayout
+					pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p] projectName : rpamis-security-test %X{ip} [%traceId] [%t] (%c:%L) - %m%n"/>
+			<Policies>
+				<TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+				<SizeBasedTriggeringPolicy size="2 GB"/>
+			</Policies>
+			<DefaultRolloverStrategy max="30"/>
+		</RollingRandomAccessFile>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p] projectName : rpamis-security-test %X{ip} [%traceId] [%t] (%c:%L) - %m%n"/>
+		</Console>
+		<!-- druid的日志记录追加器 -->
+		<RollingFile name="druid"
+					 fileName="${LOG_HOME}/${DRUID_LOG_FILE_NAME}.log"
+					 filePattern="${LOG_HOME}/${DRUID_LOG_FILE_NAME}.%d{yyyy-MM-dd}-%i.log.gz"
+					 append="true">
+			<PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] %-5level %L %M - %msg%xEx%n"/>
+			<Policies>
+				<TimeBasedTriggeringPolicy/>
+				<SizeBasedTriggeringPolicy size="500 MB"/>
+			</Policies>
+		</RollingFile>
+	</Appenders>
+	
+	<Loggers>
+          <asyncRoot level="info"  includeLocation="true">
+			<AppenderRef ref="file" />
+            <AppenderRef ref="error" />
+			<AppenderRef ref="Console" />
+    	</asyncRoot>
+		<logger name="org.springframework" level="info" />
+		<logger name="com.alibaba.dubbo" level="info" />
+		<AsyncLogger name="com.alibaba.druid.filter.stat" level="error" additivity="false">
+			<AppenderRef ref="druid"/>
+		</AsyncLogger>
+		<logger name="org.mybatis" level="debug"/>
+	</Loggers>
+
+</Configuration>
+		
