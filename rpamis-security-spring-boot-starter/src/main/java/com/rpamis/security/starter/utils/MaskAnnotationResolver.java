@@ -1,5 +1,6 @@
 package com.rpamis.security.starter.utils;
 
+import com.rpamis.security.starter.factory.MaskFunctionFactory;
 import com.rpamis.security.starter.field.FieldProcess;
 import com.rpamis.security.starter.field.ProcessContext;
 import com.rpamis.security.starter.field.TypeHandler;
@@ -58,6 +59,7 @@ public class MaskAnnotationResolver {
         // 解析队列
         Deque<Object> analyzeDeque = new ArrayDeque<>();
         analyzeDeque.offer(findActualMaskObject(sourceObject));
+        MaskFunctionFactory maskFunctionFactory = new MaskFunctionFactory();
         while (!analyzeDeque.isEmpty()) {
             Object currentObj = analyzeDeque.poll();
             Field[] fields = FieldUtils.getAllFields(currentObj);
@@ -69,6 +71,7 @@ public class MaskAnnotationResolver {
                     Class<?> fieldValueClass = fieldValue.getClass();
                     ProcessContext processContext = new ProcessContext(currentObj, fieldValue, field,
                             fieldValueClass, referenceSet, HANDLER_LIST, analyzeDeque);
+                    processContext.setMaskFunctionFactory(maskFunctionFactory);
                     // 字段解析并脱敏
                     for (FieldProcess fieldProcess : PROCESS_LIST) {
                         fieldProcess.processField(processContext);

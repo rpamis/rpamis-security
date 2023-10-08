@@ -1,5 +1,7 @@
 package com.rpamis.security.starter.field;
 
+import com.rpamis.security.starter.factory.MaskFunctionFactory;
+
 import java.lang.reflect.Field;
 import java.util.Deque;
 import java.util.List;
@@ -47,6 +49,11 @@ public class ProcessContext {
      * 解析队列
      */
     private Deque<Object> analyzeDeque;
+
+    /**
+     * 脱敏工厂
+     */
+    private MaskFunctionFactory maskFunctionFactory;
 
     public ProcessContext() {
     }
@@ -115,5 +122,13 @@ public class ProcessContext {
 
     public void setHandlerList(List<TypeHandler> handlerList) {
         this.handlerList = handlerList;
+    }
+
+    public MaskFunctionFactory getMaskFunctionFactory() {
+        return maskFunctionFactory;
+    }
+
+    public void setMaskFunctionFactory(MaskFunctionFactory maskFunctionFactory) {
+        this.maskFunctionFactory = maskFunctionFactory;
     }
 }

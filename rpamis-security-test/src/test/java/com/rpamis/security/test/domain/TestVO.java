@@ -1,6 +1,7 @@
 package com.rpamis.security.test.domain;
 
 import com.rpamis.security.annotation.Masked;
+import com.rpamis.security.mask.MaskType;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -22,18 +23,18 @@ public class TestVO implements Serializable {
     /**
      *
      */
-    @Masked()
+    @Masked(type = MaskType.NAME_MASK)
     private String name;
 
     /**
      *
      */
-    @Masked()
+    @Masked(type = MaskType.IDCARD_MASK)
     private String idCard;
 
     /**
      *
      */
-    @Masked()
+    @Masked(type = MaskType.PHONE_MASK)
     private String phone;
 }

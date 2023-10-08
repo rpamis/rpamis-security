@@ -2,6 +2,7 @@ package com.rpamis.security.test.domain;
 
 import com.rpamis.security.annotation.Masked;
 import com.rpamis.security.annotation.NestedMasked;
+import com.rpamis.security.mask.MaskType;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -25,7 +26,7 @@ public class TestNestVO implements Serializable {
     /**
      *
      */
-    @Masked()
+    @Masked(type = MaskType.NAME_MASK)
     private String name;
 
     /**

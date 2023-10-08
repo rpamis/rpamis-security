@@ -1,6 +1,7 @@
 package com.rpamis.security.starter.field.impl;
 
 import com.rpamis.security.annotation.Masked;
+import com.rpamis.security.starter.factory.MaskFunctionFactory;
 import com.rpamis.security.starter.field.FieldProcess;
 import com.rpamis.security.starter.field.ProcessContext;
 
@@ -27,8 +28,8 @@ public class DataMaskingProcessor implements FieldProcess {
         Object currentObject = processContext.getCurrentObject();
         if (field.isAnnotationPresent(Masked.class)) {
             Masked annotation = field.getAnnotation(Masked.class);
-            // todo mask
-            String maskValue = "";
+            MaskFunctionFactory maskFunctionFactory = processContext.getMaskFunctionFactory();
+            String maskValue = maskFunctionFactory.maskData(String.valueOf(fieldValue), annotation);
             field.set(currentObject, maskValue);
         }
     }
