@@ -27,14 +27,14 @@ public @interface Masked {
      *
      * @return String
      */
-    String start() default "0";
+    int start() default 0;
 
     /**
      * 脱敏结束位置，仅在MaskTypeFunction.CUSTOM_MASK下生效
      *
      * @return String
      */
-    String end() default "0";
+    int end() default 0;
 
     /**
      * 脱敏符号

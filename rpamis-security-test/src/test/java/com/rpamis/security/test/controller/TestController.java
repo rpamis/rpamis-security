@@ -251,6 +251,7 @@ public class TestController {
     public Map<String, TestVO> testMap() {
         TestVersionDO testVersionDO = testVersionDOService.testDesensite();
         TestVO test = RpamisBeanUtil.copy(testVersionDO, TestVO.class);
+        test.setCustomFiled("4984189sdwq");
         Map<String, TestVO> map = new HashMap<>();
         map.put("test", test);
         return map;

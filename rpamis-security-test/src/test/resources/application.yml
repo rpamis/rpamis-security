@@ -7,6 +7,12 @@ server:
 spring:
   application:
     name: rpamis-security-test
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/securityTest?characterEncoding=utf8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    username:
+    password:
 
 # mybaits-plus配置
 mybatis-plus:
@@ -31,3 +37,18 @@ logging:
   level:
     root: info
     org.springframework: info
+
+rpamis:
+  # rpamis-security配置
+  security:
+    # 是否开启安全组件，落库加密，出库脱密，如果不指定加密算法，则默认返回原值
+    # 当此开关为false时，无论脱敏切面是否开启，均不生效
+    enable: true
+    # 忽略解密失败，如果解密失败则返回原值，否则抛出异常，如果不填写默认true
+    ignore-decrypt-failed: true
+    # 是否开启脱敏切面
+    desensitization-enable: true
+    # 加解密算法
+    algorithm: sm4
+    # 加密算法key
+    sm4key: 1234567890123456

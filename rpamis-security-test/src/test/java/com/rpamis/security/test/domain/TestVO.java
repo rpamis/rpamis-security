@@ -37,4 +37,8 @@ public class TestVO implements Serializable {
      */
     @Masked(type = MaskType.PHONE_MASK)
     private String phone;
+
+
+    @Masked(type = MaskType.CUSTOM_MASK, start = 2, end = 5, symbol = "#")
+    private String customFiled;
 }
