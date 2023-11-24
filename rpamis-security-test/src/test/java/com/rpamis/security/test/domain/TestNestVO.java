@@ -19,25 +19,31 @@ public class TestNestVO implements Serializable {
     private static final long serialVersionUID = -5559148350211559748L;
 
     /**
-     *
+     * 主键id
      */
     private Long id;
 
     /**
-     *
+     * 姓名
      */
     @Masked(type = MaskType.NAME_MASK)
     private String name;
 
     /**
-     * 嵌套校验
+     * 嵌套校验-直接返回实体
      */
     @NestedMasked
     private TestVO testVO;
 
+    /**
+     * 嵌套校验-返回List
+     */
     @NestedMasked
     private List<TestVO> testVOList;
 
+    /**
+     * 嵌套校验-返回Map
+     */
     @NestedMasked
     private Map<String, TestVO> testVOMap;
 }
