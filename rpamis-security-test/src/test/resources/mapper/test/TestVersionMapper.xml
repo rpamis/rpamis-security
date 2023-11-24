@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rpamis.security.test.dao.TestVersionMapper">
+
+    <resultMap id="BaseResultMap" type="com.rpamis.security.test.domain.TestVersionDO">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="idCard" column="id_card" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="version" column="version" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,name,id_card,
+        phone,version
+    </sql>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id">
+        insert into test_version
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="idCard != null">id_card,</if>
+            <if test="phone != null">phone,</if>
+            <if test="version != null">version,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=BIGINT},</if>
+            <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+            <if test="idCard != null">#{idCard,jdbcType=VARCHAR},</if>
+            <if test="phone != null">#{phone,jdbcType=VARCHAR},</if>
+            <if test="version != null">#{version,jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+    <delete id="deleteByTestId">
+        delete
+        from test_version
+        where id = #{id,jdbcType=NUMERIC}
+    </delete>
+    <select id="selectByTestId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from test_version
+        where
+        id = #{id,jdbcType=NUMERIC}
+    </select>
+    <select id="selectAllByIdList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from test_version
+        where id in
+        <foreach collection="idList" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="selectMapByTestId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from test_version
+        where
+        id = #{id,jdbcType=NUMERIC}
+    </select>
+    <insert id="batchInsertWithList" useGeneratedKeys="true" keyProperty="id">
+        insert into test_version(id,name,id_card,
+        phone,version)
+        values
+        <foreach collection="testVersionDOList" item="testVersion" separator=",">
+            (#{testVersion.id,jdbcType=NUMERIC},#{testVersion.name,jdbcType=VARCHAR},#{testVersion.idCard,jdbcType=VARCHAR},
+            #{testVersion.phone,jdbcType=VARCHAR},#{testVersion.version,jdbcType=NUMERIC})
+        </foreach>
+    </insert>
+    <update id="updateSelective">
+        update test_version
+        <set>
+            <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
+            <if test="idCard != null">id_card=#{idCard,jdbcType=VARCHAR},</if>
+            <if test="phone != null">phone=#{phone,jdbcType=VARCHAR},</if>
+            <if test="version != null">version=#{version,jdbcType=NUMERIC},</if>
+        </set>
+        where id = #{id,jdbcType=NUMERIC}
+    </update>
+</mapper>

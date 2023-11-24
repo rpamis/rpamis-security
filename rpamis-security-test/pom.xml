@@ -107,7 +107,6 @@
             <groupId>com.rpamis</groupId>
             <artifactId>rpamis-security-spring-boot-starter</artifactId>
             <version>1.0.0</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
