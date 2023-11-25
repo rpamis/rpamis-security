@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.0.0">
-    <img alt="maven" src="https://img.shields.io/maven-central/v/com.rpamis/rpamis-security?style=flat-square">
+    <img alt="maven" src="https://img.shields.io/maven-central/v/com.rpamis/rpamis-security-spring-boot-starter?style=flat-square">
   </a>
 
   <a href="https://www.apache.org/licenses/LICENSE-2.0">
