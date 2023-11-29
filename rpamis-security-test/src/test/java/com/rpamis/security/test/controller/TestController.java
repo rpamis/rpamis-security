@@ -475,7 +475,7 @@ public class TestController {
         Assert.isTrue("张三".equals(nameInDb), "数据库姓名校验失败");
         // 同一上文对象
         testVersionDO.setName("李四");
-        // 更新后数据库不为加密字段，因为该对象在insert时已经加密，此时数据库为李四
+        // 更新后数据库为李四的加密字段
         testVersionMapper.updateById(testVersionDO);
         TestVersionDO result = testVersionMapper.selectById(testVersionDO.getId());
         Assert.isTrue("李四".equals(result.getName()), "更新姓名校验失败");
