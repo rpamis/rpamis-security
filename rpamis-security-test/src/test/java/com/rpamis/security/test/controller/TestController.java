@@ -461,7 +461,7 @@ public class TestController {
     }
 
     /**
-     * 新增后，如果修改同一个对象引用，再进行更新，将不会重复加密
+     * 新增后，如果修改同一个对象引用，再进行更新，能够正常加密
      */
     @PostMapping("/insert/repeat")
     public void insertRepeat() {
