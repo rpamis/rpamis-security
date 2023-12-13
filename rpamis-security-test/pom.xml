@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>rpamis-security-test</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>rpamis-security-test</name>
     <packaging>jar</packaging>
     <description>rpamis-security-test</description>

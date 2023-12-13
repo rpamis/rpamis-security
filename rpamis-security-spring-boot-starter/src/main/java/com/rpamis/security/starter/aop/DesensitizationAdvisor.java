@@ -7,6 +7,7 @@ import org.springframework.aop.support.AbstractPointcutAdvisor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.util.StringUtils;
 
 /**
  * 脱敏Advisor
@@ -26,15 +27,26 @@ public class DesensitizationAdvisor extends AbstractPointcutAdvisor implements B
     @SuppressWarnings("all")
     private final Pointcut pointcut;
 
-    public DesensitizationAdvisor(DesensitizationInterceptor desensitizationInterceptor) {
+    private final String customPointcut;
+
+    public DesensitizationAdvisor(DesensitizationInterceptor desensitizationInterceptor, String customPointcut) {
         this.advice = desensitizationInterceptor;
         this.pointcut = buildPointCut();
+        this.customPointcut = customPointcut;
     }
 
     private Pointcut buildPointCut(){
         AspectJExpressionPointcut ajpc = new AspectJExpressionPointcut();
-        ajpc.setExpression(DEFAULT_POINTCUT);
+        ajpc.setExpression(buildCutExpression(customPointcut));
         return ajpc;
+    }
+
+    private String buildCutExpression(String customPointcut) {
+        StringBuilder sbf = new StringBuilder(DEFAULT_POINTCUT);
+        if (!StringUtils.isEmpty(customPointcut)) {
+            sbf.append(" || ").append(customPointcut);
+        }
+        return sbf.toString();
     }
 
     @Override

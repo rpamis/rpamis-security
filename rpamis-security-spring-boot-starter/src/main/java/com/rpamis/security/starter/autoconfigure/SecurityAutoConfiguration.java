@@ -140,7 +140,7 @@ public class SecurityAutoConfiguration {
      */
     @Bean
     @ConditionalOnExpression("${rpamis.security.desensitization-enable:true}")
-    DesensitizationAdvisor desensitizationAdvisor(DesensitizationInterceptor desensitizationInterceptor) {
-        return new DesensitizationAdvisor(desensitizationInterceptor);
+    DesensitizationAdvisor desensitizationAdvisor(DesensitizationInterceptor desensitizationInterceptor, SecurityProperties securityProperties) {
+        return new DesensitizationAdvisor(desensitizationInterceptor, securityProperties.getCustomPointcut());
     }
 }

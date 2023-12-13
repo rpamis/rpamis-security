@@ -41,6 +41,11 @@ public class SecurityProperties {
      */
     private Boolean ignoreDecryptFailed = Boolean.TRUE;
 
+    /**
+     * 自定义切点
+     */
+    private String customPointcut = "";
+
     public String getAlgorithm() {
         return algorithm;
     }
@@ -79,5 +84,13 @@ public class SecurityProperties {
 
     public void setIgnoreDecryptFailed(Boolean ignoreDecryptFailed) {
         this.ignoreDecryptFailed = ignoreDecryptFailed;
+    }
+
+    public String getCustomPointcut() {
+        return customPointcut;
+    }
+
+    public void setCustomPointcut(String customPointcut) {
+        this.customPointcut = customPointcut;
     }
 }

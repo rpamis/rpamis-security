@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>rpamis-security-spring-boot-starter</name>
     <packaging>jar</packaging>
     <description>rpamis-security-spring-boot-starter</description>
