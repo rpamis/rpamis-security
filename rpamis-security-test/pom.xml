@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.rpamis</groupId>
-        <artifactId>rpamis-boot-starter-parent</artifactId>
-        <version>1.0.1.RELEASE</version>
-        <relativePath/>
+        <artifactId>rpamis-security</artifactId>
+        <version>1.0.2-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>rpamis-security-test</artifactId>
-    <version>1.0.1</version>
+    <version>${rpamis-security-test.version}</version>
     <name>rpamis-security-test</name>
     <packaging>jar</packaging>
     <description>rpamis-security-test</description>
@@ -68,7 +68,6 @@
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
             <optional>true</optional>
             <scope>test</scope>
         </dependency>
@@ -99,14 +98,16 @@
         <dependency>
             <groupId>com.lmax</groupId>
             <artifactId>disruptor</artifactId>
-            <version>3.4.4</version>
             <scope>test</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.rpamis</groupId>
             <artifactId>rpamis-security-spring-boot-starter</artifactId>
-            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rpamis</groupId>
+            <artifactId>rpamis-security-annotation</artifactId>
         </dependency>
     </dependencies>
 

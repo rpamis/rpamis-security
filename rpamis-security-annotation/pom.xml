@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.rpamis</groupId>
-        <artifactId>rpamis-boot-starter-parent</artifactId>
-        <version>1.0.1.RELEASE</version>
-        <relativePath/>
+        <artifactId>rpamis-security</artifactId>
+        <version>1.0.2-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>rpamis-security-annotation</artifactId>
-    <version>1.0.1</version>
+    <version>${rpamis-security-annotation.version}</version>
     <name>rpamis-security-annotation</name>
     <packaging>jar</packaging>
     <description>rpamis-security-annotation</description>

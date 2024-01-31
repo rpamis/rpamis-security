@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.rpamis</groupId>
-        <artifactId>rpamis-boot-starter-parent</artifactId>
-        <version>1.0.1.RELEASE</version>
-        <relativePath/>
+        <artifactId>rpamis-security</artifactId>
+        <version>1.0.2-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.0.1</version>
+    <version>${rpamis-security-spring-boot-starter.version}</version>
     <name>rpamis-security-spring-boot-starter</name>
     <packaging>jar</packaging>
     <description>rpamis-security-spring-boot-starter</description>
@@ -39,7 +39,6 @@
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
-            <version>3.5.10</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -66,18 +65,14 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15to18</artifactId>
-            <version>1.76</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.9</version>
         </dependency>
         <dependency>
             <groupId>com.rpamis</groupId>
             <artifactId>rpamis-security-annotation</artifactId>
-            <version>1.0.1</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
