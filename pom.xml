@@ -13,7 +13,7 @@
 
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.2</version>
     <packaging>pom</packaging>
     <modules>
         <module>rpamis-security-annotation</module>
@@ -82,9 +82,8 @@
                 <rpamis-exception-spring-boot-starter.version>1.0.0</rpamis-exception-spring-boot-starter.version>
                 <rpamis-extension-aspect.version>1.0.0</rpamis-extension-aspect.version>
                 <rpamis-extension-spi.version>1.0.1</rpamis-extension-spi.version>
-                <rpamis-security-annotation.version>1.0.2</rpamis-security-annotation.version>
-                <rpamis-security-spring-boot-starter.version>1.0.2</rpamis-security-spring-boot-starter.version>
-                <rpamis-security-test.version>1.0.2</rpamis-security-test.version>
+                <revision>1.0.2</revision>
+                <rpamis-security.version>${revision}</rpamis-security.version>
             </properties>
             <distributionManagement>
                 <!--这两个id需要和setting.xml文件中的server字段的id进行对应-->
@@ -125,9 +124,6 @@
         </profile>
         <profile>
             <id>sonatype</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <!-- 自研组件 -->
                 <rpamis-architecture-build.version>1.0.0-SNAPSHOT</rpamis-architecture-build.version>
@@ -143,9 +139,8 @@
                 </rpamis-exception-spring-boot-starter.version>
                 <rpamis-extension-aspect.version>1.0.0-SNAPSHOT</rpamis-extension-aspect.version>
                 <rpamis-extension-spi.version>1.0.0-SNAPSHOT</rpamis-extension-spi.version>
-                <rpamis-security-annotation.version>1.0.2-rc.1</rpamis-security-annotation.version>
-                <rpamis-security-spring-boot-starter.version>1.0.2-rc.1</rpamis-security-spring-boot-starter.version>
-                <rpamis-security-test.version>1.0.2-rc.1</rpamis-security-test.version>
+                <revision>1.0.2-rc.1</revision>
+                <rpamis-security.version>${revision}</rpamis-security.version>
             </properties>
             <distributionManagement>
                 <!--这两个id需要和setting.xml文件中的server字段的id进行对应-->
@@ -267,17 +262,17 @@
             <dependency>
                 <groupId>com.rpamis</groupId>
                 <artifactId>rpamis-security-annotation</artifactId>
-                <version>${rpamis-security-annotation.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.rpamis</groupId>
-                <artifactId>rpamis-security-annotation</artifactId>
-                <version>${rpamis-security-annotation.version}</version>
+                <version>${rpamis-security.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.rpamis</groupId>
                 <artifactId>rpamis-security-spring-boot-starter</artifactId>
-                <version>${rpamis-security-spring-boot-starter.version}</version>
+                <version>${rpamis-security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rpamis</groupId>
+                <artifactId>rpamis-security-test</artifactId>
+                <version>${rpamis-security.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

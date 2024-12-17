@@ -6,12 +6,11 @@
     <parent>
         <groupId>com.rpamis</groupId>
         <artifactId>rpamis-security</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>rpamis-security-test</artifactId>
-    <version>${rpamis-security-test.version}</version>
     <name>rpamis-security-test</name>
     <packaging>jar</packaging>
     <description>rpamis-security-test</description>
