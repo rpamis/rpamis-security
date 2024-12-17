@@ -13,7 +13,7 @@
 
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
     <packaging>pom</packaging>
     <modules>
         <module>rpamis-security-annotation</module>
@@ -88,9 +88,13 @@
             </properties>
             <distributionManagement>
                 <!--这两个id需要和setting.xml文件中的server字段的id进行对应-->
+<!--                <repository>-->
+<!--                    <id>release</id>-->
+<!--                    <url>https://s01.oss.sonatype.org/content/repositories/releases/</url>-->
+<!--                </repository>-->
                 <repository>
-                    <id>release</id>
-                    <url>https://s01.oss.sonatype.org/content/repositories/releases/</url>
+                    <id>central</id>
+                    <url>https://central.sonatype.com</url>
                 </repository>
             </distributionManagement>
             <build>
@@ -129,32 +133,45 @@
                 </rpamis-exception-spring-boot-starter.version>
                 <rpamis-extension-aspect.version>1.0.0-SNAPSHOT</rpamis-extension-aspect.version>
                 <rpamis-extension-spi.version>1.0.0-SNAPSHOT</rpamis-extension-spi.version>
-                <rpamis-security-annotation.version>1.0.2-SNAPSHOT</rpamis-security-annotation.version>
-                <rpamis-security-spring-boot-starter.version>1.0.2-SNAPSHOT</rpamis-security-spring-boot-starter.version>
-                <rpamis-security-test.version>1.0.2-SNAPSHOT</rpamis-security-test.version>
+                <rpamis-security-annotation.version>1.0.2-rc.1</rpamis-security-annotation.version>
+                <rpamis-security-spring-boot-starter.version>1.0.2-rc.1</rpamis-security-spring-boot-starter.version>
+                <rpamis-security-test.version>1.0.2-rc.1</rpamis-security-test.version>
             </properties>
             <distributionManagement>
                 <!--这两个id需要和setting.xml文件中的server字段的id进行对应-->
-                <snapshotRepository>
-                    <id>sonatype</id>
-                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-                </snapshotRepository>
+<!--                <snapshotRepository>-->
+<!--                    <id>sonatype</id>-->
+<!--                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>-->
+<!--                </snapshotRepository>-->
+<!--                <repository>-->
+<!--                    <id>sonatype</id>-->
+<!--                    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+<!--                </repository>-->
                 <repository>
-                    <id>sonatype</id>
-                    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                    <id>central</id>
+                    <url>https://central.sonatype.com</url>
                 </repository>
             </distributionManagement>
             <build>
                 <plugins>
+<!--                    <plugin>-->
+<!--                        <groupId>org.sonatype.plugins</groupId>-->
+<!--                        <artifactId>nexus-staging-maven-plugin</artifactId>-->
+<!--                        <version>${nexus-staging-maven-plugin.version}</version>-->
+<!--                        <extensions>true</extensions>-->
+<!--                        <configuration>-->
+<!--                            <serverId>sonatype</serverId>-->
+<!--                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>-->
+<!--                            <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+<!--                        </configuration>-->
+<!--                    </plugin>-->
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>${nexus-staging-maven-plugin.version}</version>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.6.0</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>sonatype</serverId>
-                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <publishingServerId>central</publishingServerId>
                         </configuration>
                     </plugin>
                 </plugins>
