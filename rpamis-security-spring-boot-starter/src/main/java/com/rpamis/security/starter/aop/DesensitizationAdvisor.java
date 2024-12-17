@@ -31,8 +31,8 @@ public class DesensitizationAdvisor extends AbstractPointcutAdvisor implements B
 
     public DesensitizationAdvisor(DesensitizationInterceptor desensitizationInterceptor, String customPointcut) {
         this.advice = desensitizationInterceptor;
-        this.pointcut = buildPointCut();
         this.customPointcut = customPointcut;
+        this.pointcut = buildPointCut();
     }
 
     private Pointcut buildPointCut(){
