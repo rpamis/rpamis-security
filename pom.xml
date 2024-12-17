@@ -13,7 +13,7 @@
 
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>rpamis-security-annotation</module>
@@ -82,9 +82,9 @@
                 <rpamis-exception-spring-boot-starter.version>1.0.0</rpamis-exception-spring-boot-starter.version>
                 <rpamis-extension-aspect.version>1.0.0</rpamis-extension-aspect.version>
                 <rpamis-extension-spi.version>1.0.1</rpamis-extension-spi.version>
-                <rpamis-security-annotation.version>1.0.1</rpamis-security-annotation.version>
-                <rpamis-security-spring-boot-starter.version>1.0.1</rpamis-security-spring-boot-starter.version>
-                <rpamis-security-test.version>1.0.1</rpamis-security-test.version>
+                <rpamis-security-annotation.version>1.0.2</rpamis-security-annotation.version>
+                <rpamis-security-spring-boot-starter.version>1.0.2</rpamis-security-spring-boot-starter.version>
+                <rpamis-security-test.version>1.0.2</rpamis-security-test.version>
             </properties>
             <distributionManagement>
                 <!--这两个id需要和setting.xml文件中的server字段的id进行对应-->
@@ -129,9 +129,9 @@
                 </rpamis-exception-spring-boot-starter.version>
                 <rpamis-extension-aspect.version>1.0.0-SNAPSHOT</rpamis-extension-aspect.version>
                 <rpamis-extension-spi.version>1.0.0-SNAPSHOT</rpamis-extension-spi.version>
-                <rpamis-security-annotation.version>1.0.1-SNAPSHOT</rpamis-security-annotation.version>
-                <rpamis-security-spring-boot-starter.version>1.0.1-SNAPSHOT</rpamis-security-spring-boot-starter.version>
-                <rpamis-security-test.version>1.0.1-SNAPSHOT</rpamis-security-test.version>
+                <rpamis-security-annotation.version>1.0.2-SNAPSHOT</rpamis-security-annotation.version>
+                <rpamis-security-spring-boot-starter.version>1.0.2-SNAPSHOT</rpamis-security-spring-boot-starter.version>
+                <rpamis-security-test.version>1.0.2-SNAPSHOT</rpamis-security-test.version>
             </properties>
             <distributionManagement>
                 <!--这两个id需要和setting.xml文件中的server字段的id进行对应-->
