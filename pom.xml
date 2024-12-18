@@ -63,28 +63,24 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
+        <!-- 自研组件 -->
+        <rpamis-architecture-build.version>1.0.0</rpamis-architecture-build.version>
+        <rpamis-common-dto.version>1.0.0</rpamis-common-dto.version>
+        <rpamis-common-exception.version>1.0.0</rpamis-common-exception.version>
+        <rpamis-common-utils.version>1.0.0</rpamis-common-utils.version>
+        <rpamis-common-trace.version>1.0.0</rpamis-common-trace.version>
+        <rpamis-common-trace-toolkit.version>1.0.0</rpamis-common-trace-toolkit.version>
+        <rpamis-enum-spring-boot-starter.version>1.0.0</rpamis-enum-spring-boot-starter.version>
+        <rpamis-exception-dto.version>1.0.0</rpamis-exception-dto.version>
+        <rpamis-enum-core.version>1.0.0</rpamis-enum-core.version>
+        <rpamis-exception-spring-boot-starter.version>1.0.0</rpamis-exception-spring-boot-starter.version>
+        <rpamis-extension-aspect.version>1.0.0</rpamis-extension-aspect.version>
+        <rpamis-extension-spi.version>1.0.1</rpamis-extension-spi.version>
     </properties>
 
     <profiles>
         <profile>
             <id>release</id>
-            <properties>
-                <!-- 自研组件 -->
-                <rpamis-architecture-build.version>1.0.0</rpamis-architecture-build.version>
-                <rpamis-common-dto.version>1.0.0</rpamis-common-dto.version>
-                <rpamis-common-exception.version>1.0.0</rpamis-common-exception.version>
-                <rpamis-common-utils.version>1.0.0</rpamis-common-utils.version>
-                <rpamis-common-trace.version>1.0.0</rpamis-common-trace.version>
-                <rpamis-common-trace-toolkit.version>1.0.0</rpamis-common-trace-toolkit.version>
-                <rpamis-enum-spring-boot-starter.version>1.0.0</rpamis-enum-spring-boot-starter.version>
-                <rpamis-exception-dto.version>1.0.0</rpamis-exception-dto.version>
-                <rpamis-enum-core.version>1.0.0</rpamis-enum-core.version>
-                <rpamis-exception-spring-boot-starter.version>1.0.0</rpamis-exception-spring-boot-starter.version>
-                <rpamis-extension-aspect.version>1.0.0</rpamis-extension-aspect.version>
-                <rpamis-extension-spi.version>1.0.1</rpamis-extension-spi.version>
-                <revision>1.0.2</revision>
-                <rpamis-security.version>${revision}</rpamis-security.version>
-            </properties>
             <distributionManagement>
                 <!--这两个id需要和setting.xml文件中的server字段的id进行对应-->
 <!--                <repository>-->
@@ -124,24 +120,6 @@
         </profile>
         <profile>
             <id>sonatype</id>
-            <properties>
-                <!-- 自研组件 -->
-                <rpamis-architecture-build.version>1.0.0-SNAPSHOT</rpamis-architecture-build.version>
-                <rpamis-common-dto.version>1.0.0-SNAPSHOT</rpamis-common-dto.version>
-                <rpamis-common-exception.version>1.0.0-SNAPSHOT</rpamis-common-exception.version>
-                <rpamis-common-utils.version>1.0.0-SNAPSHOT</rpamis-common-utils.version>
-                <rpamis-common-trace.version>1.0.0-SNAPSHOT</rpamis-common-trace.version>
-                <rpamis-common-trace-toolkit.version>1.0.0-SNAPSHOT</rpamis-common-trace-toolkit.version>
-                <rpamis-enum-spring-boot-starter.version>1.0.0-SNAPSHOT</rpamis-enum-spring-boot-starter.version>
-                <rpamis-exception-dto.version>1.0.0-SNAPSHOT</rpamis-exception-dto.version>
-                <rpamis-enum-core.version>1.0.0-SNAPSHOT</rpamis-enum-core.version>
-                <rpamis-exception-spring-boot-starter.version>1.0.0-SNAPSHOT
-                </rpamis-exception-spring-boot-starter.version>
-                <rpamis-extension-aspect.version>1.0.0-SNAPSHOT</rpamis-extension-aspect.version>
-                <rpamis-extension-spi.version>1.0.0-SNAPSHOT</rpamis-extension-spi.version>
-                <revision>1.0.2-rc.1</revision>
-                <rpamis-security.version>${revision}</rpamis-security.version>
-            </properties>
             <distributionManagement>
                 <!--这两个id需要和setting.xml文件中的server字段的id进行对应-->
 <!--                <snapshotRepository>-->
@@ -367,6 +345,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.18.0</version>
+                <configuration>
+                    <!--pom不备份-->
+                    <generateBackupPoms>false</generateBackupPoms>
+                </configuration>
             </plugin>
         </plugins>
     </build>
