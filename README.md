@@ -282,30 +282,31 @@ public class TestVersionDO implements Serializable {
 
 [点击这里](https://github.com/benym/rpamis-security/blob/master/rpamis-security-test/src/test/java/com/rpamis/security/test/SecurityTest.java)找到对应的单测用例
 
-| 测试用例                                                     | 测试结果 |
-| ------------------------------------------------------------ | -------- |
-| Mybatis-plus insert接口，新增数据后查询，同时校验加解密结果  | ✅通过    |
-| Mybatis-plus saveBatch接口，新增数据后查询，同时校验加解密结果 | ✅通过    |
-| Mybatis-plus update接口，新增数据后查询，再更新数据，同时校验加解密结果 | ✅通过    |
-| Mybatis-plus updateWrapper，新增数据后查询，再更新数据，同时校验加解密结果 | ✅通过    |
-| Mybatis-plus delete接口，新增数据后删除，同时校验加解密结果  | ✅通过    |
-| Mybatis自定义insert接口，新增数据后查询，同时校验加解密结果  | ✅通过    |
+| 测试用例                                                      | 测试结果 |
+|-----------------------------------------------------------| -------- |
+| Mybatis-plus insert接口，新增数据后查询，同时校验加解密结果                   | ✅通过    |
+| Mybatis-plus saveBatch接口，新增数据后查询，同时校验加解密结果                | ✅通过    |
+| Mybatis-plus update接口，新增数据后查询，再更新数据，同时校验加解密结果             | ✅通过    |
+| Mybatis-plus updateWrapper，新增数据后查询，再更新数据，同时校验加解密结果        | ✅通过    |
+| Mybatis-plus delete接口，新增数据后删除，同时校验加解密结果                   | ✅通过    |
+| Mybatis自定义insert接口，新增数据后查询，同时校验加解密结果                      | ✅通过    |
 | Mybatis自定义insertBatch接口(foreach动态SQL拼接)，新增数据后查询，同时校验加解密结果 | ✅通过    |
-| Mybatis自定义update接口，新增数据后查询，再更新数据，同时校验加解密结果 | ✅通过    |
-| Mybatis自定义delete接口，新增数据后删除，同时校验加解密结果  | ✅通过    |
-| 获取脱敏数据-单一自定义实体                                  | ✅通过    |
-| 获取脱敏数据-List类型                                        | ✅通过    |
-| 获取脱敏数据-Map类型                                         | ✅通过    |
-| 获取脱敏数据-统一返回体(泛型自定义实体)                      | ✅通过    |
-| 获取脱敏数据-统一返回体(无泛型)                              | ✅通过    |
-| 获取脱敏数据-嵌套脱敏-单一自定义实体                         | ✅通过    |
-| 获取脱敏数据-嵌套脱敏-List类型                               | ✅通过    |
-| 获取脱敏数据-嵌套脱敏-Map类型                                | ✅通过    |
-| 获取解密数据-Mybatis-plus-selectOne                          | ✅通过    |
-| 获取解密数据-Mybatis-plus-selectList                         | ✅通过    |
-| 获取解密数据-Mybatis-selectOne                               | ✅通过    |
-| 获取解密数据-Mybatis-selectList                              | ✅通过    |
-| 获取解密数据-Mybatis-selectMap                               | ✅通过    |
-| 新增入库后不改变源对象引用-深拷贝                            | ✅通过    |
-| 新增后，如果修改同一个对象引用，再进行更新，能够正常加密     | ✅通过    |
+| Mybatis自定义update接口，新增数据后查询，再更新数据，同时校验加解密结果                | ✅通过    |
+| Mybatis自定义delete接口，新增数据后删除，同时校验加解密结果                      | ✅通过    |
+| 获取脱敏数据-单一自定义实体                                            | ✅通过    |
+| 获取脱敏数据-List类型                                             | ✅通过    |
+| 获取脱敏数据-Map类型                                              | ✅通过    |
+| 获取脱敏数据-统一返回体(泛型自定义实体)                                     | ✅通过    |
+| 获取脱敏数据-统一返回体(无泛型)                                         | ✅通过    |
+| 获取脱敏数据-嵌套脱敏-单一自定义实体                                       | ✅通过    |
+| 获取脱敏数据-嵌套脱敏-List类型                                        | ✅通过    |
+| 获取脱敏数据-嵌套脱敏-Map类型                                         | ✅通过    |
+| 获取解密数据-Mybatis-plus-selectOne                             | ✅通过    |
+| 获取解密数据-Mybatis-plus-selectList                            | ✅通过    |
+| 获取解密数据-Mybatis-selectOne                                  | ✅通过    |
+| 获取解密数据-Mybatis-selectList                                 | ✅通过    |
+| 获取解密数据-Mybatis-selectMap                                  | ✅通过    |
+| 新增入库后不改变源对象引用-深拷贝                                         | ✅通过    |
+| 新增后，如果修改同一个对象引用，再进行更新，能够正常加密                              | ✅通过    |
+| 存量未加密数据进行解密，支持原值返回                                        | ✅通过    |
 
