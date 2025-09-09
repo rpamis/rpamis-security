@@ -87,6 +87,9 @@ public class MybatisEncryptInterceptor implements Interceptor {
                     Field field = parameterHandler.getClass().getDeclaredField("parameterObject");
                     field.setAccessible(true);
                     field.set(parameterHandler, deepCloneEntity);
+                    Field superField = parameterHandler.getClass().getSuperclass().getDeclaredField("parameterObject");
+                    superField.setAccessible(true);
+                    superField.set(parameterHandler, deepCloneEntity);
                     // 进行加密
                     Object encryptObject = securityResolver.encryptFiled(deepCloneEntity);
                 }
