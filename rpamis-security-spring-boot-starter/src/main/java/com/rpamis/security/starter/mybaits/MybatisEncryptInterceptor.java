@@ -10,6 +10,7 @@ import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
+import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,9 +88,12 @@ public class MybatisEncryptInterceptor implements Interceptor {
                     Field field = parameterHandler.getClass().getDeclaredField("parameterObject");
                     field.setAccessible(true);
                     field.set(parameterHandler, deepCloneEntity);
-                    Field superField = parameterHandler.getClass().getSuperclass().getDeclaredField("parameterObject");
-                    superField.setAccessible(true);
-                    superField.set(parameterHandler, deepCloneEntity);
+                    Class<?> superclass = parameterHandler.getClass().getSuperclass();
+                    if (DefaultParameterHandler.class.equals(superclass)) {
+                        Field superField = superclass.getDeclaredField("parameterObject");
+                        superField.setAccessible(true);
+                        superField.set(parameterHandler, deepCloneEntity);
+                    }
                     // 进行加密
                     Object encryptObject = securityResolver.encryptFiled(deepCloneEntity);
                 }
