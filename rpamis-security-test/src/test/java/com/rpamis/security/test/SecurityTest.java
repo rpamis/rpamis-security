@@ -1,14 +1,12 @@
 package com.rpamis.security.test;
 
 import com.rpamis.security.test.controller.TestController;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -21,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author benym
  * @date 2023/9/13 16:51
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class SecurityTest {
@@ -32,7 +29,7 @@ public class SecurityTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Before
+    @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(testController).build();
     }
@@ -249,6 +246,33 @@ public class SecurityTest {
     @Rollback
     public void insertRepeat() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/test/insert/repeat"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    @Transactional()
+    @Rollback
+    public void decryptReturn() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/test/decrypt/return"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    @Transactional()
+    @Rollback
+    public void avoidRepeatEncrypt() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/test/avoid/repeat/encrypt"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    @Transactional()
+    @Rollback
+    public void compatibilityOld() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/test/compatibility/old"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
     }
