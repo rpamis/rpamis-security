@@ -14,39 +14,40 @@ import java.io.Serializable;
  * @author benym
  * @date 2025/9/10 17:42
  */
-@TableName(value ="test_version")
+@TableName(value = "test_version")
 @Data
 public class TestVersionV2DO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键id
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+	/**
+	 * 主键id
+	 */
+	@TableId(value = "id", type = IdType.AUTO)
+	private Long id;
 
-    /**
-     * 姓名
-     */
-    @TableField(value = "name")
-    private String name;
+	/**
+	 * 姓名
+	 */
+	@TableField(value = "name")
+	private String name;
 
-    /**
-     * 身份证号
-     */
-    @TableField(value = "id_card")
-    private String idCard;
+	/**
+	 * 身份证号
+	 */
+	@TableField(value = "id_card")
+	private String idCard;
 
-    /**
-     * 电话
-     */
-    @TableField(value = "phone")
-    private String phone;
+	/**
+	 * 电话
+	 */
+	@TableField(value = "phone")
+	private String phone;
 
-    /**
-     * 版本号
-     */
-    @TableField(value = "version")
-    private Integer version;
+	/**
+	 * 版本号
+	 */
+	@TableField(value = "version")
+	private Integer version;
+
 }

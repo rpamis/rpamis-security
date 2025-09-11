@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * @date 2023/9/18 23:10
  */
 @Inherited
-@Target({ElementType.FIELD})
+@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface SecurityField {

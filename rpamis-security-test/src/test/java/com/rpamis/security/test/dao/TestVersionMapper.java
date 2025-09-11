@@ -17,22 +17,19 @@ import java.util.Map;
 @Mapper
 public interface TestVersionMapper extends BaseMapper<TestVersionDO> {
 
-    int insertSelective(TestVersionDO testVersionDO);
+	int insertSelective(TestVersionDO testVersionDO);
 
-    int batchInsertWithList(@Param("testVersionDOList") List<TestVersionDO> testVersionDOList);
+	int batchInsertWithList(@Param("testVersionDOList") List<TestVersionDO> testVersionDOList);
 
-    TestVersionDO selectByTestId(@Param("id") Long id);
+	TestVersionDO selectByTestId(@Param("id") Long id);
 
-    int deleteByTestId(@Param("id") Long id);
+	int deleteByTestId(@Param("id") Long id);
 
-    int updateSelective(TestVersionDO testVersionDO);
+	int updateSelective(TestVersionDO testVersionDO);
 
-    List<TestVersionDO> selectAllByIdList(@Param("idList") List<Long> id);
+	List<TestVersionDO> selectAllByIdList(@Param("idList") List<Long> id);
 
-    @MapKey("id")
-    Map<String, TestVersionDO> selectMapByTestId(@Param("id") Long id);
+	@MapKey("id")
+	Map<String, TestVersionDO> selectMapByTestId(@Param("id") Long id);
+
 }
-
-
-
-

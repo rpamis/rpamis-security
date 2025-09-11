@@ -17,42 +17,39 @@ import java.util.List;
  */
 @Service
 public class TestVersionDOServiceImpl extends ServiceImpl<TestVersionMapper, TestVersionDO>
-        implements TestVersionDOService {
+		implements TestVersionDOService {
 
-    @Autowired
-    private TestVersionMapper testVersionMapper;
+	@Autowired
+	private TestVersionMapper testVersionMapper;
 
-    @Override
-    public TestVersionDO testDesensite() {
-        TestVersionDO testVersionDO = new TestVersionDO();
-        testVersionDO.setName("王五");
-        testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
-        testVersionMapper.insert(testVersionDO);
-        return testVersionMapper.selectById(testVersionDO.getId());
-    }
+	@Override
+	public TestVersionDO testDesensite() {
+		TestVersionDO testVersionDO = new TestVersionDO();
+		testVersionDO.setName("王五");
+		testVersionDO.setIdCard("500101111118181952");
+		testVersionDO.setPhone("18523578454");
+		testVersionMapper.insert(testVersionDO);
+		return testVersionMapper.selectById(testVersionDO.getId());
+	}
 
-    @Override
-    public List<TestVersionDO> testDesensiteList() {
-        TestVersionDO testVersionDO = new TestVersionDO();
-        testVersionDO.setName("王五");
-        testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
-        TestVersionDO testVersionDO2 = new TestVersionDO();
-        testVersionDO2.setName("李四");
-        testVersionDO2.setIdCard("500101111118181953");
-        testVersionDO2.setPhone("18523578456");
-        List<TestVersionDO> testVersionDOList = new ArrayList<>();
-        testVersionDOList.add(testVersionDO);
-        testVersionDOList.add(testVersionDO2);
-        testVersionMapper.batchInsertWithList(testVersionDOList);
-        List<Long> testIdList = new ArrayList<>();
-        testIdList.add(testVersionDO.getId());
-        testIdList.add(testVersionDO2.getId());
-        return testVersionMapper.selectAllByIdList(testIdList);
-    }
+	@Override
+	public List<TestVersionDO> testDesensiteList() {
+		TestVersionDO testVersionDO = new TestVersionDO();
+		testVersionDO.setName("王五");
+		testVersionDO.setIdCard("500101111118181952");
+		testVersionDO.setPhone("18523578454");
+		TestVersionDO testVersionDO2 = new TestVersionDO();
+		testVersionDO2.setName("李四");
+		testVersionDO2.setIdCard("500101111118181953");
+		testVersionDO2.setPhone("18523578456");
+		List<TestVersionDO> testVersionDOList = new ArrayList<>();
+		testVersionDOList.add(testVersionDO);
+		testVersionDOList.add(testVersionDO2);
+		testVersionMapper.batchInsertWithList(testVersionDOList);
+		List<Long> testIdList = new ArrayList<>();
+		testIdList.add(testVersionDO.getId());
+		testIdList.add(testVersionDO2.getId());
+		return testVersionMapper.selectAllByIdList(testIdList);
+	}
+
 }
-
-
-
-

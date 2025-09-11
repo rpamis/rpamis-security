@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * @author benym
  * @date 2023/9/18 23:08
  */
-@Target({ElementType.METHOD})
+@Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Desensitizationed {

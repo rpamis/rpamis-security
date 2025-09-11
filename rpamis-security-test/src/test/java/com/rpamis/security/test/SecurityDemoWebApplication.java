@@ -14,10 +14,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication()
 public class SecurityDemoWebApplication {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityDemoWebApplication.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityDemoWebApplication.class);
 
-    public static void main(String[] args) {
-        SpringApplication.run(SecurityDemoWebApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(SecurityDemoWebApplication.class, args);
+	}
 
 }
