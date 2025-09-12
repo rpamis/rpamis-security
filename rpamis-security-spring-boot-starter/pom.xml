@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.rpamis</groupId>
         <artifactId>rpamis-security</artifactId>
-        <version>1.0.3-SNAPSHOT</version>
+        <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -14,6 +14,13 @@
     <name>rpamis-security-spring-boot-starter</name>
     <packaging>jar</packaging>
     <description>rpamis-security-spring-boot-starter</description>
+    <url>https://github.com/rpamis/rpamis-security</url>
+
+    <scm>
+        <url>git@github.com:rpamis/rpamis-security.git</url>
+        <connection>scm:git@github.com:rpamis/rpamis-security.git</connection>
+        <developerConnection>https://github.com/rpamis</developerConnection>
+    </scm>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
