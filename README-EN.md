@@ -10,3 +10,9 @@ rpamis-security, a mybatis encryption, decryption and desensitization component
     <img alt="code style" src="https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square">
   </a>
 </p>
+
+-------------------------------------------------------------------------------
+
+[**中文**](README.md)|[**English**](README-EN.md)
+
+-------------------------------------------------------------------------------
