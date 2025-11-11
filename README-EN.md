@@ -13,6 +13,6 @@ rpamis-security, a mybatis encryption, decryption and desensitization component
 
 -------------------------------------------------------------------------------
 
-[**中文**](README.md)|[**English**](README-EN.md)
+[**English**](README-EN.md)|[**中文**](README.md)
 
 -------------------------------------------------------------------------------
