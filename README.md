@@ -13,9 +13,9 @@
 </p>
 
 ## 原理解析
-[Rpamis-security技术背景](https://cloud.benym.cn/pages/c7a36a/)
+[Rpamis-security技术背景](https://benym.cn/notes/08-open-source-project/01-rpamis/03-security/02-rpamis-security-technical-background)
 
-[Rpamis-security原理解析](https://cloud.benym.cn/pages/1ffe0d/)
+[Rpamis-security原理解析](https://benym.cn/notes/08-open-source-project/01-rpamis/03-security/03-rpamis-security-principle-analysis)
 
 -------------------------------------------------------------------------------
 
