@@ -10,6 +10,10 @@
   <a href="https://www.apache.org/licenses/LICENSE-2.0">
     <img alt="code style" src="https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square">
   </a>
+  
+  <a href="https://deepwiki.com/rpamis/rpamis-security">
+    <img alt="code style" src="https://deepwiki.com/badge.svg">
+  </a>
 </p>
 
 ## 原理解析
