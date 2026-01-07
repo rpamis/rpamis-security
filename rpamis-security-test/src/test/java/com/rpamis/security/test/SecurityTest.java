@@ -121,7 +121,7 @@ public class SecurityTest {
     @Test
     @Transactional()
     @Rollback
-    public void testtestBase() throws Exception {
+    public void testBase() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/test/baseType"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
@@ -130,7 +130,7 @@ public class SecurityTest {
     @Test
     @Transactional()
     @Rollback
-    public void testtestList() throws Exception {
+    public void testList() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/test/listType"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
@@ -139,7 +139,7 @@ public class SecurityTest {
     @Test
     @Transactional()
     @Rollback
-    public void testtestMap() throws Exception {
+    public void testMap() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/test/mapType"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();

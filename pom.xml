@@ -13,8 +13,9 @@
 
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security</artifactId>
-    <version>1.0.2</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
+    <url>https://github.com/rpamis/rpamis-security</url>
     <modules>
         <module>rpamis-security-annotation</module>
         <module>rpamis-security-spring-boot-starter</module>
@@ -44,8 +45,6 @@
         <mybatis-plus.version>3.3.2</mybatis-plus.version>
         <mybatis.version>3.5.10</mybatis.version>
         <mysql.version>8.0.20</mysql.version>
-        <!-- 序列化 -->
-        <jackson-databind.version>2.13.2.2</jackson-databind.version>
         <!-- 工具类 -->
         <aspectj-aspectjweaver.version>1.9.5</aspectj-aspectjweaver.version>
         <commons-lang.version>2.6</commons-lang.version>
@@ -63,6 +62,8 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
+        <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
+        <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
         <!-- 自研组件 -->
         <rpamis-architecture-build.version>1.0.0</rpamis-architecture-build.version>
         <rpamis-common-dto.version>1.0.0</rpamis-common-dto.version>
@@ -82,12 +83,10 @@
     <profiles>
         <profile>
             <id>release</id>
+            <properties>
+                <revision>1.0.3</revision>
+            </properties>
             <distributionManagement>
-                <!--这两个id需要和setting.xml文件中的server字段的id进行对应-->
-<!--                <repository>-->
-<!--                    <id>release</id>-->
-<!--                    <url>https://s01.oss.sonatype.org/content/repositories/releases/</url>-->
-<!--                </repository>-->
                 <repository>
                     <id>central</id>
                     <url>https://central.sonatype.com</url>
@@ -95,25 +94,15 @@
             </distributionManagement>
             <build>
                 <plugins>
-<!--                    <plugin>-->
-<!--                        <groupId>org.apache.maven.plugins</groupId>-->
-<!--                        <artifactId>maven-release-plugin</artifactId>-->
-<!--                        <version>${maven-release-plugin.version}</version>-->
-<!--                        <configuration>-->
-<!--                            <autoVersionSubmodules>true</autoVersionSubmodules>-->
-<!--                            <useReleaseProfile>false</useReleaseProfile>-->
-<!--                            <releaseProfiles>release</releaseProfiles>-->
-<!--                            <goals>deploy</goals>-->
-<!--                        </configuration>-->
-<!--                    </plugin>-->
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.6.0</version>
+                        <version>0.8.0</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <publishingServerId>central</publishingServerId>
-<!--                            <autoPublish>true</autoPublish>-->
+                            <publishingServerId>release</publishingServerId>
+                            <autoPublish>false</autoPublish> <!-- 手动发布 -->
+                            <waitUntil>uploaded</waitUntil> <!-- 等待上传完成 -->
                         </configuration>
                     </plugin>
                 </plugins>
@@ -121,16 +110,10 @@
         </profile>
         <profile>
             <id>sonatype</id>
+            <properties>
+                <revision>1.0.3-SNAPSHOT</revision>
+            </properties>
             <distributionManagement>
-                <!--这两个id需要和setting.xml文件中的server字段的id进行对应-->
-<!--                <snapshotRepository>-->
-<!--                    <id>sonatype</id>-->
-<!--                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>-->
-<!--                </snapshotRepository>-->
-<!--                <repository>-->
-<!--                    <id>sonatype</id>-->
-<!--                    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-<!--                </repository>-->
                 <repository>
                     <id>central</id>
                     <url>https://central.sonatype.com</url>
@@ -138,25 +121,13 @@
             </distributionManagement>
             <build>
                 <plugins>
-<!--                    <plugin>-->
-<!--                        <groupId>org.sonatype.plugins</groupId>-->
-<!--                        <artifactId>nexus-staging-maven-plugin</artifactId>-->
-<!--                        <version>${nexus-staging-maven-plugin.version}</version>-->
-<!--                        <extensions>true</extensions>-->
-<!--                        <configuration>-->
-<!--                            <serverId>sonatype</serverId>-->
-<!--                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>-->
-<!--                            <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
-<!--                        </configuration>-->
-<!--                    </plugin>-->
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.6.0</version>
+                        <version>0.8.0</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <publishingServerId>central</publishingServerId>
-<!--                            <autoPublish>true</autoPublish>-->
+                            <publishingServerId>sonatype</publishingServerId>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -184,12 +155,6 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
-            </dependency>
-            <!-- 序列化 -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson-databind.version}</version>
             </dependency>
             <!-- 工具类 -->
             <dependency>
@@ -241,17 +206,17 @@
             <dependency>
                 <groupId>com.rpamis</groupId>
                 <artifactId>rpamis-security-annotation</artifactId>
-                <version>${rpamis-security.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.rpamis</groupId>
                 <artifactId>rpamis-security-spring-boot-starter</artifactId>
-                <version>${rpamis-security.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.rpamis</groupId>
                 <artifactId>rpamis-security-test</artifactId>
-                <version>${rpamis-security.version}</version>
+                <version>${revision}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -350,11 +315,45 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.18.0</version>
+                <version>${versions-maven-plugin.version}</version>
                 <configuration>
                     <!--pom不备份-->
                     <generateBackupPoms>false</generateBackupPoms>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <updatePomFile>true</updatePomFile>
+                            <flattenMode>ossrh</flattenMode>
+                            <pomElements>
+                                <distributionManagement>remove</distributionManagement>
+                                <dependencyManagement>keep</dependencyManagement>
+                                <repositories>remove</repositories>
+                                <properties>keep</properties>
+                                <scm>keep</scm>
+                                <url>keep</url>
+                                <organization>resolve</organization>
+                            </pomElements>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>clean</id>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <phase>clean</phase>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
