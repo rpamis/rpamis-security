@@ -38,7 +38,7 @@ public class ProcessContext {
     /**
      * 防重Set
      */
-    private Set<Integer> referenceSet;
+    private Set<Object> referenceSet;
 
     /**
      * 类型处理者列表
@@ -58,7 +58,7 @@ public class ProcessContext {
     public ProcessContext() {
     }
 
-    public ProcessContext(Object currentObject, Object fieldValue, Field field, Class<?> fieldValueClass, Set<Integer> referenceSet, List<TypeHandler> handlerList, Deque<Object> analyzeDeque) {
+    public ProcessContext(Object currentObject, Object fieldValue, Field field, Class<?> fieldValueClass, Set<Object> referenceSet, List<TypeHandler> handlerList, Deque<Object> analyzeDeque) {
         this.currentObject = currentObject;
         this.fieldValue = fieldValue;
         this.field = field;
@@ -100,11 +100,11 @@ public class ProcessContext {
         this.fieldValueClass = fieldValueClass;
     }
 
-    public Set<Integer> getReferenceSet() {
+    public Set<Object> getReferenceSet() {
         return referenceSet;
     }
 
-    public void setReferenceSet(Set<Integer> referenceSet) {
+    public void setReferenceSet(Set<Object> referenceSet) {
         this.referenceSet = referenceSet;
     }
 

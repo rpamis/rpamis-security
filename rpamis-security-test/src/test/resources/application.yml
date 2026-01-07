@@ -51,6 +51,7 @@ rpamis:
     # 是否开启脱敏切面
     desensitization-enable: true
     # 加解密算法
-    algorithm: sm4
-    # 加密算法key
-    sm4key: 1234567890123456
+    algorithm:
+        sm4:
+          # 加密算法key
+          key: 1234567890123456

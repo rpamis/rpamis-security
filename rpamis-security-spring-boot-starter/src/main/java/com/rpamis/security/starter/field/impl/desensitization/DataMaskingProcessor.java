@@ -1,4 +1,4 @@
-package com.rpamis.security.starter.field.impl;
+package com.rpamis.security.starter.field.impl.desensitization;
 
 import com.rpamis.security.annotation.Masked;
 import com.rpamis.security.starter.factory.MaskFunctionFactory;

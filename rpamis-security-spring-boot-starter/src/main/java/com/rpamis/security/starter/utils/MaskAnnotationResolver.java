@@ -5,6 +5,9 @@ import com.rpamis.security.starter.field.FieldProcess;
 import com.rpamis.security.starter.field.ProcessContext;
 import com.rpamis.security.starter.field.TypeHandler;
 import com.rpamis.security.starter.field.impl.*;
+import com.rpamis.security.starter.field.impl.desensitization.DataMaskingProcessor;
+import com.rpamis.security.starter.field.impl.desensitization.MaskingResponseProcessor;
+import com.rpamis.security.starter.field.impl.desensitization.NestedMaskingProcessor;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -31,10 +34,8 @@ public class MaskAnnotationResolver {
      */
     private static final List<TypeHandler> HANDLER_LIST = new ArrayList<>();
 
-    /**
-     * 必要处理者初始化
-     */
     static {
+        // 必要处理者初始化
         PROCESS_LIST.add(new MaskingResponseProcessor());
         PROCESS_LIST.add(new NestedMaskingProcessor());
         PROCESS_LIST.add(new DataMaskingProcessor());
@@ -55,7 +56,7 @@ public class MaskAnnotationResolver {
         if (sourceObject == null) {
             return null;
         }
-        Set<Integer> referenceSet = new HashSet<>();
+        Set<Object> referenceSet = Collections.newSetFromMap(new IdentityHashMap<>());
         // 解析队列
         Deque<Object> analyzeDeque = new ArrayDeque<>();
         analyzeDeque.offer(findActualMaskObject(sourceObject));

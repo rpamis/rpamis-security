@@ -9,6 +9,7 @@ import com.rpamis.security.starter.mybaits.MybatisDecryptInterceptor;
 import com.rpamis.security.starter.mybaits.MybatisDynamicSqlEncryptInterceptor;
 import com.rpamis.security.starter.mybaits.MybatisEncryptInterceptor;
 import com.rpamis.security.starter.utils.SecurityResolver;
+import com.rpamis.security.starter.utils.SecurityUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -67,15 +68,27 @@ public class SecurityAutoConfiguration {
     }
 
     /**
+     * 安全工具类
+     *
+     * @param securityAlgorithm  securityAlgorithm
+     * @param securityProperties securityProperties
+     * @return SecurityUtils
+     */
+    @Bean
+    SecurityUtils securityUtils(SecurityAlgorithm securityAlgorithm, SecurityProperties securityProperties) {
+        return new SecurityUtils(securityAlgorithm, securityProperties);
+    }
+
+    /**
      * 加解密处理者
      *
-     * @param securityAlgorithm 安全算法
+     * @param securityUtils 安全工具类
      * @return SecurityResolver
      */
     @Bean
     @Order(1)
-    SecurityResolver securityResolver(SecurityAlgorithm securityAlgorithm) {
-        return new SecurityResolver(securityAlgorithm);
+    SecurityResolver securityResolver(SecurityUtils securityUtils) {
+        return new SecurityResolver(securityUtils);
     }
 
     /**

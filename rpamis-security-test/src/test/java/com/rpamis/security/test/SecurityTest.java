@@ -252,4 +252,31 @@ public class SecurityTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
     }
+
+    @Test
+    @Transactional()
+    @Rollback
+    public void decryptReturn() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/test/decrypt/return"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    @Transactional()
+    @Rollback
+    public void avoidRepeatEncrypt() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/test/avoid/repeat/encrypt"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    @Transactional()
+    @Rollback
+    public void compatibilityOld() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/test/compatibility/old"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+    }
 }

@@ -7,9 +7,11 @@ import com.rpamis.common.utils.RpamisBeanUtil;
 import com.rpamis.security.annotation.Desensitizationed;
 import com.rpamis.security.starter.algorithm.SecurityAlgorithm;
 import com.rpamis.security.test.dao.TestVersionMapper;
+import com.rpamis.security.test.dao.TestVersionV2Mapper;
 import com.rpamis.security.test.domain.TestNestVO;
 import com.rpamis.security.test.domain.TestVO;
 import com.rpamis.security.test.domain.TestVersionDO;
+import com.rpamis.security.test.domain.TestVersionV2DO;
 import com.rpamis.security.test.service.TestVersionDOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -32,6 +34,9 @@ public class TestController {
     private TestVersionMapper testVersionMapper;
 
     @Autowired
+    private TestVersionV2Mapper testVersionV2Mapper;
+
+    @Autowired
     private TestVersionDOService testVersionDOService;
 
     @Resource
@@ -45,12 +50,12 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("张三");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         testVersionMapper.insert(testVersionDO);
         TestVersionDO selectResult = testVersionMapper.selectById(testVersionDO.getId());
         Assert.isTrue("张三".equals(selectResult.getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(selectResult.getIdCard()), "身份证校验失败");
-        Assert.isTrue("18523578454".equals(selectResult.getPhone()), "电话校验失败");
+        Assert.isTrue("12345678965".equals(selectResult.getPhone()), "电话校验失败");
     }
 
     /**
@@ -61,7 +66,7 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("王五");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         TestVersionDO testVersionDO2 = new TestVersionDO();
         testVersionDO2.setName("李四");
         testVersionDO2.setIdCard("500101111118181953");
@@ -76,7 +81,7 @@ public class TestController {
         List<TestVersionDO> selectResult = testVersionMapper.selectAllByIdList(testIdList);
         Assert.isTrue("王五".equals(selectResult.get(0).getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(selectResult.get(0).getIdCard()), "身份证校验失败");
-        Assert.isTrue("18523578454".equals(selectResult.get(0).getPhone()), "电话校验失败");
+        Assert.isTrue("12345678965".equals(selectResult.get(0).getPhone()), "电话校验失败");
         Assert.isTrue("李四".equals(selectResult.get(1).getName()), "姓名校验失败");
         Assert.isTrue("500101111118181953".equals(selectResult.get(1).getIdCard()), "身份证校验失败");
         Assert.isTrue("18523578456".equals(selectResult.get(1).getPhone()), "电话校验失败");
@@ -90,7 +95,7 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("张三");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         testVersionMapper.insert(testVersionDO);
         TestVersionDO selectResult = testVersionMapper.selectById(testVersionDO.getId());
         String nameInDb = selectResult.getName();
@@ -110,7 +115,7 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("张三");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         testVersionMapper.insert(testVersionDO);
         TestVersionDO selectResult = testVersionMapper.selectById(testVersionDO.getId());
         String nameInDb = selectResult.getName();
@@ -132,7 +137,7 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("张三");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         testVersionMapper.insert(testVersionDO);
         int row = testVersionMapper.deleteById(testVersionDO.getId());
         Assert.isTrue(row != 0, "删除数据失败");
@@ -146,12 +151,12 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("王五");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         testVersionMapper.insertSelective(testVersionDO);
         TestVersionDO selectResult = testVersionMapper.selectByTestId(testVersionDO.getId());
         Assert.isTrue("王五".equals(selectResult.getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(selectResult.getIdCard()), "身份证校验失败");
-        Assert.isTrue("18523578454".equals(selectResult.getPhone()), "电话校验失败");
+        Assert.isTrue("12345678965".equals(selectResult.getPhone()), "电话校验失败");
     }
 
     /**
@@ -162,7 +167,7 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("王五");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         TestVersionDO testVersionDO2 = new TestVersionDO();
         testVersionDO2.setName("李四");
         testVersionDO2.setIdCard("500101111118181953");
@@ -177,7 +182,7 @@ public class TestController {
         List<TestVersionDO> selectResult = testVersionMapper.selectAllByIdList(testIdList);
         Assert.isTrue("王五".equals(selectResult.get(0).getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(selectResult.get(0).getIdCard()), "身份证校验失败");
-        Assert.isTrue("18523578454".equals(selectResult.get(0).getPhone()), "电话校验失败");
+        Assert.isTrue("12345678965".equals(selectResult.get(0).getPhone()), "电话校验失败");
         Assert.isTrue("李四".equals(selectResult.get(1).getName()), "姓名校验失败");
         Assert.isTrue("500101111118181953".equals(selectResult.get(1).getIdCard()), "身份证校验失败");
         Assert.isTrue("18523578456".equals(selectResult.get(1).getPhone()), "电话校验失败");
@@ -191,7 +196,7 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("王五");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         testVersionMapper.insertSelective(testVersionDO);
         TestVersionDO selectResult = testVersionMapper.selectByTestId(testVersionDO.getId());
         String nameInDb = selectResult.getName();
@@ -211,7 +216,7 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("王五");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         testVersionMapper.insertSelective(testVersionDO);
         int row = testVersionMapper.deleteByTestId(testVersionDO.getId());
         Assert.isTrue(row != 0, "删除数据失败");
@@ -344,7 +349,7 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("张三");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         testVersionMapper.insert(testVersionDO);
         QueryWrapper<TestVersionDO> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
@@ -352,7 +357,7 @@ public class TestController {
         TestVersionDO selectResult = testVersionMapper.selectOne(queryWrapper);
         Assert.isTrue("张三".equals(selectResult.getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(selectResult.getIdCard()), "身份证校验失败");
-        Assert.isTrue("18523578454".equals(selectResult.getPhone()), "电话校验失败");
+        Assert.isTrue("12345678965".equals(selectResult.getPhone()), "电话校验失败");
     }
 
     /**
@@ -363,12 +368,12 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("张三");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         testVersionMapper.insert(testVersionDO);
         TestVersionDO testVersion2 = new TestVersionDO();
         testVersion2.setName("李四");
         testVersion2.setIdCard("500101111118181952");
-        testVersion2.setPhone("18523578454");
+        testVersion2.setPhone("12345678965");
         testVersionMapper.insert(testVersion2);
         List<Long> idList = new ArrayList<>();
         idList.add(testVersionDO.getId());
@@ -379,10 +384,10 @@ public class TestController {
         List<TestVersionDO> selectResult = testVersionMapper.selectList(queryWrapper);
         Assert.isTrue("张三".equals(selectResult.get(0).getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(selectResult.get(0).getIdCard()), "身份证校验失败");
-        Assert.isTrue("18523578454".equals(selectResult.get(0).getPhone()), "电话校验失败");
+        Assert.isTrue("12345678965".equals(selectResult.get(0).getPhone()), "电话校验失败");
         Assert.isTrue("李四".equals(selectResult.get(1).getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(selectResult.get(1).getIdCard()), "身份证校验失败");
-        Assert.isTrue("18523578454".equals(selectResult.get(1).getPhone()), "电话校验失败");
+        Assert.isTrue("12345678965".equals(selectResult.get(1).getPhone()), "电话校验失败");
     }
 
     /**
@@ -393,12 +398,12 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("张三");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         testVersionMapper.insert(testVersionDO);
         TestVersionDO selectResult = testVersionMapper.selectByTestId(testVersionDO.getId());
         Assert.isTrue("张三".equals(selectResult.getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(selectResult.getIdCard()), "身份证校验失败");
-        Assert.isTrue("18523578454".equals(selectResult.getPhone()), "电话校验失败");
+        Assert.isTrue("12345678965".equals(selectResult.getPhone()), "电话校验失败");
     }
 
     /**
@@ -409,12 +414,12 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("张三");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         testVersionMapper.insert(testVersionDO);
         TestVersionDO testVersion2 = new TestVersionDO();
         testVersion2.setName("李四");
         testVersion2.setIdCard("500101111118181952");
-        testVersion2.setPhone("18523578454");
+        testVersion2.setPhone("12345678965");
         testVersionMapper.insert(testVersion2);
         List<Long> idList = new ArrayList<>();
         idList.add(testVersionDO.getId());
@@ -422,10 +427,10 @@ public class TestController {
         List<TestVersionDO> selectResult = testVersionMapper.selectAllByIdList(idList);
         Assert.isTrue("张三".equals(selectResult.get(0).getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(selectResult.get(0).getIdCard()), "身份证校验失败");
-        Assert.isTrue("18523578454".equals(selectResult.get(0).getPhone()), "电话校验失败");
+        Assert.isTrue("12345678965".equals(selectResult.get(0).getPhone()), "电话校验失败");
         Assert.isTrue("李四".equals(selectResult.get(1).getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(selectResult.get(1).getIdCard()), "身份证校验失败");
-        Assert.isTrue("18523578454".equals(selectResult.get(1).getPhone()), "电话校验失败");
+        Assert.isTrue("12345678965".equals(selectResult.get(1).getPhone()), "电话校验失败");
     }
 
     /**
@@ -436,13 +441,13 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("张三");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         testVersionMapper.insert(testVersionDO);
         Map<String, TestVersionDO> selectResultMap = testVersionMapper.selectMapByTestId(testVersionDO.getId());
         TestVersionDO selectResult = selectResultMap.get(testVersionDO.getId());
         Assert.isTrue("张三".equals(selectResult.getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(selectResult.getIdCard()), "身份证校验失败");
-        Assert.isTrue("18523578454".equals(selectResult.getPhone()), "电话校验失败");
+        Assert.isTrue("12345678965".equals(selectResult.getPhone()), "电话校验失败");
     }
 
     /**
@@ -453,11 +458,11 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("张三");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         testVersionMapper.insert(testVersionDO);
         Assert.isTrue("张三".equals(testVersionDO.getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(testVersionDO.getIdCard()), "身份证校验失败");
-        Assert.isTrue("18523578454".equals(testVersionDO.getPhone()), "电话校验失败");
+        Assert.isTrue("12345678965".equals(testVersionDO.getPhone()), "电话校验失败");
     }
 
     /**
@@ -468,7 +473,7 @@ public class TestController {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("张三");
         testVersionDO.setIdCard("500101111118181952");
-        testVersionDO.setPhone("18523578454");
+        testVersionDO.setPhone("12345678965");
         testVersionMapper.insert(testVersionDO);
         TestVersionDO selectResult = testVersionMapper.selectById(testVersionDO.getId());
         String nameInDb = selectResult.getName();
@@ -479,5 +484,53 @@ public class TestController {
         testVersionMapper.updateById(testVersionDO);
         TestVersionDO result = testVersionMapper.selectById(testVersionDO.getId());
         Assert.isTrue("李四".equals(result.getName()), "更新姓名校验失败");
+    }
+
+    /**
+     * 存量未加密数据解密，原值返回
+     */
+    @PostMapping("/decrypt/return")
+    public void decryptReturn() {
+        TestVersionDO selectResult = testVersionMapper.selectById(330);
+        Assert.isTrue("张三".equals(selectResult.getName()), "姓名校验失败");
+        Assert.isTrue("500101111118181952".equals(selectResult.getIdCard()), "身份证校验失败");
+        Assert.isTrue("12345678965".equals(selectResult.getPhone()), "电话校验失败");
+    }
+
+    /**
+     * 防止已经加密的字段重复加密
+     * 如数据库已加密，但出库时加密字段实体未采用注解标识，则此时返回的是加密数据
+     * 此加密数据又被赋值给另一个采用注解标识的实体字段，期望不会重复加密
+     */
+    @PostMapping("/avoid/repeat/encrypt")
+    public void avoidRepeatEncrypt() {
+        TestVersionDO testVersionDO = new TestVersionDO();
+        testVersionDO.setName("张三");
+        testVersionDO.setIdCard("500101111118181952");
+        testVersionDO.setPhone("12345678965");
+        testVersionMapper.insert(testVersionDO);
+        TestVersionV2DO selectResult = testVersionV2Mapper.selectById(testVersionDO.getId());
+        String nameInDb = selectResult.getName();
+        String idCard = selectResult.getIdCard();
+        String phone = selectResult.getPhone();
+        Assert.isTrue("ENC_SM4_4e123e9554b4a5b30b53b5b27c4deb59".equals(nameInDb), "数据库姓名校验失败");
+        Assert.isTrue("ENC_SM4_afea507cb1a88c25807d29b905b49bec5222893c3ff712bf9841e10d0ec1ac12".equals(idCard), "数据库姓名校验失败");
+        Assert.isTrue("ENC_SM4_50993764479fe08b8bb71c3201786316".equals(phone), "数据库姓名校验失败");
+        testVersionDO.setName(selectResult.getName());
+        testVersionMapper.updateById(testVersionDO);
+        TestVersionDO repeatTestVersion = testVersionMapper.selectById(testVersionDO.getId());
+        Assert.isTrue("张三".equals(repeatTestVersion.getName()), "姓名校验失败");
+    }
+
+    /**
+     * 兼容rpamis-security 1.0.2以前老版本已加密数据解密，正常解密后返回
+     */
+    @PostMapping("/compatibility/old")
+    public void compatibilityOld() {
+        // 老数据加密方式，不带ENC_SM4_前缀
+        TestVersionDO testVersionDO = testVersionMapper.selectById(100469);
+        Assert.isTrue("张三".equals(testVersionDO.getName()), "姓名校验失败");
+        Assert.isTrue("500101111118181952".equals(testVersionDO.getIdCard()), "身份证校验失败");
+        Assert.isTrue("12345678965".equals(testVersionDO.getPhone()), "电话校验失败");
     }
 }

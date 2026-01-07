@@ -1,14 +1,24 @@
 package com.rpamis.security.starter.utils;
 
 import com.rpamis.security.annotation.SecurityField;
-import com.rpamis.security.starter.algorithm.SecurityAlgorithm;
+import com.rpamis.security.starter.field.FieldProcess;
+import com.rpamis.security.starter.field.ProcessContext;
+import com.rpamis.security.starter.field.TypeHandler;
+import com.rpamis.security.starter.field.impl.ArrayTypeHandler;
+import com.rpamis.security.starter.field.impl.CollectionTypeHandler;
+import com.rpamis.security.starter.field.impl.MapTypeHandler;
+import com.rpamis.security.starter.field.impl.OtherTypeHandler;
+import com.rpamis.security.starter.field.impl.database.FinderSecurityProcessor;
+import com.rpamis.security.starter.field.impl.database.SecurityAnnotationProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -19,23 +29,53 @@ import java.util.stream.Collectors;
  */
 public class SecurityResolver {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityResolver.class);
+
     /**
      * 缓存Class->filed Map
      */
     private final ConcurrentHashMap<Class<?>, List<Field>> classToFieldMap = new ConcurrentHashMap<>();
 
     /**
-     * 加密算法
+     * 缓存Class->解密filed Map
      */
-    private final SecurityAlgorithm securityAlgorithm;
+    private final ConcurrentHashMap<Class<?>, List<Field>> classToDecryptFieldMap = new ConcurrentHashMap<>();
+
+
+    /**
+     * 加解密工具类
+     */
+    private final SecurityUtils securityUtils;
 
     /**
      * 防重复加密Set
      */
-    private static final Set<Integer> REFERENCE_SET = new HashSet<>(128);
+    private static final Set<Integer> REFERENCE_SET = Collections.newSetFromMap(new IdentityHashMap<>(128));
 
-    public SecurityResolver(SecurityAlgorithm securityAlgorithm) {
-        this.securityAlgorithm = securityAlgorithm;
+    /**
+     * 防重复解密Set
+     */
+    private static final Set<Object> DECRYPT_REFERENCE_SET = Collections.newSetFromMap(new IdentityHashMap<>(128));
+
+    /**
+     * Filed处理者list
+     */
+    private static final List<FieldProcess> PROCESS_LIST = new ArrayList<>();
+
+    /**
+     * 类型处理者list
+     */
+    private static final List<TypeHandler> HANDLER_LIST = new ArrayList<>();
+
+    public SecurityResolver(SecurityUtils securityUtils) {
+        this.securityUtils = securityUtils;
+        // 必要处理者初始化
+        PROCESS_LIST.add(new FinderSecurityProcessor());
+        PROCESS_LIST.add(new SecurityAnnotationProcessor(securityUtils));
+        HANDLER_LIST.add(new ArrayTypeHandler());
+        HANDLER_LIST.add(new CollectionTypeHandler());
+        HANDLER_LIST.add(new MapTypeHandler());
+        HANDLER_LIST.add(new OtherTypeHandler());
     }
 
     /**
@@ -79,8 +119,14 @@ public class SecurityResolver {
                 if (!(sourceObject instanceof String)) {
                     continue;
                 }
-                String encryptedString = securityAlgorithm.encrypt(String.valueOf(sourceObject));
-                ReflectionUtils.setField(field, sourceParam, encryptedString);
+                String stringObject = String.valueOf(sourceObject);
+                // 防止已经加密的字段重复加密
+                // 如数据库已加密，但出库时加密字段实体未采用注解标识，则此时返回的是加密数据
+                // 此加密数据又被赋值给另一个采用注解标识的实体字段，则会重复加密
+                if (securityUtils.checkHasBeenEncrypted(stringObject)) {
+                    continue;
+                }
+                ReflectionUtils.setField(field, sourceParam, securityUtils.encryptWithPrefix(stringObject));
                 REFERENCE_SET.add(sourceParam.hashCode());
             }
         }
@@ -110,60 +156,39 @@ public class SecurityResolver {
         if (Objects.isNull(params)) {
             return null;
         }
-        // 此处没有并发问题，只是为了通过stream的lambda编译
-        AtomicReference<Class<?>> clazz = new AtomicReference<>();
-        AtomicReference<Object> object = new AtomicReference<>();
-        // 解析返回值为List的
+        Deque<Object> analyzeDeque = new ArrayDeque<>();
+        List<?> paramsList;
         if (params instanceof List) {
-            List<?> sourceList = (List<?>) params;
-            if (CollectionUtils.isEmpty(sourceList)) {
-                return params;
-            }
-            sourceList.stream().filter(Objects::nonNull)
-                    .findFirst()
-                    .ifPresent(source -> {
-                        clazz.set(source.getClass());
-                        object.set(source);
-                    });
+            paramsList = (List<?>) params;
         } else {
-            clazz.set(params.getClass());
-            object.set(params);
+            paramsList = Collections.singletonList(params);
         }
-        if (null == clazz.get()) {
-            return params;
+        for (Object sourceParam : paramsList) {
+            analyzeDeque.offer(sourceParam);
         }
-        List<Field> decryptFields = getParamsFields(object.get());
-        if (!CollectionUtils.isEmpty(decryptFields)) {
-            List<?> paramsList;
-            if (params instanceof List) {
-                paramsList = (List<?>) params;
-            } else {
-                paramsList = Collections.singletonList(params);
-            }
-            return processDecrypt(paramsList, decryptFields);
-        }
-        return params;
-    }
-
-    /**
-     * 处理解密
-     *
-     * @param sourceList    源对象List
-     * @param decryptFields 需要解密字段集合
-     * @return List<?>
-     */
-    private List<?> processDecrypt(List<?> sourceList, List<Field> decryptFields) {
-        for (Object sourceParam : sourceList) {
-            for (Field field : decryptFields) {
+        while (!analyzeDeque.isEmpty()) {
+            Object currentObj = analyzeDeque.poll();
+            List<Field> fields = classToDecryptFieldMap.computeIfAbsent(currentObj.getClass(), key -> getWillDecryptFields(currentObj));
+            for (Field field : fields) {
                 ReflectionUtils.makeAccessible(field);
-                Object sourceObject = ReflectionUtils.getField(field, sourceParam);
-                if (sourceObject instanceof String) {
-                    String newStr = securityAlgorithm.decrypt(String.valueOf(sourceObject));
-                    ReflectionUtils.setField(field, sourceParam, newStr);
+                Object fieldValue = ReflectionUtils.getField(field, currentObj);
+                if (null != fieldValue) {
+                    Class<?> fieldValueClass = fieldValue.getClass();
+                    ProcessContext processContext = new ProcessContext(currentObj, fieldValue, field,
+                            fieldValueClass, DECRYPT_REFERENCE_SET, HANDLER_LIST, analyzeDeque);
+                    // 字段解析并解密
+                    for (FieldProcess fieldProcess : PROCESS_LIST) {
+                        try {
+                            fieldProcess.processField(processContext);
+                        } catch (Exception e) {
+                            LOGGER.error("SecurityResolver.decryptFiled error:", e);
+                            throw new SecurityException(e);
+                        }
+                    }
                 }
             }
         }
-        return sourceList;
+        return params;
     }
 
     /**
@@ -176,5 +201,20 @@ public class SecurityResolver {
         return Arrays.stream(FieldUtils.getAllFields(params))
                 .filter(field -> Objects.nonNull(field.getAnnotation(SecurityField.class)))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 获取可能需要解密的字段，不含静态和final字段
+     *
+     * @param params params
+     * @return List<Field>
+     */
+    private List<Field> getWillDecryptFields(Object params) {
+        Field[] fields = FieldUtils.getAllFields(params);
+        fields = Arrays.stream(fields).filter(field ->
+                        !Modifier.isStatic(field.getModifiers())
+                                && !Modifier.isFinal(field.getModifiers()))
+                .collect(Collectors.toList()).toArray(new Field[0]);
+        return Arrays.stream(fields).collect(Collectors.toList());
     }
 }

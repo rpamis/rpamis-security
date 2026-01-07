@@ -1,6 +1,9 @@
 package com.rpamis.security.starter.autoconfigure;
 
+import com.rpamis.security.starter.properties.Sm4Config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import javax.validation.Valid;
 
 /**
  * 安全组件Properties
@@ -19,12 +22,8 @@ public class SecurityProperties {
     /**
      * 支持的加密算法：sm4
      */
-    private String algorithm;
-
-    /**
-     * sm4算法加密密钥(16位)
-     */
-    private String sm4key;
+    @Valid
+    private Algorithm algorithm;
 
     /**
      * 是否启用脱敏切面
@@ -46,20 +45,32 @@ public class SecurityProperties {
      */
     private String customPointcut = "";
 
-    public String getAlgorithm() {
+    /**
+     * 支持的加密算法
+     */
+    public static class Algorithm {
+
+        /**
+         * SM4
+         */
+        @Valid
+        public Sm4Config sm4;
+
+        public Sm4Config getSm4() {
+            return sm4;
+        }
+
+        public void setSm4(Sm4Config sm4) {
+            this.sm4 = sm4;
+        }
+    }
+
+    public Algorithm getAlgorithm() {
         return algorithm;
     }
 
-    public void setAlgorithm(String algorithm) {
+    public void setAlgorithm(Algorithm algorithm) {
         this.algorithm = algorithm;
-    }
-
-    public String getSm4key() {
-        return sm4key;
-    }
-
-    public void setSm4key(String sm4key) {
-        this.sm4key = sm4key;
     }
 
     public Boolean getEnable() {
