@@ -1,6 +1,7 @@
-package com.rpamis.security.starter.autoconfigure;
+package com.rpamis.security.starter.properties;
 
-import com.rpamis.security.starter.properties.Sm4Config;
+import com.rpamis.security.core.properties.Algorithm;
+import com.rpamis.security.core.properties.SecurityConfigProvider;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import javax.validation.Valid;
@@ -12,7 +13,7 @@ import javax.validation.Valid;
  * @date 2023/9/4 13:56
  */
 @ConfigurationProperties(SecurityProperties.PREFIX)
-public class SecurityProperties {
+public class SecurityProperties implements SecurityConfigProvider {
 
     /**
      * 前缀
@@ -45,26 +46,7 @@ public class SecurityProperties {
      */
     private String customPointcut = "";
 
-    /**
-     * 支持的加密算法
-     */
-    public static class Algorithm {
-
-        /**
-         * SM4
-         */
-        @Valid
-        public Sm4Config sm4;
-
-        public Sm4Config getSm4() {
-            return sm4;
-        }
-
-        public void setSm4(Sm4Config sm4) {
-            this.sm4 = sm4;
-        }
-    }
-
+    @Override
     public Algorithm getAlgorithm() {
         return algorithm;
     }
@@ -89,6 +71,7 @@ public class SecurityProperties {
         this.desensitizationEnable = desensitizationEnable;
     }
 
+    @Override
     public Boolean getIgnoreDecryptFailed() {
         return ignoreDecryptFailed;
     }

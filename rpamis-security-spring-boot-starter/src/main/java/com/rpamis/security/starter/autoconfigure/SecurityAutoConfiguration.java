@@ -1,15 +1,16 @@
 package com.rpamis.security.starter.autoconfigure;
 
-import com.rpamis.security.starter.algorithm.SecurityAlgorithm;
-import com.rpamis.security.starter.algorithm.impl.Sm4SecurityAlgorithmImpl;
-import com.rpamis.security.starter.aop.DesensitizationAdvisor;
-import com.rpamis.security.starter.aop.DesensitizationAspect;
-import com.rpamis.security.starter.aop.DesensitizationInterceptor;
-import com.rpamis.security.starter.mybaits.MybatisDecryptInterceptor;
-import com.rpamis.security.starter.mybaits.MybatisDynamicSqlEncryptInterceptor;
-import com.rpamis.security.starter.mybaits.MybatisEncryptInterceptor;
-import com.rpamis.security.starter.utils.SecurityResolver;
-import com.rpamis.security.starter.utils.SecurityUtils;
+import com.rpamis.security.core.algorithm.SecurityAlgorithm;
+import com.rpamis.security.core.algorithm.impl.Sm4SecurityAlgorithmImpl;
+import com.rpamis.security.core.aop.DesensitizationAdvisor;
+import com.rpamis.security.core.aop.DesensitizationAspect;
+import com.rpamis.security.core.aop.DesensitizationInterceptor;
+import com.rpamis.security.core.mybaits.MybatisDecryptInterceptor;
+import com.rpamis.security.core.mybaits.MybatisDynamicSqlEncryptInterceptor;
+import com.rpamis.security.core.mybaits.MybatisEncryptInterceptor;
+import com.rpamis.security.core.utils.SecurityResolver;
+import com.rpamis.security.core.utils.SecurityUtils;
+import com.rpamis.security.starter.properties.SecurityProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

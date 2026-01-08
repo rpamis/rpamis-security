@@ -1,4 +1,4 @@
-package com.rpamis.security.starter.properties;
+package com.rpamis.security.core.properties;
 
 import javax.validation.constraints.Size;
 

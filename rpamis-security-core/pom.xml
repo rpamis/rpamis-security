@@ -73,6 +73,10 @@
             <groupId>com.rpamis</groupId>
             <artifactId>rpamis-security-annotation</artifactId>
         </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

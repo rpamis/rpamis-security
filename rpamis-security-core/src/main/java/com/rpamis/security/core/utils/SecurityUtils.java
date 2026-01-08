@@ -1,6 +1,8 @@
 package com.rpamis.security.core.utils;
 
 import com.rpamis.security.core.algorithm.SecurityAlgorithm;
+import com.rpamis.security.core.properties.Algorithm;
+import com.rpamis.security.core.properties.SecurityConfigProvider;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
@@ -31,11 +33,11 @@ public class SecurityUtils {
     /**
      * 安全组件配置
      */
-    private final SecurityProperties securityProperties;
+    private final SecurityConfigProvider securityConfigProvider;
 
-    public SecurityUtils(SecurityAlgorithm securityAlgorithm, SecurityProperties securityProperties) {
+    public SecurityUtils(SecurityAlgorithm securityAlgorithm, SecurityConfigProvider securityConfigProvider) {
         this.securityAlgorithm = securityAlgorithm;
-        this.securityProperties = securityProperties;
+        this.securityConfigProvider = securityConfigProvider;
     }
 
     /**
@@ -101,7 +103,7 @@ public class SecurityUtils {
         if (!StringUtils.hasText(encryptedString)) {
             return encryptedString;
         }
-        SecurityProperties.Algorithm algorithm = securityProperties.getAlgorithm();
+        Algorithm algorithm = securityConfigProvider.getAlgorithm();
         if (algorithm == null) {
             return encryptedString;
         }
@@ -123,7 +125,7 @@ public class SecurityUtils {
         if (!StringUtils.hasText(decryptedString)) {
             return decryptedString;
         }
-        SecurityProperties.Algorithm algorithm = securityProperties.getAlgorithm();
+        Algorithm algorithm = securityConfigProvider.getAlgorithm();
         if (algorithm == null) {
             return decryptedString;
         }
