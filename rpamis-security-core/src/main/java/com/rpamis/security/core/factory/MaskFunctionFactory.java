@@ -2,8 +2,8 @@ package com.rpamis.security.core.factory;
 
 import cn.hutool.core.util.DesensitizedUtil;
 import com.rpamis.security.annotation.Masked;
+import com.rpamis.security.core.utils.StringReplaceUtils;
 import com.rpamis.security.mask.MaskType;
-import com.rpamis.security.starter.utils.StringReplaceUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Map;

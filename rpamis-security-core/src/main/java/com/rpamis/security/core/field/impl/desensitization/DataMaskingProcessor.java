@@ -1,9 +1,9 @@
 package com.rpamis.security.core.field.impl.desensitization;
 
 import com.rpamis.security.annotation.Masked;
-import com.rpamis.security.starter.factory.MaskFunctionFactory;
-import com.rpamis.security.starter.field.FieldProcess;
-import com.rpamis.security.starter.field.ProcessContext;
+import com.rpamis.security.core.factory.MaskFunctionFactory;
+import com.rpamis.security.core.field.FieldProcess;
+import com.rpamis.security.core.field.ProcessContext;
 
 import java.lang.reflect.Field;
 

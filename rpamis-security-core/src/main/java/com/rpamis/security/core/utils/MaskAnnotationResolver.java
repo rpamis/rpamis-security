@@ -1,12 +1,16 @@
 package com.rpamis.security.core.utils;
 
-import com.rpamis.security.starter.factory.MaskFunctionFactory;
-import com.rpamis.security.starter.field.FieldProcess;
-import com.rpamis.security.starter.field.ProcessContext;
-import com.rpamis.security.starter.field.TypeHandler;
-import com.rpamis.security.starter.field.impl.desensitization.DataMaskingProcessor;
-import com.rpamis.security.starter.field.impl.desensitization.MaskingResponseProcessor;
-import com.rpamis.security.starter.field.impl.desensitization.NestedMaskingProcessor;
+import com.rpamis.security.core.factory.MaskFunctionFactory;
+import com.rpamis.security.core.field.FieldProcess;
+import com.rpamis.security.core.field.ProcessContext;
+import com.rpamis.security.core.field.TypeHandler;
+import com.rpamis.security.core.field.impl.ArrayTypeHandler;
+import com.rpamis.security.core.field.impl.CollectionTypeHandler;
+import com.rpamis.security.core.field.impl.MapTypeHandler;
+import com.rpamis.security.core.field.impl.OtherTypeHandler;
+import com.rpamis.security.core.field.impl.desensitization.DataMaskingProcessor;
+import com.rpamis.security.core.field.impl.desensitization.MaskingResponseProcessor;
+import com.rpamis.security.core.field.impl.desensitization.NestedMaskingProcessor;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -90,7 +94,7 @@ public class MaskAnnotationResolver {
      * @param referenceCounter 防重set
      * @return boolean
      */
-    public static boolean isNotBaseType(Class<?> clazz, Object element, Set<Integer> referenceCounter) {
+    public static boolean isNotBaseType(Class<?> clazz, Object element, Set<Object> referenceCounter) {
         return !clazz.isPrimitive()
                 && clazz.getPackage() != null
                 && !clazz.isEnum()
@@ -98,7 +102,9 @@ public class MaskAnnotationResolver {
                 && !clazz.getPackage().getName().startsWith("javax.")
                 && !clazz.getName().startsWith("java.")
                 && !clazz.getName().startsWith("javax.")
-                && referenceCounter.add(element.hashCode());
+                && !clazz.getName().startsWith("jakarta.")
+                && !clazz.getName().startsWith("sun.")
+                && referenceCounter.add(element);
     }
 
     /**

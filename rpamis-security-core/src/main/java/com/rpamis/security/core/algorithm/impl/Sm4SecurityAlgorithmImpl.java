@@ -1,8 +1,7 @@
 package com.rpamis.security.core.algorithm.impl;
 
-import com.rpamis.security.starter.algorithm.SecurityAlgorithm;
-import com.rpamis.security.starter.autoconfigure.SecurityProperties;
-import com.rpamis.security.starter.utils.Sm4SecurityUtils;
+import com.rpamis.security.core.algorithm.SecurityAlgorithm;
+import com.rpamis.security.core.utils.Sm4SecurityUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.StringUtils;
 

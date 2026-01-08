@@ -1,7 +1,6 @@
 package com.rpamis.security.core.utils;
 
-import com.rpamis.security.starter.algorithm.SecurityAlgorithm;
-import com.rpamis.security.starter.autoconfigure.SecurityProperties;
+import com.rpamis.security.core.algorithm.SecurityAlgorithm;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;

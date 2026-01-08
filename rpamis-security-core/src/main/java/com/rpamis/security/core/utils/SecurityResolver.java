@@ -1,15 +1,15 @@
 package com.rpamis.security.core.utils;
 
 import com.rpamis.security.annotation.SecurityField;
-import com.rpamis.security.starter.field.FieldProcess;
-import com.rpamis.security.starter.field.ProcessContext;
-import com.rpamis.security.starter.field.TypeHandler;
-import com.rpamis.security.starter.field.impl.ArrayTypeHandler;
-import com.rpamis.security.starter.field.impl.CollectionTypeHandler;
-import com.rpamis.security.starter.field.impl.MapTypeHandler;
-import com.rpamis.security.starter.field.impl.OtherTypeHandler;
-import com.rpamis.security.starter.field.impl.database.FinderSecurityProcessor;
-import com.rpamis.security.starter.field.impl.database.SecurityAnnotationProcessor;
+import com.rpamis.security.core.field.FieldProcess;
+import com.rpamis.security.core.field.ProcessContext;
+import com.rpamis.security.core.field.TypeHandler;
+import com.rpamis.security.core.field.impl.ArrayTypeHandler;
+import com.rpamis.security.core.field.impl.CollectionTypeHandler;
+import com.rpamis.security.core.field.impl.MapTypeHandler;
+import com.rpamis.security.core.field.impl.OtherTypeHandler;
+import com.rpamis.security.core.field.impl.database.FinderSecurityProcessor;
+import com.rpamis.security.core.field.impl.database.SecurityAnnotationProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;

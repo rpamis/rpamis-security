@@ -1,9 +1,9 @@
 package com.rpamis.security.core.field.impl.database;
 
 import com.rpamis.security.annotation.SecurityField;
-import com.rpamis.security.starter.field.FieldProcess;
-import com.rpamis.security.starter.field.ProcessContext;
-import com.rpamis.security.starter.utils.SecurityUtils;
+import com.rpamis.security.core.field.FieldProcess;
+import com.rpamis.security.core.field.ProcessContext;
+import com.rpamis.security.core.utils.SecurityUtils;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;

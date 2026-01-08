@@ -1,9 +1,10 @@
 package com.rpamis.security.core.field.impl.desensitization;
 
 
-import com.rpamis.security.starter.field.FieldProcess;
-import com.rpamis.security.starter.field.ProcessContext;
-import com.rpamis.security.starter.field.TypeHandler;
+
+import com.rpamis.security.core.field.FieldProcess;
+import com.rpamis.security.core.field.ProcessContext;
+import com.rpamis.security.core.field.TypeHandler;
 
 import java.util.List;
 

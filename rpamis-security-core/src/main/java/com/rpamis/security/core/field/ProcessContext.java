@@ -1,6 +1,7 @@
 package com.rpamis.security.core.field;
 
-import com.rpamis.security.starter.factory.MaskFunctionFactory;
+
+import com.rpamis.security.core.factory.MaskFunctionFactory;
 
 import java.lang.reflect.Field;
 import java.util.Deque;

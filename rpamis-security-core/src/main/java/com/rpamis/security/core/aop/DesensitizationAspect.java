@@ -1,6 +1,6 @@
 package com.rpamis.security.core.aop;
 
-import com.rpamis.security.starter.utils.MaskAnnotationResolver;
+import com.rpamis.security.core.utils.MaskAnnotationResolver;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package com.rpamis.security.core.mybaits;
 
-import com.rpamis.security.starter.utils.SecurityResolver;
+import com.rpamis.security.core.utils.SecurityResolver;
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
 import org.apache.ibatis.plugin.*;
 import org.slf4j.Logger;

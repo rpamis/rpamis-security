@@ -1,9 +1,9 @@
 package com.rpamis.security.core.mybaits;
 
-import com.rpamis.security.starter.mybatisplus.Constants;
-import com.rpamis.security.starter.mybatisplus.PluginUtils;
-import com.rpamis.security.starter.utils.SecurityResolver;
-import com.rpamis.security.starter.utils.SerializationUtils;
+import com.rpamis.security.core.mybatisplus.Constants;
+import com.rpamis.security.core.mybatisplus.PluginUtils;
+import com.rpamis.security.core.utils.SecurityResolver;
+import com.rpamis.security.core.utils.SerializationUtils;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;

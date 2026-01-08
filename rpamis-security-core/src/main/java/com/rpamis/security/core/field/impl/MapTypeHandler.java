@@ -1,8 +1,8 @@
 package com.rpamis.security.core.field.impl;
 
-import com.rpamis.security.starter.field.ProcessContext;
-import com.rpamis.security.starter.field.TypeHandler;
-import com.rpamis.security.starter.utils.MaskAnnotationResolver;
+import com.rpamis.security.core.field.ProcessContext;
+import com.rpamis.security.core.field.TypeHandler;
+import com.rpamis.security.core.utils.MaskAnnotationResolver;
 
 import java.util.Collection;
 import java.util.Deque;
@@ -16,10 +16,11 @@ import java.util.Set;
  * @date 2023/9/6 17:01
  */
 public class MapTypeHandler implements TypeHandler {
+
     @Override
     public boolean handle(ProcessContext processContext) {
         Object fieldValue = processContext.getFieldValue();
-        Set<Integer> referenceSet = processContext.getReferenceSet();
+        Set<Object> referenceSet = processContext.getReferenceSet();
         Deque<Object> analyzeDeque = processContext.getAnalyzeDeque();
         if (fieldValue instanceof Map<?, ?>) {
             Map<?, ?> fieldValueMap = (Map<?, ?>) fieldValue;
