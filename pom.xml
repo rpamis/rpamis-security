@@ -19,6 +19,7 @@
     <modules>
         <module>rpamis-security-annotation</module>
         <module>rpamis-security-spring-boot-starter</module>
+        <module>rpamis-security-core</module>
         <module>rpamis-security-test</module>
     </modules>
 
@@ -206,6 +207,11 @@
             <dependency>
                 <groupId>com.rpamis</groupId>
                 <artifactId>rpamis-security-annotation</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rpamis</groupId>
+                <artifactId>rpamis-security-core</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
