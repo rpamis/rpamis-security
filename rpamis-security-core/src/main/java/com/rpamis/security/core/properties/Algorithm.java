@@ -11,10 +11,23 @@ import javax.validation.Valid;
 public class Algorithm {
 
     /**
+     * 全局加解密算法
+     */
+    public DefaultPrefix active = DefaultPrefix.SM4;
+
+    /**
      * SM4
      */
     @Valid
-    public Sm4Config sm4 = new Sm4Config();
+    public Sm4Config sm4;
+
+    public DefaultPrefix getActive() {
+        return active;
+    }
+
+    public void setActive(DefaultPrefix active) {
+        this.active = active;
+    }
 
     public Sm4Config getSm4() {
         return sm4;

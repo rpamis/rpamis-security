@@ -41,7 +41,7 @@ public class SecurityAutoConfiguration {
     @ConditionalOnExpression("'${rpamis.security.algorithm}'.equals('sm4')")
     @ConditionalOnMissingBean
     SecurityAlgorithm sm4SecurityAlgorithm(SecurityProperties securityProperties) {
-        if (!StringUtils.hasLength(securityProperties.getSm4key())) {
+        if (!StringUtils.hasLength(securityProperties.getAlgorithm().getSm4().getKey())) {
             throw new IllegalArgumentException("sm4 encryption key is null, please set");
         }
         return new Sm4SecurityAlgorithmImpl(securityProperties);

@@ -10,8 +10,16 @@ import javax.validation.constraints.Size;
  */
 public class Sm4Config {
 
+    /**
+     * SM4密钥，必须为16位
+     */
     @Size(min = 16, max = 16, message = "SM4密钥长度必须为16位")
     public String key;
+
+    /**
+     * 加解密唯一识别前缀
+     */
+    public String prefix = DefaultPrefix.SM4.getPrefix();
 
     public String getKey() {
         return key;
@@ -19,5 +27,13 @@ public class Sm4Config {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 }

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.rpamis.common.dto.response.Response;
 import com.rpamis.common.utils.RpamisBeanUtil;
 import com.rpamis.security.annotation.Desensitizationed;
-import com.rpamis.security.starter.algorithm.SecurityAlgorithm;
+import com.rpamis.security.core.algorithm.SecurityAlgorithm;
 import com.rpamis.security.test.dao.TestVersionMapper;
 import com.rpamis.security.test.dao.TestVersionV2Mapper;
 import com.rpamis.security.test.domain.TestNestVO;

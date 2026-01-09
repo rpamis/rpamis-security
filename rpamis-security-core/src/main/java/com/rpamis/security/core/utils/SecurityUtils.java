@@ -2,7 +2,9 @@ package com.rpamis.security.core.utils;
 
 import com.rpamis.security.core.algorithm.SecurityAlgorithm;
 import com.rpamis.security.core.properties.Algorithm;
+import com.rpamis.security.core.properties.DefaultPrefix;
 import com.rpamis.security.core.properties.SecurityConfigProvider;
+import com.rpamis.security.core.properties.Sm4Config;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
@@ -17,13 +19,20 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SecurityUtils {
 
     /**
-     * 加密算法类型->加密算法前缀占位符 Map
+     * 加密算法类型->默认加密算法前缀占位符 Map
      */
-    private final ConcurrentHashMap<SecurityProperties.Algorithm, String> algorithmPrefixMap = new ConcurrentHashMap<>() {{
-        for (SecurityProperties.Algorithm algorithm : SecurityProperties.Algorithm.values()) {
-            put(algorithm, "ENC_" + algorithm.name() + "_");
+    private static final ConcurrentHashMap<String, String> DEFAULT_ALGORITHM_PREFIX_MAP = new ConcurrentHashMap<>();
+
+    /**
+     * 加密算法类型->自定义加密算法前缀占位符 Map
+     */
+    private static final ConcurrentHashMap<String, String> CUSTOM_ALGORITHM_PREFIX_MAP = new ConcurrentHashMap<>();
+
+    static {
+        for (DefaultPrefix defaultPrefix : DefaultPrefix.values()) {
+            DEFAULT_ALGORITHM_PREFIX_MAP.put(defaultPrefix.name(), defaultPrefix.getPrefix());
         }
-    }};
+    }
 
     /**
      * 加密算法
@@ -38,6 +47,18 @@ public class SecurityUtils {
     public SecurityUtils(SecurityAlgorithm securityAlgorithm, SecurityConfigProvider securityConfigProvider) {
         this.securityAlgorithm = securityAlgorithm;
         this.securityConfigProvider = securityConfigProvider;
+        initPropertyPrefix();
+    }
+
+    /**
+     * 初始化配置的前缀
+     */
+    private void initPropertyPrefix() {
+        Algorithm algorithm = securityConfigProvider.getAlgorithm();
+        Sm4Config sm4 = algorithm.getSm4();
+        if (sm4 != null && StringUtils.hasText(sm4.getPrefix()) && !sm4.getPrefix().equals(DefaultPrefix.SM4.getPrefix())) {
+            CUSTOM_ALGORITHM_PREFIX_MAP.put(DefaultPrefix.SM4.name(), sm4.getPrefix());
+        }
     }
 
     /**
@@ -84,9 +105,15 @@ public class SecurityUtils {
         if (!StringUtils.hasText(source)) {
             return false;
         }
-        Collection<String> algorithmsPlaceholder = algorithmPrefixMap.values();
-        for (String algorithmPlaceholder : algorithmsPlaceholder) {
-            if (source.startsWith(algorithmPlaceholder)) {
+        Collection<String> defaultPrefixList = DEFAULT_ALGORITHM_PREFIX_MAP.values();
+        for (String defaultPrefix : defaultPrefixList) {
+            if (source.startsWith(defaultPrefix)) {
+                return true;
+            }
+        }
+        Collection<String> customPrefixList = CUSTOM_ALGORITHM_PREFIX_MAP.values();
+        for (String customPrefix : customPrefixList) {
+            if (StringUtils.hasText(customPrefix) && source.startsWith(customPrefix)) {
                 return true;
             }
         }
@@ -107,11 +134,19 @@ public class SecurityUtils {
         if (algorithm == null) {
             return encryptedString;
         }
-        String algorithmPlaceholder = algorithmPrefixMap.get(algorithm);
-        if (!StringUtils.hasText(algorithmPlaceholder)) {
-            return encryptedString;
+        DefaultPrefix active = algorithm.getActive();
+        if (active == DefaultPrefix.SM4) {
+            String defaultSm4Prefix = DEFAULT_ALGORITHM_PREFIX_MAP.get(active.name());
+            String customSm4Prefix = CUSTOM_ALGORITHM_PREFIX_MAP.get(active.name());
+            if (StringUtils.hasText(customSm4Prefix)) {
+                return customSm4Prefix + encryptedString;
+            } else if (StringUtils.hasText(defaultSm4Prefix)) {
+                return defaultSm4Prefix + encryptedString;
+            } else {
+                return encryptedString;
+            }
         } else {
-            return algorithmPlaceholder + encryptedString;
+            return encryptedString;
         }
     }
 
@@ -129,15 +164,19 @@ public class SecurityUtils {
         if (algorithm == null) {
             return decryptedString;
         }
-        String algorithmPlaceholder = algorithmPrefixMap.get(algorithm);
-        if (!StringUtils.hasText(algorithmPlaceholder)) {
-            return decryptedString;
-        } else {
-            if (decryptedString.startsWith(algorithmPlaceholder)) {
-                return decryptedString.substring(algorithmPlaceholder.length());
+        DefaultPrefix active = algorithm.getActive();
+        if (active == DefaultPrefix.SM4) {
+            String defaultSm4Prefix = DEFAULT_ALGORITHM_PREFIX_MAP.get(active.name());
+            String customSm4Prefix = CUSTOM_ALGORITHM_PREFIX_MAP.get(active.name());
+            if (StringUtils.hasText(customSm4Prefix) && decryptedString.startsWith(customSm4Prefix)) {
+                return decryptedString.substring(customSm4Prefix.length());
+            } else if (StringUtils.hasText(defaultSm4Prefix)) {
+                return decryptedString.substring(defaultSm4Prefix.length());
             } else {
                 return decryptedString;
             }
+        } else {
+            return decryptedString;
         }
     }
 }
