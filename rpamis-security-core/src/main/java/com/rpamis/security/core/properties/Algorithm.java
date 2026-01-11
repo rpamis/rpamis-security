@@ -1,5 +1,7 @@
 package com.rpamis.security.core.properties;
 
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+
 import javax.validation.Valid;
 
 /**
@@ -13,19 +15,28 @@ public class Algorithm {
     /**
      * 全局加解密算法
      */
-    public DefaultPrefix active = DefaultPrefix.SM4;
+    public String active = "sm4";
 
     /**
      * SM4
      */
     @Valid
+    @NestedConfigurationProperty
     public Sm4Config sm4;
 
-    public DefaultPrefix getActive() {
+    public String getActive() {
         return active;
     }
 
-    public void setActive(DefaultPrefix active) {
+    public DefaultPrefix getEnumActive() {
+        try {
+            return DefaultPrefix.valueOf(active.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return DefaultPrefix.SM4;
+        }
+    }
+
+    public void setActive(String active) {
         this.active = active;
     }
 

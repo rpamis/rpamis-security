@@ -50,7 +50,7 @@ public class SecurityResolver {
     /**
      * 防重复加密Set
      */
-    private static final Set<Integer> REFERENCE_SET = Collections.newSetFromMap(new IdentityHashMap<>(128));
+    private static final Set<Object> REFERENCE_SET = Collections.newSetFromMap(new IdentityHashMap<>(128));
 
     /**
      * 防重复解密Set
@@ -111,7 +111,7 @@ public class SecurityResolver {
      * @return Object
      */
     private Object processEncrypt(Object sourceParam, List<Field> encryptFields) {
-        if (!REFERENCE_SET.contains(sourceParam.hashCode())) {
+        if (!REFERENCE_SET.contains(sourceParam)) {
             for (Field field : encryptFields) {
                 ReflectionUtils.makeAccessible(field);
                 Object sourceObject = ReflectionUtils.getField(field, sourceParam);
@@ -127,7 +127,7 @@ public class SecurityResolver {
                     continue;
                 }
                 ReflectionUtils.setField(field, sourceParam, securityUtils.encryptWithPrefix(stringObject));
-                REFERENCE_SET.add(sourceParam.hashCode());
+                REFERENCE_SET.add(sourceParam);
             }
         }
         return sourceParam;

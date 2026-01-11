@@ -17,6 +17,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.util.StringUtils;
 
@@ -38,7 +39,7 @@ public class SecurityAutoConfiguration {
      * @return SecurityAlgorithm
      */
     @Bean
-    @ConditionalOnExpression("'${rpamis.security.algorithm}'.equals('sm4')")
+    @ConditionalOnProperty(prefix = "rpamis.security.algorithm", value = "active", havingValue = "sm4", matchIfMissing = true)
     @ConditionalOnMissingBean
     SecurityAlgorithm sm4SecurityAlgorithm(SecurityProperties securityProperties) {
         if (!StringUtils.hasLength(securityProperties.getAlgorithm().getSm4().getKey())) {
@@ -54,7 +55,7 @@ public class SecurityAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    SecurityAlgorithm defaultSecurityAlgorithm(){
+    SecurityAlgorithm defaultSecurityAlgorithm() {
         return new SecurityAlgorithm() {
             @Override
             public String encrypt(String sourceValue) {
@@ -131,8 +132,8 @@ public class SecurityAutoConfiguration {
      * @return DesensitizationAspect
      */
     @Bean
-    @ConditionalOnExpression("${rpamis.security.desensitization-enable:true}")
-    DesensitizationAspect desensitizationAspect(){
+    @ConditionalOnExpression("${rpamis.security.desensitization-enable}==true")
+    DesensitizationAspect desensitizationAspect() {
         return new DesensitizationAspect();
     }
 
@@ -142,8 +143,8 @@ public class SecurityAutoConfiguration {
      * @return DesensitizationInterceptor
      */
     @Bean
-    @ConditionalOnExpression("${rpamis.security.desensitization-enable:true}")
-    DesensitizationInterceptor desensitizationInterceptor(DesensitizationAspect desensitizationAspect){
+    @ConditionalOnExpression("${rpamis.security.desensitization-enable}==true")
+    DesensitizationInterceptor desensitizationInterceptor(DesensitizationAspect desensitizationAspect) {
         return new DesensitizationInterceptor(desensitizationAspect);
     }
 
@@ -153,7 +154,7 @@ public class SecurityAutoConfiguration {
      * @return DesensitizationAdvisor
      */
     @Bean
-    @ConditionalOnExpression("${rpamis.security.desensitization-enable:true}")
+    @ConditionalOnExpression("${rpamis.security.desensitization-enable}==true")
     DesensitizationAdvisor desensitizationAdvisor(DesensitizationInterceptor desensitizationInterceptor, SecurityProperties securityProperties) {
         return new DesensitizationAdvisor(desensitizationInterceptor, securityProperties.getCustomPointcut());
     }

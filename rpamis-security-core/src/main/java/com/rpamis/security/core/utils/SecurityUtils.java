@@ -134,7 +134,7 @@ public class SecurityUtils {
         if (algorithm == null) {
             return encryptedString;
         }
-        DefaultPrefix active = algorithm.getActive();
+        DefaultPrefix active = algorithm.getEnumActive();
         if (active == DefaultPrefix.SM4) {
             String defaultSm4Prefix = DEFAULT_ALGORITHM_PREFIX_MAP.get(active.name());
             String customSm4Prefix = CUSTOM_ALGORITHM_PREFIX_MAP.get(active.name());
@@ -164,7 +164,7 @@ public class SecurityUtils {
         if (algorithm == null) {
             return decryptedString;
         }
-        DefaultPrefix active = algorithm.getActive();
+        DefaultPrefix active = algorithm.getEnumActive();
         if (active == DefaultPrefix.SM4) {
             String defaultSm4Prefix = DEFAULT_ALGORITHM_PREFIX_MAP.get(active.name());
             String customSm4Prefix = CUSTOM_ALGORITHM_PREFIX_MAP.get(active.name());

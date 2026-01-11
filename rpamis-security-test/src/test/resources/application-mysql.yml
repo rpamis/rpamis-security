@@ -8,15 +8,12 @@ spring:
   application:
     name: rpamis-security-test
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;DATABASE_TO_UPPER=false;AUTO_RECONNECT=TRUE
-    username:
-    password:
-    initialization-mode: always
-    schema: classpath:schema.sql
-    data: classpath:data.sql
-#  profiles:
-#    active: mysql
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST}/securityTest?allowMultiQueries=true&useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
+    username: ${MYSQL_USERNAME:username}
+    password: ${MYSQL_PASSWORD:password}
+    initialization-mode: never
 
 # mybaits-plus配置
 mybatis-plus:

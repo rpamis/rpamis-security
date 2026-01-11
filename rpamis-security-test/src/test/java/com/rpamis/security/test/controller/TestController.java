@@ -491,7 +491,7 @@ public class TestController {
      */
     @PostMapping("/decrypt/return")
     public void decryptReturn() {
-        TestVersionDO selectResult = testVersionMapper.selectById(330);
+        TestVersionDO selectResult = testVersionMapper.selectById(1);
         Assert.isTrue("张三".equals(selectResult.getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(selectResult.getIdCard()), "身份证校验失败");
         Assert.isTrue("12345678965".equals(selectResult.getPhone()), "电话校验失败");
@@ -515,7 +515,7 @@ public class TestController {
         String phone = selectResult.getPhone();
         Assert.isTrue("ENC_SM4_4e123e9554b4a5b30b53b5b27c4deb59".equals(nameInDb), "数据库姓名校验失败");
         Assert.isTrue("ENC_SM4_afea507cb1a88c25807d29b905b49bec5222893c3ff712bf9841e10d0ec1ac12".equals(idCard), "数据库姓名校验失败");
-        Assert.isTrue("ENC_SM4_50993764479fe08b8bb71c3201786316".equals(phone), "数据库姓名校验失败");
+        Assert.isTrue("ENC_SM4_93250b1e19518cc1b36af85c54066051".equals(phone), "数据库姓名校验失败");
         testVersionDO.setName(selectResult.getName());
         testVersionMapper.updateById(testVersionDO);
         TestVersionDO repeatTestVersion = testVersionMapper.selectById(testVersionDO.getId());
@@ -528,7 +528,7 @@ public class TestController {
     @PostMapping("/compatibility/old")
     public void compatibilityOld() {
         // 老数据加密方式，不带ENC_SM4_前缀
-        TestVersionDO testVersionDO = testVersionMapper.selectById(100469);
+        TestVersionDO testVersionDO = testVersionMapper.selectById(3);
         Assert.isTrue("张三".equals(testVersionDO.getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(testVersionDO.getIdCard()), "身份证校验失败");
         Assert.isTrue("12345678965".equals(testVersionDO.getPhone()), "电话校验失败");
