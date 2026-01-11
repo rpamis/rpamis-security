@@ -7,6 +7,7 @@
         <groupId>com.rpamis</groupId>
         <artifactId>rpamis-security</artifactId>
         <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>rpamis-security-core</artifactId>
