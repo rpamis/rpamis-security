@@ -9,3 +9,10 @@ create table test_version
     constraint id
         unique (id)
 );
+
+create table test_nest
+(
+    id           int auto_increment
+        primary key,
+    user_account varchar(255) null
+);

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rpamis.security.test.dao.TestNestMapper">
+
+    <resultMap id="BaseResultMap" type="com.rpamis.security.test.domain.TestNestDO">
+            <id property="id" column="id" />
+            <result property="user_account" column="user_account" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_account
+    </sql>
+
+    <resultMap id="nestDecrypt" type="com.rpamis.security.test.domain.TestNestDecryptVO">
+        <result property="name" column="name"/>
+        <association property="testVersionDO" javaType="com.rpamis.security.test.domain.TestVersionDO">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="idCard" column="id_card" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" jdbcType="VARCHAR"/>
+            <result property="version" column="version" jdbcType="INTEGER"/>
+        </association>
+        <association property="testNestDO" javaType="com.rpamis.security.test.domain.TestNestDO">
+            <id property="id" column="id" />
+            <result property="userAccount" column="user_account" />
+        </association>
+    </resultMap>
+    <select id="queryUserInfoById" resultMap="nestDecrypt">
+        select
+            tv.name,
+            tv.id as id,
+            tv.name as name,
+            tv.id_card as id_card,
+            tv.phone as phone,
+            tv.version as version,
+            tn.id as id,
+            tn.user_account as user_account
+        from
+        test_nest as tn
+        inner join test_version as tv
+        on tn.user_account = tv.phone
+        where tn.id = #{id}
+    </select>
+</mapper>

@@ -13,7 +13,6 @@ import java.util.Map;
  * @author benym
  * @description 针对表【test_version】的数据库操作Mapper
  * @createDate 2023-07-05 15:18:00
- * @Entity generator.domain.TestVersionDO
  */
 @Mapper
 public interface TestVersionMapper extends BaseMapper<TestVersionDO> {

@@ -6,21 +6,24 @@ import com.rpamis.common.dto.response.Response;
 import com.rpamis.common.utils.RpamisBeanUtil;
 import com.rpamis.security.annotation.Desensitizationed;
 import com.rpamis.security.core.algorithm.SecurityAlgorithm;
+import com.rpamis.security.core.utils.SecurityUtils;
+import com.rpamis.security.test.dao.TestNestMapper;
 import com.rpamis.security.test.dao.TestVersionMapper;
 import com.rpamis.security.test.dao.TestVersionV2Mapper;
-import com.rpamis.security.test.domain.TestNestVO;
-import com.rpamis.security.test.domain.TestVO;
-import com.rpamis.security.test.domain.TestVersionDO;
-import com.rpamis.security.test.domain.TestVersionV2DO;
+import com.rpamis.security.test.domain.*;
 import com.rpamis.security.test.service.TestVersionDOService;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.*;
+
+import static org.apache.logging.log4j.core.tools.picocli.CommandLine.Help.Ansi.Style.reverse;
 
 /**
  * @author benym
@@ -37,10 +40,16 @@ public class TestController {
     private TestVersionV2Mapper testVersionV2Mapper;
 
     @Autowired
+    private TestNestMapper testNestMapper;
+
+    @Autowired
     private TestVersionDOService testVersionDOService;
 
     @Resource
     private SecurityAlgorithm securityAlgorithm;
+
+    @Resource
+    private SecurityUtils securityUtils;
 
     /**
      * mybatis-plus 新增并校验数据
@@ -532,5 +541,65 @@ public class TestController {
         Assert.isTrue("张三".equals(testVersionDO.getName()), "姓名校验失败");
         Assert.isTrue("500101111118181952".equals(testVersionDO.getIdCard()), "身份证校验失败");
         Assert.isTrue("12345678965".equals(testVersionDO.getPhone()), "电话校验失败");
+    }
+
+    /**
+     * 嵌套解密测试
+     */
+    @GetMapping("/nested/decrypt")
+    public void testNestedDecrypt() {
+        TestNestDecryptVO testNestDecryptVO =  testNestMapper.queryUserInfoById(1);
+        String name = testNestDecryptVO.getName();
+        TestVersionDO testVersionDO = testNestDecryptVO.getTestVersionDO();
+        TestNestDO testNestDO = testNestDecryptVO.getTestNestDO();
+        Assert.isTrue("张三".equals(name), "嵌套解密-外层姓名校验失败");
+        Assert.isTrue("张三".equals(testVersionDO.getName()), "嵌套解密-姓名校验失败");
+        Assert.isTrue("500101111118181952".equals(testVersionDO.getIdCard()), "嵌套解密-身份证校验失败");
+        Assert.isTrue("12345678965".equals(testVersionDO.getPhone()), "嵌套解密-电话校验失败");
+        Assert.isTrue("12345678965".equals(testNestDO.getUserAccount()), "嵌套解密-用户账号校验失败");
+    }
+
+    /**
+     * 缓存隔离测试
+     */
+    @PostMapping("/cache/isolate")
+    public void testCacheIsolate() {
+        // 先查询，会让解密缓存字段构建
+        QueryWrapper<TestVersionV2DO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .eq(TestVersionV2DO::getId, 1);
+        TestVersionV2DO testVersionV2DO = testVersionV2Mapper.selectOne(queryWrapper);
+        Assert.isTrue(testVersionV2DO != null, "查询数据失败");
+        // 再新增，看是否会影响加密部分，期望不加密
+        TestVersionDO testVersionDO = new TestVersionDO();
+        testVersionDO.setName("张三");
+        testVersionDO.setIdCard("500101111118181952");
+        testVersionDO.setPhone("12345678965");
+        testVersionMapper.insert(testVersionDO);
+        QueryWrapper<TestVersionDO> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.lambda()
+                .eq(TestVersionDO::getId, testVersionDO.getId());
+        TestVersionDO selected = testVersionMapper.selectOne(queryWrapper2);
+        Assert.isTrue(!securityUtils.checkHasBeenEncrypted(selected.getName()), "name缓存隔离测试失败");
+        Assert.isTrue(!securityUtils.checkHasBeenEncrypted(selected.getIdCard()), "idCard缓存隔离测试失败");
+        Assert.isTrue(!securityUtils.checkHasBeenEncrypted(selected.getPhone()), "phone缓存隔离测试失败");
+    }
+
+    /**
+     * 查询返回null测试，正常返回null内部会处理为list类型，不会引起框架内部报错
+     */
+    @PostMapping("/select/null")
+    public void selectNull() {
+        QueryWrapper<TestVersionDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .eq(TestVersionDO::getId, 999);
+        // 断言执行selectOne不会抛出NullPointerException
+        TestVersionDO testVersionDO = Assertions.assertDoesNotThrow(
+                () -> testVersionMapper.selectOne(queryWrapper),
+                "查询不存在的记录不应该抛出NullPointerException"
+        );
+        // 验证结果确实是null
+        Assertions.assertNull(testVersionDO, "查询不存在的记录应该返回null");
+
     }
 }

@@ -279,4 +279,27 @@ public class SecurityTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
     }
+
+    @Test
+    public void testNestedMapper() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/test/nested/decrypt"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testCacheIsolation() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/test/cache/isolate"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    public void selectNull() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/test/select/null"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+    }
 }
