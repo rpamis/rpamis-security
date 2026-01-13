@@ -15,6 +15,7 @@ spring:
     initialization-mode: always
     schema: classpath:schema.sql
     data: classpath:data.sql
+    sql-script-encoding: UTF-8
 #  profiles:
 #    active: mysql
 
@@ -57,3 +58,5 @@ rpamis:
       sm4:
         # 加密算法key
         key: 1234567890123456
+      # 激活的加密算法
+      active: sm4

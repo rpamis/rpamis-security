@@ -1,6 +1,7 @@
 package com.rpamis.security.core.properties;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.springframework.util.StringUtils;
 
 import javax.validation.Valid;
 
@@ -15,7 +16,7 @@ public class Algorithm {
     /**
      * 全局加解密算法
      */
-    public String active = "sm4";
+    public String active;
 
     /**
      * SM4
@@ -30,6 +31,9 @@ public class Algorithm {
 
     public DefaultPrefix getEnumActive() {
         try {
+            if (!StringUtils.hasText(active)) {
+                return null;
+            }
             return DefaultPrefix.valueOf(active.toUpperCase());
         } catch (IllegalArgumentException e) {
             return DefaultPrefix.SM4;
