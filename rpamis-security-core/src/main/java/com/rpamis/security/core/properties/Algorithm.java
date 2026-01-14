@@ -1,5 +1,7 @@
 package com.rpamis.security.core.properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.StringUtils;
 
@@ -12,6 +14,8 @@ import javax.validation.Valid;
  * @date 2026/1/8 16:32
  */
 public class Algorithm {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Algorithm.class);
 
     /**
      * 全局加解密算法
@@ -36,7 +40,8 @@ public class Algorithm {
             }
             return DefaultPrefix.valueOf(active.toUpperCase());
         } catch (IllegalArgumentException e) {
-            return DefaultPrefix.SM4;
+            LOGGER.warn("Unknown algorithm type: {}", active);
+            return null;
         }
     }
 
