@@ -2,6 +2,7 @@ package com.rpamis.security.test;
 
 import com.rpamis.security.starter.autoconfigure.SecurityAutoConfiguration;
 import com.rpamis.security.starter.properties.SecurityProperties;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.springframework.beans.BeanInstantiationException;
 import org.springframework.beans.factory.BeanCreationException;
@@ -9,8 +10,6 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
-
-import static org.assertj.core.api.Assertions.*;
 
 /**
  * sm4算法未设置key测试
@@ -30,7 +29,7 @@ public class NoSetKeyTest {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
                 .withUserConfiguration(TestConfig.class)
                 .withConfiguration(AutoConfigurations.of(SecurityAutoConfiguration.class));
-        Throwable thrown = catchThrowable(() -> contextRunner
+        Throwable thrown = Assertions.catchThrowable(() -> contextRunner
                 .withPropertyValues(
                         "rpamis.security.enable=true",
                         "rpamis.security.algorithm.active=sm4",
@@ -44,7 +43,7 @@ public class NoSetKeyTest {
                     }
                 })
         );
-        assertThat(thrown)
+        Assertions.assertThat(thrown)
                 .isInstanceOf(IllegalStateException.class)
                 .getCause()
                 .isInstanceOf(BeanCreationException.class)
