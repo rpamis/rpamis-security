@@ -60,5 +60,5 @@ rpamis:
       sm4:
         # 加密算法key
         key: 1234567890123456
-        # 加解密唯一识别前缀
-        prefix: Your_CUSTOM_PREFIX_
+        # 加解密唯一识别前缀, 默认ENC_SM4_
+        prefix: ENC_SM4_
