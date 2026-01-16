@@ -13,6 +13,7 @@
 
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security</artifactId>
+    <name>rpamis-security</name>
     <version>${revision}</version>
     <packaging>pom</packaging>
     <url>https://github.com/rpamis/rpamis-security</url>

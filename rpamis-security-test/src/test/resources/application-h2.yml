@@ -51,10 +51,14 @@ rpamis:
     ignore-decrypt-failed: true
     # 是否开启脱敏切面
     desensitization-enable: true
+    # 自定义切点，比如增加RestController切点
+    custom-pointcut: @within(org.springframework.web.bind.annotation.RestController)
     # 加解密算法
     algorithm:
+      # 激活的加密算法
+      active: sm4
       sm4:
         # 加密算法key
         key: 1234567890123456
-      # 激活的加密算法
-      active: sm4
+        # 加解密唯一识别前缀
+        prefix: Your_CUSTOM_PREFIX_
