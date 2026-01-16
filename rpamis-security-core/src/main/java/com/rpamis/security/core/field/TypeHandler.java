@@ -4,7 +4,7 @@ package com.rpamis.security.core.field;
  * 类型处理器接口
  *
  * @author benym
- * @date 2023/9/6 16:59
+ * @since 2023/9/6 16:59
  */
 public interface TypeHandler {
 

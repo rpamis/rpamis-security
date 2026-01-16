@@ -18,7 +18,7 @@ import org.springframework.util.Assert;
  * 默认安全算法测试
  *
  * @author benym
- * @date 2026/1/14 17:35
+ * @since 2026/1/14 17:35
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest

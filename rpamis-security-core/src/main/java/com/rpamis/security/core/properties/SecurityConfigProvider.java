@@ -4,7 +4,7 @@ package com.rpamis.security.core.properties;
  * 安全配置提供者
  *
  * @author benym
- * @date 2025/9/11 18:18
+ * @since 2025/9/11 18:18
  */
 public interface SecurityConfigProvider {
 

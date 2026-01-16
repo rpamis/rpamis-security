@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
  * TestVersionV2Mapper
  *
  * @author benym
- * @date 2025/9/10 18:08
+ * @since 2025/9/10 18:08
  */
 @Mapper
 public interface TestVersionV2Mapper extends BaseMapper<TestVersionV2DO> {

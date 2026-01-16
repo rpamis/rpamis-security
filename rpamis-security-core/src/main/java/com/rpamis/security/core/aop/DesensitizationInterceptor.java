@@ -10,7 +10,7 @@ import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
  * 脱敏增强Interceptor
  *
  * @author benym
- * @date 2023/9/4 16:19
+ * @since 2023/9/4 16:19
  */
 public class DesensitizationInterceptor implements MethodInterceptor {
 

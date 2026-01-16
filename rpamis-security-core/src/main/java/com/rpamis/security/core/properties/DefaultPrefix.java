@@ -4,7 +4,7 @@ package com.rpamis.security.core.properties;
  * 加解密唯一识别前缀默认值
  *
  * @author benym
- * @date 2026/1/9 16:57
+ * @since 2026/1/9 16:57
  */
 public enum DefaultPrefix {
 

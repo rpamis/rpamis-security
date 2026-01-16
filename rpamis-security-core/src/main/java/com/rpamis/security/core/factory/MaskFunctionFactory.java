@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 脱敏函数工厂
  *
  * @author benym
- * @date 2023/10/8 17:28
+ * @since 2023/10/8 17:28
  */
 public class MaskFunctionFactory {
 

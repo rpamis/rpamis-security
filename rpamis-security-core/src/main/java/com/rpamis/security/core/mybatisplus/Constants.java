@@ -6,7 +6,7 @@ package com.rpamis.security.core.mybatisplus;
  * @see com.baomidou.mybatisplus.core.toolkit.Constants
  *
  * @author benym
- * @date 2023/9/4 13:36
+ * @since 2023/9/4 13:36
  */
 public final class Constants {
 

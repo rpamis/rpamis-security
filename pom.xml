@@ -79,14 +79,14 @@
         <rpamis-exception-spring-boot-starter.version>1.0.0</rpamis-exception-spring-boot-starter.version>
         <rpamis-extension-aspect.version>1.0.0</rpamis-extension-aspect.version>
         <rpamis-extension-spi.version>1.0.1</rpamis-extension-spi.version>
-        <rpamis-security.version>1.0.3</rpamis-security.version>
+        <rpamis-security.version>1.0.4</rpamis-security.version>
     </properties>
 
     <profiles>
         <profile>
             <id>release</id>
             <properties>
-                <revision>1.0.3</revision>
+                <revision>1.0.4</revision>
             </properties>
             <distributionManagement>
                 <repository>
@@ -113,7 +113,7 @@
         <profile>
             <id>sonatype</id>
             <properties>
-                <revision>1.0.3-SNAPSHOT</revision>
+                <revision>1.0.4-SNAPSHOT</revision>
             </properties>
             <build>
                 <plugins>
