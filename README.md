@@ -3,14 +3,19 @@
 🎄Rpamis-security项目是一个基于Mybatis插件开发的安全组件，旨在提供更优于市面上组件的脱敏、加解密落库等企业数据安全解决方案。组件提供注解式编程方式，开发者只需要对需要处理的字段或方法加上对应注解，无需关心安全相关需求，由组件全自动完成脱敏、加解密等功能
 
 <p align="center">
-  <a href="https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.0.2">
+  <a href="https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.0.3">
     <img alt="maven" src="https://img.shields.io/maven-central/v/com.rpamis/rpamis-security-spring-boot-starter?style=flat-square">
   </a>
+
 
   <a href="https://www.apache.org/licenses/LICENSE-2.0">
     <img alt="code style" src="https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square">
   </a>
-  
+
+  <a href="https://app.codecov.io/github/rpamis/rpamis-security" > 
+    <img alt="codecov" src="https://img.shields.io/codecov/c/gh/rpamis/rpamis-security?color=%23&style=flat-square"/> 
+  </a>
+
   <a href="https://deepwiki.com/rpamis/rpamis-security">
     <img alt="code style" src="https://deepwiki.com/badge.svg">
   </a>
@@ -35,7 +40,7 @@ SpringBoot项目接入方式
 <dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 yml配置
@@ -47,16 +52,21 @@ rpamis:
     # 是否开启安全组件，落库加密，出库脱密，如果不指定加密算法，则默认返回原值
     # 当此开关为false时，无论脱敏切面是否开启，均不生效
     enable: true
-    # 加密算法类型，内置sm4，可自行扩展
-    algorithm: sm4
-    # 加密算法密钥，需要自己生成，满足16位即可，下面只是样例
-    sm4key: 2U43wVWjLgToKBzG
     # 忽略解密失败，如果解密失败则返回原值，否则抛出异常，如果不填写默认true
     ignore-decrypt-failed: true
     # 是否开启脱敏切面
     desensitization-enable: true
     # 自定义切点，比如增加RestController切点
     custom-pointcut: @within(org.springframework.web.bind.annotation.RestController)
+    # 加解密算法
+    algorithm:
+      # 激活的加密算法
+      active: sm4
+      sm4:
+        # 加密算法key，需要自己生成，满足16位即可，下面只是样例
+        key: 2U43wVWjLgToKBzG
+        # 加解密唯一识别前缀
+        prefix: Your_CUSTOM_PREFIX_
 ```
 
 组件特点
@@ -72,11 +82,7 @@ rpamis:
 | 新增后，如果修改同一个对象引用，再进行更新，能够正常加密 | **支持**                                                     | **支持**                                                     |
 | 可拓展式加密算法、加解密类型处理器、脱敏类型处理器       | **✅支持**                                                    | **❌不支持**                                                  |
 | 自定义脱敏标识，起始位置，结束位置                       | ✅**支持**                                                    | ❌**不支持**                                                  |
-| 完整的单测用例                                           | ✅**给出完整的单测用例，单测覆盖率达80%(含get/set)**          | ❌**无**                                                      |
-
-## 单测覆盖率
-
-![](/img/rpamis-security-cover.png)
+| 完整的单测用例                                           | ✅**完整的单测用例，单测覆盖率达95%(含get/set)**              | ❌**无**                                                      |
 
 ## 使用方法
 
@@ -284,33 +290,43 @@ public class TestVersionDO implements Serializable {
 
 ### 单测用例
 
-[点击这里](https://github.com/benym/rpamis-security/blob/master/rpamis-security-test/src/test/java/com/rpamis/security/test/SecurityTest.java)找到对应的单测用例
+[点击这里](https://github.com/benym/rpamis-security/blob/master/rpamis-security-test/src/test/java/com/rpamis/security/test)找到对应的单测用例
 
-| 测试用例                                                      | 测试结果 |
-|-----------------------------------------------------------| -------- |
-| Mybatis-plus insert接口，新增数据后查询，同时校验加解密结果                   | ✅通过    |
-| Mybatis-plus saveBatch接口，新增数据后查询，同时校验加解密结果                | ✅通过    |
-| Mybatis-plus update接口，新增数据后查询，再更新数据，同时校验加解密结果             | ✅通过    |
-| Mybatis-plus updateWrapper，新增数据后查询，再更新数据，同时校验加解密结果        | ✅通过    |
-| Mybatis-plus delete接口，新增数据后删除，同时校验加解密结果                   | ✅通过    |
-| Mybatis自定义insert接口，新增数据后查询，同时校验加解密结果                      | ✅通过    |
+| 测试用例                                                     | 测试结果 |
+| ------------------------------------------------------------ | -------- |
+| Mybatis-plus insert接口，新增数据后查询，同时校验加解密结果  | ✅通过    |
+| Mybatis-plus saveBatch接口，新增数据后查询，同时校验加解密结果 | ✅通过    |
+| Mybatis-plus update接口，新增数据后查询，再更新数据，同时校验加解密结果 | ✅通过    |
+| Mybatis-plus updateWrapper，新增数据后查询，再更新数据，同时校验加解密结果 | ✅通过    |
+| Mybatis-plus delete接口，新增数据后删除，同时校验加解密结果  | ✅通过    |
+| Mybatis自定义insert接口，新增数据后查询，同时校验加解密结果  | ✅通过    |
 | Mybatis自定义insertBatch接口(foreach动态SQL拼接)，新增数据后查询，同时校验加解密结果 | ✅通过    |
-| Mybatis自定义update接口，新增数据后查询，再更新数据，同时校验加解密结果                | ✅通过    |
-| Mybatis自定义delete接口，新增数据后删除，同时校验加解密结果                      | ✅通过    |
-| 获取脱敏数据-单一自定义实体                                            | ✅通过    |
-| 获取脱敏数据-List类型                                             | ✅通过    |
-| 获取脱敏数据-Map类型                                              | ✅通过    |
-| 获取脱敏数据-统一返回体(泛型自定义实体)                                     | ✅通过    |
-| 获取脱敏数据-统一返回体(无泛型)                                         | ✅通过    |
-| 获取脱敏数据-嵌套脱敏-单一自定义实体                                       | ✅通过    |
-| 获取脱敏数据-嵌套脱敏-List类型                                        | ✅通过    |
-| 获取脱敏数据-嵌套脱敏-Map类型                                         | ✅通过    |
-| 获取解密数据-Mybatis-plus-selectOne                             | ✅通过    |
-| 获取解密数据-Mybatis-plus-selectList                            | ✅通过    |
-| 获取解密数据-Mybatis-selectOne                                  | ✅通过    |
-| 获取解密数据-Mybatis-selectList                                 | ✅通过    |
-| 获取解密数据-Mybatis-selectMap                                  | ✅通过    |
-| 新增入库后不改变源对象引用-深拷贝                                         | ✅通过    |
-| 新增后，如果修改同一个对象引用，再进行更新，能够正常加密                              | ✅通过    |
-| 存量未加密数据进行解密，支持原值返回                                        | ✅通过    |
+| Mybatis自定义update接口，新增数据后查询，再更新数据，同时校验加解密结果 | ✅通过    |
+| Mybatis自定义delete接口，新增数据后删除，同时校验加解密结果  | ✅通过    |
+| 获取脱敏数据-单一自定义实体                                  | ✅通过    |
+| 获取脱敏数据-List类型                                        | ✅通过    |
+| 获取脱敏数据-Map类型                                         | ✅通过    |
+| 获取脱敏数据-统一返回体(泛型自定义实体)                      | ✅通过    |
+| 获取脱敏数据-统一返回体(无泛型)                              | ✅通过    |
+| 获取脱敏数据-嵌套脱敏-单一自定义实体                         | ✅通过    |
+| 获取脱敏数据-嵌套脱敏-List类型                               | ✅通过    |
+| 获取脱敏数据-嵌套脱敏-Map类型                                | ✅通过    |
+| 获取解密数据-Mybatis-plus-selectOne                          | ✅通过    |
+| 获取解密数据-Mybatis-plus-selectList                         | ✅通过    |
+| 获取解密数据-Mybatis-selectOne                               | ✅通过    |
+| 获取解密数据-Mybatis-selectList                              | ✅通过    |
+| 获取解密数据-Mybatis-selectMap                               | ✅通过    |
+| 新增入库后不改变源对象引用-深拷贝                            | ✅通过    |
+| 新增后，如果修改同一个对象引用，再进行更新，能够正常加密     | ✅通过    |
+| 存量未加密数据进行解密，支持原值返回                         | ✅通过    |
+| 避免重复加密                                                 | ✅通过    |
+| 兼容1.0.3以下旧版本加解密                                    | ✅通过    |
+| 嵌套解密                                                     | ✅通过    |
+| 加解密缓存隔离                                               | ✅通过    |
+| 查询数据返回null正常处理                                     | ✅通过    |
+| 默认安全算法-插入数据返回原值                                | ✅通过    |
+| SM4密钥为空-抛出提示                                         | ✅通过    |
+| SM4密钥长度不足16位-抛出提示                                 | ✅通过    |
+
+
 
