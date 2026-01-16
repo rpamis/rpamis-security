@@ -7,7 +7,7 @@ import cn.hutool.crypto.symmetric.SM4;
  * Sm4国密算法加解密工具类
  *
  * @author benym
- * @date 2023/9/4 15:10
+ * @since 2023/9/4 15:10
  */
 public class Sm4SecurityUtils {
 

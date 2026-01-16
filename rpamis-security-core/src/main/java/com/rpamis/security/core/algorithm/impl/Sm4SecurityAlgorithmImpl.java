@@ -10,7 +10,7 @@ import org.springframework.util.StringUtils;
  * Sm4国密对称加密算法实现
  *
  * @author benym
- * @date 2023/9/4 14:29
+ * @since 2023/9/4 14:29
  */
 public class Sm4SecurityAlgorithmImpl implements SecurityAlgorithm, InitializingBean {
 

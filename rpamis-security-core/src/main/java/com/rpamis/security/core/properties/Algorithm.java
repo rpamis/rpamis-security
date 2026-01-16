@@ -9,7 +9,7 @@ import org.springframework.util.StringUtils;
  * 加解密算法实体
  *
  * @author benym
- * @date 2026/1/8 16:32
+ * @since 2026/1/8 16:32
  */
 public class Algorithm {
 

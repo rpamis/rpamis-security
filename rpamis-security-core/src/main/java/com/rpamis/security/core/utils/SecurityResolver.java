@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * 加解密注解处理者
  *
  * @author benym
- * @date 2023/8/31 16:59
+ * @since 2023/8/31 16:59
  */
 public class SecurityResolver {
 

@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  * 安全组件Properties
  *
  * @author benym
- * @date 2023/9/4 13:56
+ * @since 2023/9/4 13:56
  */
 @ConfigurationProperties(SecurityProperties.PREFIX)
 public class SecurityProperties implements SecurityConfigProvider {

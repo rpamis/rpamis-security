@@ -11,7 +11,7 @@ import lombok.Data;
  * 测试嵌套实体
  *
  * @author benym
- * @date 2026/1/12 18:35
+ * @since 2026/1/12 18:35
  */
 @TableName(value ="test_nest")
 @Data

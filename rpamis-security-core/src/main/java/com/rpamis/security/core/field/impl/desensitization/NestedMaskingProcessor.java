@@ -18,7 +18,7 @@ import java.util.List;
  * 对于这样的泛型情况统一由MaskingResponseProcessor处理
  *
  * @author benym
- * @date 2023/9/6 14:31
+ * @since 2023/9/6 14:31
  * @see MaskingResponseProcessor
  */
 public class NestedMaskingProcessor implements FieldProcess {

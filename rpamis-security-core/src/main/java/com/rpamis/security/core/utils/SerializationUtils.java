@@ -19,7 +19,7 @@ import java.util.List;
  * 序列化工具类，用于深拷贝
  *
  * @author benym
- * @date 2023/8/31 17:35
+ * @since 2023/8/31 17:35
  */
 public class SerializationUtils {
 

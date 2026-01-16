@@ -12,7 +12,7 @@ import java.io.Serializable;
  * TestVersionV2DO无加解密注解标识的实体
  *
  * @author benym
- * @date 2025/9/10 17:42
+ * @since 2025/9/10 17:42
  */
 @TableName(value ="test_version")
 @Data

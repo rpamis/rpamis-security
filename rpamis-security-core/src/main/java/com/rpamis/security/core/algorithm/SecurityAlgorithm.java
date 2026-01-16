@@ -4,7 +4,7 @@ package com.rpamis.security.core.algorithm;
  * 加解密算法接口
  *
  * @author benym
- * @date 2023/8/31 17:14
+ * @since 2023/8/31 17:14
  */
 public interface SecurityAlgorithm {
 

@@ -24,7 +24,7 @@ import org.springframework.util.StringUtils;
  * 安全组件自动配置类
  *
  * @author benym
- * @date 2023/9/4 14:20
+ * @since 2023/9/4 14:20
  */
 @Configuration
 @EnableConfigurationProperties(value = SecurityProperties.class)

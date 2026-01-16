@@ -4,7 +4,7 @@ package com.rpamis.security.core.properties;
  * SM4配置类
  *
  * @author benym
- * @date 2026/1/7 14:06
+ * @since 2026/1/7 14:06
  */
 public class Sm4Config {
 

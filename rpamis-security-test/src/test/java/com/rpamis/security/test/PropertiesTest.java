@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * properties测试
  *
  * @author benym
- * @date 2026/1/14 19:08
+ * @since 2026/1/14 19:08
  */
 public class PropertiesTest {
 
