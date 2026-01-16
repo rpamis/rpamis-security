@@ -1,14 +1,16 @@
 package com.rpamis.security.starter.autoconfigure;
 
-import com.rpamis.security.starter.algorithm.SecurityAlgorithm;
-import com.rpamis.security.starter.algorithm.impl.Sm4SecurityAlgorithmImpl;
-import com.rpamis.security.starter.aop.DesensitizationAdvisor;
-import com.rpamis.security.starter.aop.DesensitizationAspect;
-import com.rpamis.security.starter.aop.DesensitizationInterceptor;
-import com.rpamis.security.starter.mybaits.MybatisDecryptInterceptor;
-import com.rpamis.security.starter.mybaits.MybatisDynamicSqlEncryptInterceptor;
-import com.rpamis.security.starter.mybaits.MybatisEncryptInterceptor;
-import com.rpamis.security.starter.utils.SecurityResolver;
+import com.rpamis.security.core.algorithm.SecurityAlgorithm;
+import com.rpamis.security.core.algorithm.impl.Sm4SecurityAlgorithmImpl;
+import com.rpamis.security.core.aop.DesensitizationAdvisor;
+import com.rpamis.security.core.aop.DesensitizationAspect;
+import com.rpamis.security.core.aop.DesensitizationInterceptor;
+import com.rpamis.security.core.mybaits.MybatisDecryptInterceptor;
+import com.rpamis.security.core.mybaits.MybatisDynamicSqlEncryptInterceptor;
+import com.rpamis.security.core.mybaits.MybatisEncryptInterceptor;
+import com.rpamis.security.core.utils.SecurityResolver;
+import com.rpamis.security.core.utils.SecurityUtils;
+import com.rpamis.security.starter.properties.SecurityProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -29,6 +31,8 @@ import org.springframework.util.StringUtils;
 @ConditionalOnProperty(prefix = SecurityProperties.PREFIX, value = "enable", havingValue = "true")
 public class SecurityAutoConfiguration {
 
+    private static final Integer SM4_KEY_LENGTH = 16;
+
     /**
      * Sm4国密算法实现类，仅当算法类型为sm4时注入
      *
@@ -36,11 +40,14 @@ public class SecurityAutoConfiguration {
      * @return SecurityAlgorithm
      */
     @Bean
-    @ConditionalOnExpression("'${rpamis.security.algorithm}'.equals('sm4')")
+    @ConditionalOnProperty(prefix = "rpamis.security.algorithm", value = "active", havingValue = "sm4", matchIfMissing = true)
     @ConditionalOnMissingBean
     SecurityAlgorithm sm4SecurityAlgorithm(SecurityProperties securityProperties) {
-        if (!StringUtils.hasLength(securityProperties.getSm4key())) {
+        if (!StringUtils.hasLength(securityProperties.getAlgorithm().getSm4().getKey())) {
             throw new IllegalArgumentException("sm4 encryption key is null, please set");
+        }
+        if (securityProperties.getAlgorithm().getSm4().getKey().length() != SM4_KEY_LENGTH) {
+            throw new IllegalArgumentException("sm4 encryption key length is not 16 bytes, please check");
         }
         return new Sm4SecurityAlgorithmImpl(securityProperties);
     }
@@ -52,7 +59,7 @@ public class SecurityAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    SecurityAlgorithm defaultSecurityAlgorithm(){
+    SecurityAlgorithm defaultSecurityAlgorithm() {
         return new SecurityAlgorithm() {
             @Override
             public String encrypt(String sourceValue) {
@@ -67,15 +74,27 @@ public class SecurityAutoConfiguration {
     }
 
     /**
+     * 安全工具类
+     *
+     * @param securityAlgorithm  securityAlgorithm
+     * @param securityProperties securityProperties
+     * @return SecurityUtils
+     */
+    @Bean
+    SecurityUtils securityUtils(SecurityAlgorithm securityAlgorithm, SecurityProperties securityProperties) {
+        return new SecurityUtils(securityAlgorithm, securityProperties);
+    }
+
+    /**
      * 加解密处理者
      *
-     * @param securityAlgorithm 安全算法
+     * @param securityUtils 安全工具类
      * @return SecurityResolver
      */
     @Bean
     @Order(1)
-    SecurityResolver securityResolver(SecurityAlgorithm securityAlgorithm) {
-        return new SecurityResolver(securityAlgorithm);
+    SecurityResolver securityResolver(SecurityUtils securityUtils) {
+        return new SecurityResolver(securityUtils);
     }
 
     /**
@@ -117,8 +136,8 @@ public class SecurityAutoConfiguration {
      * @return DesensitizationAspect
      */
     @Bean
-    @ConditionalOnExpression("${rpamis.security.desensitization-enable:true}")
-    DesensitizationAspect desensitizationAspect(){
+    @ConditionalOnExpression("${rpamis.security.desensitization-enable}==true")
+    DesensitizationAspect desensitizationAspect() {
         return new DesensitizationAspect();
     }
 
@@ -128,8 +147,8 @@ public class SecurityAutoConfiguration {
      * @return DesensitizationInterceptor
      */
     @Bean
-    @ConditionalOnExpression("${rpamis.security.desensitization-enable:true}")
-    DesensitizationInterceptor desensitizationInterceptor(DesensitizationAspect desensitizationAspect){
+    @ConditionalOnExpression("${rpamis.security.desensitization-enable}==true")
+    DesensitizationInterceptor desensitizationInterceptor(DesensitizationAspect desensitizationAspect) {
         return new DesensitizationInterceptor(desensitizationAspect);
     }
 
@@ -139,7 +158,7 @@ public class SecurityAutoConfiguration {
      * @return DesensitizationAdvisor
      */
     @Bean
-    @ConditionalOnExpression("${rpamis.security.desensitization-enable:true}")
+    @ConditionalOnExpression("${rpamis.security.desensitization-enable}==true")
     DesensitizationAdvisor desensitizationAdvisor(DesensitizationInterceptor desensitizationInterceptor, SecurityProperties securityProperties) {
         return new DesensitizationAdvisor(desensitizationInterceptor, securityProperties.getCustomPointcut());
     }
