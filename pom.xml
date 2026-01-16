@@ -229,6 +229,7 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
                 <configuration>
+                    <destFile>target/jacoco.exec</destFile>
                     <append>true</append>
                 </configuration>
                 <executions>

@@ -120,25 +120,36 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- 添加依赖以确保 JaCoCo 聚合所有模块的覆盖率数据 -->
+        <dependency>
+            <groupId>com.rpamis</groupId>
+            <artifactId>rpamis-security-core</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.rpamis</groupId>
+            <artifactId>rpamis-security-annotation</artifactId>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.10</version>
-                <executions>
-                    <execution>
-                        <id>jacoco-report-aggregate</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report-aggregate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.10</version>
+                    <executions>
+                        <execution>
+                            <id>report-aggregate</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report-aggregate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
 
 </project>
