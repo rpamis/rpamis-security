@@ -15,6 +15,7 @@ public interface MaskFunction {
      * 脱敏
      *
      * @param unMaskInput unMaskInput
+     * @param annotation Masked注解
      * @return String
      */
     String mask(String unMaskInput, Masked annotation);

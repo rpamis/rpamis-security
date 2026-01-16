@@ -5,8 +5,6 @@ import com.rpamis.security.core.properties.SecurityConfigProvider;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
-import javax.validation.Valid;
-
 /**
  * 安全组件Properties
  *
@@ -24,7 +22,6 @@ public class SecurityProperties implements SecurityConfigProvider {
     /**
      * 支持的加密算法：sm4
      */
-    @Valid
     @NestedConfigurationProperty
     private Algorithm algorithm;
 

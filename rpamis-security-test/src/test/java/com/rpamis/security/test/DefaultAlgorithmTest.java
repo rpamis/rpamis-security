@@ -5,6 +5,7 @@ import com.rpamis.security.test.dao.TestVersionV2Mapper;
 import com.rpamis.security.test.domain.TestVersionDO;
 import com.rpamis.security.test.domain.TestVersionV2DO;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,6 +39,7 @@ public class DefaultAlgorithmTest {
     }
 
     @Test
+    @DisplayName("默认安全算法-插入数据返回原值测试")
     public void testSelectOriginalReturn() {
         TestVersionDO testVersionDO = new TestVersionDO();
         testVersionDO.setName("张三");

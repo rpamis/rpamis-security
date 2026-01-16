@@ -1,7 +1,5 @@
 package com.rpamis.security.core.properties;
 
-import javax.validation.constraints.Size;
-
 /**
  * SM4配置类
  *
@@ -13,7 +11,6 @@ public class Sm4Config {
     /**
      * SM4密钥，必须为16位
      */
-    @Size(min = 16, max = 16, message = "SM4密钥长度必须为16位")
     public String key;
 
     /**

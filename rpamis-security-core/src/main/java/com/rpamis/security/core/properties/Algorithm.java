@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.StringUtils;
 
-import javax.validation.Valid;
-
 /**
  * 加解密算法实体
  *
@@ -25,7 +23,6 @@ public class Algorithm {
     /**
      * SM4
      */
-    @Valid
     @NestedConfigurationProperty
     public Sm4Config sm4;
 

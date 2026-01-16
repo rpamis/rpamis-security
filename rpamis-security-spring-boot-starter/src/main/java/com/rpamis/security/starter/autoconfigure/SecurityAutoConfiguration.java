@@ -17,7 +17,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.util.StringUtils;
 
@@ -32,6 +31,8 @@ import org.springframework.util.StringUtils;
 @ConditionalOnProperty(prefix = SecurityProperties.PREFIX, value = "enable", havingValue = "true")
 public class SecurityAutoConfiguration {
 
+    private static final Integer SM4_KEY_LENGTH = 16;
+
     /**
      * Sm4国密算法实现类，仅当算法类型为sm4时注入
      *
@@ -44,6 +45,9 @@ public class SecurityAutoConfiguration {
     SecurityAlgorithm sm4SecurityAlgorithm(SecurityProperties securityProperties) {
         if (!StringUtils.hasLength(securityProperties.getAlgorithm().getSm4().getKey())) {
             throw new IllegalArgumentException("sm4 encryption key is null, please set");
+        }
+        if (securityProperties.getAlgorithm().getSm4().getKey().length() != SM4_KEY_LENGTH) {
+            throw new IllegalArgumentException("sm4 encryption key length is not 16 bytes, please check");
         }
         return new Sm4SecurityAlgorithmImpl(securityProperties);
     }
