@@ -14,7 +14,7 @@
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security</artifactId>
     <name>rpamis-security</name>
-    <version>${revision}</version>
+    <version>1.0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <url>https://github.com/rpamis/rpamis-security</url>
     <modules>
