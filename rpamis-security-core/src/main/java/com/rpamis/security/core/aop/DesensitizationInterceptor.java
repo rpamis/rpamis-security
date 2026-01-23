@@ -10,32 +10,32 @@ import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
  * 脱敏增强Interceptor
  *
  * @author benym
- * @date 2023/9/4 16:19
+ * @since 2023/9/4 16:19
  */
 public class DesensitizationInterceptor implements MethodInterceptor {
 
-	private final DesensitizationAspect desensitizationAspect;
+    private final DesensitizationAspect desensitizationAspect;
 
-	public DesensitizationInterceptor(DesensitizationAspect desensitizationAspect) {
-		this.desensitizationAspect = desensitizationAspect;
-	}
+    public DesensitizationInterceptor(DesensitizationAspect desensitizationAspect) {
+        this.desensitizationAspect = desensitizationAspect;
+    }
 
-	@Override
-	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-		if (!(methodInvocation instanceof ProxyMethodInvocation)) {
-			throw new IllegalStateException("MethodInvocation is not a Spring ProxyMethodInvocation");
-		}
-		ProxyMethodInvocation pmi = (ProxyMethodInvocation) methodInvocation;
-		ProceedingJoinPoint pjp = lazyInitJoinPoint(pmi);
-		return doAroud(pjp);
-	}
+    @Override
+    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+        if (!(methodInvocation instanceof ProxyMethodInvocation)) {
+            throw new IllegalStateException(
+                    "MethodInvocation is not a Spring ProxyMethodInvocation");
+        }
+        ProxyMethodInvocation pmi = (ProxyMethodInvocation) methodInvocation;
+        ProceedingJoinPoint pjp = lazyInitJoinPoint(pmi);
+        return doAroud(pjp);
+    }
 
-	private ProceedingJoinPoint lazyInitJoinPoint(ProxyMethodInvocation pmi) {
-		return new MethodInvocationProceedingJoinPoint(pmi);
-	}
+    private ProceedingJoinPoint lazyInitJoinPoint(ProxyMethodInvocation pmi) {
+        return new MethodInvocationProceedingJoinPoint(pmi);
+    }
 
-	private Object doAroud(ProceedingJoinPoint pjp) throws Throwable {
-		return desensitizationAspect.around(pjp);
-	}
-
+    private Object doAroud(ProceedingJoinPoint pjp) throws Throwable {
+        return desensitizationAspect.around(pjp);
+    }
 }

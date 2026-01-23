@@ -1,4 +1,4 @@
-create table test_version
+CREATE TABLE IF NOT EXISTS test_version
 (
     id      bigint auto_increment
         primary key,
@@ -8,4 +8,11 @@ create table test_version
     version int default 0 null,
     constraint id
         unique (id)
+);
+
+CREATE TABLE IF NOT EXISTS test_nest
+(
+    id           int auto_increment
+        primary key,
+    user_account varchar(255) null
 );

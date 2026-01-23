@@ -4,7 +4,7 @@ package com.rpamis.security.mask;
  * 脱敏类型函数
  *
  * @author benym
- * @date 2023/10/8 16:53
+ * @since 2023/10/8 16:53
  */
 public enum MaskType {
 
