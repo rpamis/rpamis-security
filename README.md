@@ -3,7 +3,7 @@
 🎄Rpamis-security项目是一个基于Mybatis插件开发的安全组件，旨在提供更优于市面上组件的脱敏、加解密落库等企业数据安全解决方案。组件提供注解式编程方式，开发者只需要对需要处理的字段或方法加上对应注解，无需关心安全相关需求，由组件全自动完成脱敏、加解密等功能
 
 <p align="center">
-  <a href="https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.0.3">
+  <a href="https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.1.0">
     <img alt="maven" src="https://img.shields.io/maven-central/v/com.rpamis/rpamis-security-spring-boot-starter?style=flat-square">
   </a>
 
@@ -36,7 +36,7 @@
 
 SpringBoot项目接入方式
 
-JDK 17及以上
+JDK17及以上
 ```xml
 <dependency>
     <groupId>com.rpamis</groupId>
