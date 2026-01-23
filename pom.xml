@@ -14,7 +14,7 @@
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security</artifactId>
     <name>rpamis-security</name>
-    <version>${revision}</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
     <url>https://github.com/rpamis/rpamis-security</url>
     <modules>
@@ -202,22 +202,22 @@
             <dependency>
                 <groupId>com.rpamis</groupId>
                 <artifactId>rpamis-security-annotation</artifactId>
-                <version>${revision}</version>
+                <version>1.1.0</version>
             </dependency>
             <dependency>
                 <groupId>com.rpamis</groupId>
                 <artifactId>rpamis-security-core</artifactId>
-                <version>${revision}</version>
+                <version>1.1.0</version>
             </dependency>
             <dependency>
                 <groupId>com.rpamis</groupId>
                 <artifactId>rpamis-security-spring-boot-starter</artifactId>
-                <version>${revision}</version>
+                <version>1.1.0</version>
             </dependency>
             <dependency>
                 <groupId>com.rpamis</groupId>
                 <artifactId>rpamis-security-test</artifactId>
-                <version>${revision}</version>
+                <version>1.1.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
