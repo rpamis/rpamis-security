@@ -36,6 +36,16 @@
 
 SpringBoot项目接入方式
 
+JDK 17及以上
+```xml
+<dependency>
+    <groupId>com.rpamis</groupId>
+    <artifactId>rpamis-security-spring-boot-starter</artifactId>
+    <version>1.1.0</version>
+</dependency>
+```
+
+JDK8-JDK17
 ```xml
 <dependency>
     <groupId>com.rpamis</groupId>
@@ -82,7 +92,7 @@ rpamis:
 | 新增后，如果修改同一个对象引用，再进行更新，能够正常加密 | **支持**                                                     | **支持**                                                     |
 | 可拓展式加密算法、加解密类型处理器、脱敏类型处理器       | **✅支持**                                                    | **❌不支持**                                                  |
 | 自定义脱敏标识，起始位置，结束位置                       | ✅**支持**                                                    | ❌**不支持**                                                  |
-| 完整的单测用例                                           | ✅**完整的单测用例，单测覆盖率达74%(含get/set)**              | ❌**无**                                                      |
+| 完整的单测用例                                           | ✅**完整的单测用例**              | ❌**无**                                                      |
 
 ## 使用方法
 
