@@ -13,44 +13,46 @@ import org.springframework.util.StringUtils;
  */
 public class Algorithm {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Algorithm.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Algorithm.class);
 
-    /**
-     * 全局加解密算法
-     */
-    public String active;
+	/**
+	 * 全局加解密算法
+	 */
+	public String active;
 
-    /**
-     * SM4
-     */
-    @NestedConfigurationProperty
-    public Sm4Config sm4;
+	/**
+	 * SM4
+	 */
+	@NestedConfigurationProperty
+	public Sm4Config sm4;
 
-    public String getActive() {
-        return active;
-    }
+	public String getActive() {
+		return active;
+	}
 
-    public DefaultPrefix getEnumActive() {
-        try {
-            if (!StringUtils.hasText(active)) {
-                return null;
-            }
-            return DefaultPrefix.valueOf(active.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            LOGGER.warn("Unknown algorithm type: {}", active);
-            return null;
-        }
-    }
+	public DefaultPrefix getEnumActive() {
+		try {
+			if (!StringUtils.hasText(active)) {
+				return null;
+			}
+			return DefaultPrefix.valueOf(active.toUpperCase());
+		}
+		catch (IllegalArgumentException e) {
+			LOGGER.warn("Unknown algorithm type: {}", active);
+			return null;
+		}
+	}
 
-    public void setActive(String active) {
-        this.active = active;
-    }
+	public void setActive(String active) {
+		this.active = active;
+	}
 
-    public Sm4Config getSm4() {
-        return sm4;
-    }
+	public Sm4Config getSm4() {
+		return sm4;
+	}
 
-    public void setSm4(Sm4Config sm4) {
-        this.sm4 = sm4;
-    }
+	public void setSm4(Sm4Config sm4) {
+		this.sm4 = sm4;
+	}
+
 }

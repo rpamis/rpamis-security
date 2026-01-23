@@ -8,18 +8,16 @@ package com.rpamis.security.core.properties;
  */
 public interface SecurityConfigProvider {
 
-    /**
-     * 获取加解密算法实体
-     *
-     * @return String
-     */
-    Algorithm getAlgorithm();
+	/**
+	 * 获取加解密算法实体
+	 * @return String
+	 */
+	Algorithm getAlgorithm();
 
-    /**
-     * 获取是否忽略解密失败
-     *
-     * @return Boolean
-     */
-    Boolean getIgnoreDecryptFailed();
+	/**
+	 * 获取是否忽略解密失败
+	 * @return Boolean
+	 */
+	Boolean getIgnoreDecryptFailed();
 
 }

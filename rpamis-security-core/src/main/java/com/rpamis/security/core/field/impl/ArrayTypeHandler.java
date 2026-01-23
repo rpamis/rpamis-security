@@ -16,22 +16,24 @@ import java.util.Set;
  */
 public class ArrayTypeHandler implements TypeHandler {
 
-    @Override
-    public boolean handle(ProcessContext processContext) {
-        Class<?> fieldValueClass = processContext.getFieldValueClass();
-        Object fieldValue = processContext.getFieldValue();
-        Set<Object> referenceSet = processContext.getReferenceSet();
-        Deque<Object> analyzeDeque = processContext.getAnalyzeDeque();
-        if (fieldValueClass.isArray()) {
-            int length = Array.getLength(fieldValue);
-            for (int i = 0; i < length; i++) {
-                Object arrayObject = Array.get(fieldValue, i);
-                if (null != arrayObject && MaskAnnotationResolver.isNotBaseType(arrayObject.getClass(), arrayObject, referenceSet)) {
-                    analyzeDeque.offer(arrayObject);
-                }
-            }
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean handle(ProcessContext processContext) {
+		Class<?> fieldValueClass = processContext.getFieldValueClass();
+		Object fieldValue = processContext.getFieldValue();
+		Set<Object> referenceSet = processContext.getReferenceSet();
+		Deque<Object> analyzeDeque = processContext.getAnalyzeDeque();
+		if (fieldValueClass.isArray()) {
+			int length = Array.getLength(fieldValue);
+			for (int i = 0; i < length; i++) {
+				Object arrayObject = Array.get(fieldValue, i);
+				if (null != arrayObject
+						&& MaskAnnotationResolver.isNotBaseType(arrayObject.getClass(), arrayObject, referenceSet)) {
+					analyzeDeque.offer(arrayObject);
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 }

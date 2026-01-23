@@ -12,19 +12,20 @@ import lombok.Data;
 @Data
 public class TestNestDecryptVO {
 
-    /**
-     * name
-     */
-    @SecurityField
-    private String name;
+	/**
+	 * name
+	 */
+	@SecurityField
+	private String name;
 
-    /**
-     * testVersionDO
-     */
-    private TestVersionDO testVersionDO;
+	/**
+	 * testVersionDO
+	 */
+	private TestVersionDO testVersionDO;
 
-    /**
-     * testNestDO
-     */
-    private TestNestDO testNestDO;
+	/**
+	 * testNestDO
+	 */
+	private TestNestDO testNestDO;
+
 }

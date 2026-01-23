@@ -14,15 +14,11 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface TestNestMapper extends BaseMapper<TestNestDO> {
 
-    /**
-     * 查询用户信息通过ID
-     *
-     * @param id id
-     * @return TestNestDecryptVO
-     */
-    TestNestDecryptVO queryUserInfoById(@Param("id") int id);
+	/**
+	 * 查询用户信息通过ID
+	 * @param id id
+	 * @return TestNestDecryptVO
+	 */
+	TestNestDecryptVO queryUserInfoById(@Param("id") int id);
+
 }
-
-
-
-

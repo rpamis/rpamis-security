@@ -26,7 +26,7 @@ import java.util.Objects;
  * @see MybatisDynamicSqlEncryptInterceptor 这个插件的在其后执行，在正确修改动态sql加密后，对对象进行深度克隆
  * 避免save或update之后还需要对对象进行操作，但对象已经被加密的问题 同时处理非foreach等动态sql的克隆加密
  * @author benym
- * @date 2023/8/31 16:17
+ * @since 2023/8/31 16:17
  */
 @Intercepts({ @Signature(type = ParameterHandler.class, method = "setParameters", args = PreparedStatement.class) })
 public class MybatisEncryptInterceptor implements Interceptor {

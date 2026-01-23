@@ -15,16 +15,17 @@ import java.util.Set;
  */
 public class OtherTypeHandler implements TypeHandler {
 
-    @Override
-    public boolean handle(ProcessContext processContext) {
-        Class<?> fieldValueClass = processContext.getFieldValueClass();
-        Object fieldValue = processContext.getFieldValue();
-        Set<Object> referenceSet = processContext.getReferenceSet();
-        Deque<Object> analyzeDeque = processContext.getAnalyzeDeque();
-        if (MaskAnnotationResolver.isNotBaseType(fieldValueClass, fieldValue, referenceSet)) {
-            analyzeDeque.offer(fieldValue);
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean handle(ProcessContext processContext) {
+		Class<?> fieldValueClass = processContext.getFieldValueClass();
+		Object fieldValue = processContext.getFieldValue();
+		Set<Object> referenceSet = processContext.getReferenceSet();
+		Deque<Object> analyzeDeque = processContext.getAnalyzeDeque();
+		if (MaskAnnotationResolver.isNotBaseType(fieldValueClass, fieldValue, referenceSet)) {
+			analyzeDeque.offer(fieldValue);
+			return true;
+		}
+		return false;
+	}
+
 }

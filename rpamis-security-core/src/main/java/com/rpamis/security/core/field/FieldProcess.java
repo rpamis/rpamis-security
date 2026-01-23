@@ -8,11 +8,11 @@ package com.rpamis.security.core.field;
  */
 public interface FieldProcess {
 
-    /**
-     * 根据上下文进行field处理
-     *
-     * @param processContext 脱敏处理上下文
-     * @throws IllegalAccessException
-     */
-    void processField(ProcessContext processContext) throws IllegalAccessException;
+	/**
+	 * 根据上下文进行field处理
+	 * @param processContext 脱敏处理上下文
+	 * @throws IllegalAccessException
+	 */
+	void processField(ProcessContext processContext) throws IllegalAccessException;
+
 }

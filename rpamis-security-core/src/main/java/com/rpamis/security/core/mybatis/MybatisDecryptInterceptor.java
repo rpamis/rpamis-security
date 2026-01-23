@@ -14,7 +14,7 @@ import java.util.Objects;
  * Mybatis解密拦截器，出库时解密
  *
  * @author benym
- * @date 2023/8/31 16:22
+ * @since 2023/8/31 16:22
  */
 @Intercepts({ @Signature(type = ResultSetHandler.class, method = "handleResultSets", args = { Statement.class }) })
 public class MybatisDecryptInterceptor implements Interceptor {

@@ -13,19 +13,21 @@ import lombok.Data;
  * @author benym
  * @since 2026/1/12 18:35
  */
-@TableName(value ="test_nest")
+@TableName(value = "test_nest")
 @Data
 public class TestNestDO {
-    /**
-     *
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
 
-    /**
-     *
-     */
-    @TableField(value = "user_account")
-    @SecurityField
-    private String userAccount;
+	/**
+	 *
+	 */
+	@TableId(value = "id", type = IdType.AUTO)
+	private Integer id;
+
+	/**
+	 *
+	 */
+	@TableField(value = "user_account")
+	@SecurityField
+	private String userAccount;
+
 }

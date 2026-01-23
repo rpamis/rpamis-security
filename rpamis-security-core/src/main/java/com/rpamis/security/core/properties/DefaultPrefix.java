@@ -8,18 +8,19 @@ package com.rpamis.security.core.properties;
  */
 public enum DefaultPrefix {
 
-    /**
-     * SM4默认前缀
-     */
-    SM4("ENC_SM4_");
+	/**
+	 * SM4默认前缀
+	 */
+	SM4("ENC_SM4_");
 
-    private final String prefix;
+	private final String prefix;
 
-    DefaultPrefix(String prefix) {
-        this.prefix = prefix;
-    }
+	DefaultPrefix(String prefix) {
+		this.prefix = prefix;
+	}
 
-    public String getPrefix() {
-        return prefix;
-    }
+	public String getPrefix() {
+		return prefix;
+	}
+
 }

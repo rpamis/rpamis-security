@@ -16,21 +16,22 @@ import java.lang.reflect.Field;
  */
 public class SecurityAnnotationProcessor implements FieldProcess {
 
-    private final SecurityUtils securityUtils;
+	private final SecurityUtils securityUtils;
 
-    public SecurityAnnotationProcessor(SecurityUtils securityUtils) {
-        this.securityUtils = securityUtils;
-    }
+	public SecurityAnnotationProcessor(SecurityUtils securityUtils) {
+		this.securityUtils = securityUtils;
+	}
 
-    @Override
-    public void processField(ProcessContext processContext) throws IllegalAccessException {
-        Field field = processContext.getField();
-        Object fieldValue = processContext.getFieldValue();
-        Object currentObject = processContext.getCurrentObject();
-        if (field.isAnnotationPresent(SecurityField.class) && fieldValue instanceof String) {
-            String stringObject = String.valueOf(fieldValue);
-            String decryptedString = securityUtils.decryptWithPrefix(stringObject);
-            ReflectionUtils.setField(field, currentObject, decryptedString);
-        }
-    }
+	@Override
+	public void processField(ProcessContext processContext) throws IllegalAccessException {
+		Field field = processContext.getField();
+		Object fieldValue = processContext.getFieldValue();
+		Object currentObject = processContext.getCurrentObject();
+		if (field.isAnnotationPresent(SecurityField.class) && fieldValue instanceof String) {
+			String stringObject = String.valueOf(fieldValue);
+			String decryptedString = securityUtils.decryptWithPrefix(stringObject);
+			ReflectionUtils.setField(field, currentObject, decryptedString);
+		}
+	}
+
 }

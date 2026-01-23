@@ -8,11 +8,11 @@ package com.rpamis.security.core.field;
  */
 public interface TypeHandler {
 
-    /**
-     * 根据处理上下文进行类型处理
-     *
-     * @param processContext processContext
-     * @return boolean
-     */
-    boolean handle(ProcessContext processContext);
+	/**
+	 * 根据处理上下文进行类型处理
+	 * @param processContext processContext
+	 * @return boolean
+	 */
+	boolean handle(ProcessContext processContext);
+
 }

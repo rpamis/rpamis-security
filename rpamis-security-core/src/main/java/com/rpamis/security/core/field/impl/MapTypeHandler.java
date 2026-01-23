@@ -17,21 +17,22 @@ import java.util.Set;
  */
 public class MapTypeHandler implements TypeHandler {
 
-    @Override
-    public boolean handle(ProcessContext processContext) {
-        Object fieldValue = processContext.getFieldValue();
-        Set<Object> referenceSet = processContext.getReferenceSet();
-        Deque<Object> analyzeDeque = processContext.getAnalyzeDeque();
-        if (fieldValue instanceof Map<?, ?>) {
-            Map<?, ?> fieldValueMap = (Map<?, ?>) fieldValue;
-            Collection<?> mapValues = fieldValueMap.values();
-            for (Object value : mapValues) {
-                if (MaskAnnotationResolver.isNotBaseType(value.getClass(), value, referenceSet)) {
-                    analyzeDeque.offer(value);
-                }
-            }
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean handle(ProcessContext processContext) {
+		Object fieldValue = processContext.getFieldValue();
+		Set<Object> referenceSet = processContext.getReferenceSet();
+		Deque<Object> analyzeDeque = processContext.getAnalyzeDeque();
+		if (fieldValue instanceof Map<?, ?>) {
+			Map<?, ?> fieldValueMap = (Map<?, ?>) fieldValue;
+			Collection<?> mapValues = fieldValueMap.values();
+			for (Object value : mapValues) {
+				if (MaskAnnotationResolver.isNotBaseType(value.getClass(), value, referenceSet)) {
+					analyzeDeque.offer(value);
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 }

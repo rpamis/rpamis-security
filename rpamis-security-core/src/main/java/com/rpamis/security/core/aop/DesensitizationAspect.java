@@ -13,16 +13,18 @@ import org.slf4j.LoggerFactory;
  */
 public class DesensitizationAspect {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DesensitizationAspect.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DesensitizationAspect.class);
 
-    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-        Object[] args = joinPoint.getArgs();
-        Object result = joinPoint.proceed(args);
-        try {
-            result = MaskAnnotationResolver.processObjectAndMask(result);
-        } catch (Exception e) {
-            LOGGER.error("DesensitizationAspect process unknown error", e);
-        }
-        return result;
-    }
+	public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+		Object[] args = joinPoint.getArgs();
+		Object result = joinPoint.proceed(args);
+		try {
+			result = MaskAnnotationResolver.processObjectAndMask(result);
+		}
+		catch (Exception e) {
+			LOGGER.error("DesensitizationAspect process unknown error", e);
+		}
+		return result;
+	}
+
 }

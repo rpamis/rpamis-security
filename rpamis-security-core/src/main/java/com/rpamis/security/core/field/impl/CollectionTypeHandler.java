@@ -17,23 +17,24 @@ import java.util.Set;
  */
 public class CollectionTypeHandler implements TypeHandler {
 
-    @Override
-    public boolean handle(ProcessContext processContext) {
-        Object fieldValue = processContext.getFieldValue();
-        Set<Object> referenceSet = processContext.getReferenceSet();
-        Deque<Object> analyzeDeque = processContext.getAnalyzeDeque();
-        if (fieldValue instanceof Collection<?>) {
-            Collection<?> fieldValueList = (Collection<?>) fieldValue;
-            if (CollectionUtils.isEmpty(fieldValueList)) {
-                return false;
-            }
-            for (Object collectionObject : fieldValueList) {
-                if (MaskAnnotationResolver.isNotBaseType(collectionObject.getClass(), collectionObject, referenceSet)) {
-                    analyzeDeque.offer(collectionObject);
-                }
-            }
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean handle(ProcessContext processContext) {
+		Object fieldValue = processContext.getFieldValue();
+		Set<Object> referenceSet = processContext.getReferenceSet();
+		Deque<Object> analyzeDeque = processContext.getAnalyzeDeque();
+		if (fieldValue instanceof Collection<?>) {
+			Collection<?> fieldValueList = (Collection<?>) fieldValue;
+			if (CollectionUtils.isEmpty(fieldValueList)) {
+				return false;
+			}
+			for (Object collectionObject : fieldValueList) {
+				if (MaskAnnotationResolver.isNotBaseType(collectionObject.getClass(), collectionObject, referenceSet)) {
+					analyzeDeque.offer(collectionObject);
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 }

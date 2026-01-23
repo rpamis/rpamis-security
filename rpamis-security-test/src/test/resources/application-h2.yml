@@ -12,10 +12,12 @@ spring:
     url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;DATABASE_TO_UPPER=false;AUTO_RECONNECT=TRUE
     username:
     password:
-    platform: h2
-    schema: classpath:schema.sql
-    data: classpath:data.sql
-    sql-script-encoding: UTF-8
+  sql:
+    init:
+      platform: h2
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+      encoding: UTF-8
 
 # mybaits-plus配置
 mybatis-plus:
