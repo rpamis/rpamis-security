@@ -36,7 +36,7 @@
 
 SpringBoot项目接入方式
 
-JDK 17及以上
+JDK17及以上
 ```xml
 <dependency>
     <groupId>com.rpamis</groupId>
