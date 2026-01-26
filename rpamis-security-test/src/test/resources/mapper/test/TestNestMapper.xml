@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.rpamis.security.test.domain.TestNestDO">
             <id property="id" column="id" />
-            <result property="user_account" column="user_account" />
+            <result property="userAccount" column="user_account" />
     </resultMap>
 
     <sql id="Base_Column_List">
