@@ -24,6 +24,10 @@
     <img alt="code style" src="https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square">
   </a>
 
+  <a href="">
+    <img alt="code style" src="https://img.shields.io/badge/JDK-8%2B-orange.svg?style=flat-square">
+  </a>
+
   <a href="https://app.codecov.io/github/rpamis/rpamis-security" > 
     <img alt="codecov" src="https://img.shields.io/codecov/c/gh/rpamis/rpamis-security?color=%23&style=flat-square"/> 
   </a>
