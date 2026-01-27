@@ -22,7 +22,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn clean compile test
+        run: mvn clean compile test -Psonatype
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
