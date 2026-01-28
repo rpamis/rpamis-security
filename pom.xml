@@ -47,7 +47,7 @@
         <mybatis.version>3.5.16</mybatis.version>
         <mysql.version>8.0.20</mysql.version>
         <!-- 工具类 -->
-        <aspectj-aspectjweaver.version>1.9.5</aspectj-aspectjweaver.version>
+        <aspectj-aspectjweaver.version>1.9.25.1</aspectj-aspectjweaver.version>
         <commons-lang.version>2.6</commons-lang.version>
         <lombok.version>1.18.20</lombok.version>
         <hutool.version>5.8.9</hutool.version>
