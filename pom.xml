@@ -43,7 +43,7 @@
         <!-- Spring -->
         <springboot.version>3.4.9</springboot.version>
         <!-- 存储 -->
-        <mybatis-plus.version>3.5.6</mybatis-plus.version>
+        <mybatis-plus.version>3.5.16</mybatis-plus.version>
         <mybatis.version>3.5.16</mybatis.version>
         <mysql.version>8.0.20</mysql.version>
         <!-- 工具类 -->
