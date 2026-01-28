@@ -50,6 +50,9 @@ public class DefaultAlgorithmTest {
 		registry.add("rpamis.security.algorithm.active", () -> "no");
 	}
 
+	/**
+	 * 测试默认安全算法-插入数据返回原值 验证当安全算法设置为"no"时，插入的数据会原样返回
+	 */
 	@Test
 	@DisplayName("默认安全算法-插入数据返回原值测试")
 	public void testSelectOriginalReturn() {

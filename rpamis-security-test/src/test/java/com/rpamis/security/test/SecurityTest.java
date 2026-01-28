@@ -49,15 +49,22 @@ public class SecurityTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(testController).build();
 	}
 
+	/**
+	 * 测试MyBatis-Plus新增数据 验证通过Controller调用MyBatis-Plus新增数据时的加解密功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
+	@DisplayName("加解密-mybatis-plus新增并校验数据")
 	public void testInsertMbp() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/test/mbp/insert"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andReturn();
 	}
 
+	/**
+	 * 测试MyBatis-Plus批量新增数据 验证通过Controller调用MyBatis-Plus批量新增数据时的加解密功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -68,6 +75,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试MyBatis-Plus更新数据 验证通过Controller调用MyBatis-Plus更新数据时的加解密功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -78,6 +88,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试MyBatis-Plus使用Wrapper方式更新数据 验证通过Controller调用MyBatis-Plus使用Wrapper方式更新数据时的加解密功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -88,6 +101,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试MyBatis-Plus删除数据 验证通过Controller调用MyBatis-Plus删除数据时的加解密功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -98,6 +114,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试MyBatis新增数据 验证通过Controller调用MyBatis新增数据时的加解密功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -108,6 +127,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试MyBatis批量新增数据 验证通过Controller调用MyBatis批量新增数据时的加解密功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -118,6 +140,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试MyBatis更新数据 验证通过Controller调用MyBatis更新数据时的加解密功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -128,6 +153,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试MyBatis删除数据 验证通过Controller调用MyBatis删除数据时的加解密功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -138,6 +166,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试单条数据脱敏 验证通过Controller调用时的单条数据脱敏功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -148,6 +179,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试列表数据脱敏 验证通过Controller调用时的列表数据脱敏功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -158,6 +192,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试Map数据脱敏 验证通过Controller调用时的Map数据脱敏功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -168,6 +205,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试自定义返回体脱敏 验证通过Controller调用时的自定义返回体脱敏功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -178,6 +218,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试自定义返回体无泛型脱敏 验证通过Controller调用时的自定义返回体无泛型脱敏功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -188,6 +231,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试嵌套VO脱敏 验证通过Controller调用时的嵌套VO脱敏功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -198,6 +244,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试嵌套List脱敏 验证通过Controller调用时的嵌套List脱敏功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -208,6 +257,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试嵌套Map脱敏 验证通过Controller调用时的嵌套Map脱敏功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -218,6 +270,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试MyBatis-Plus单条查询 验证通过Controller调用MyBatis-Plus单条查询时的加解密功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -228,6 +283,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试MyBatis-Plus列表查询 验证通过Controller调用MyBatis-Plus列表查询时的加解密功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -238,6 +296,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试MyBatis单条查询 验证通过Controller调用MyBatis单条查询时的加解密功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -248,6 +309,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试MyBatis列表查询 验证通过Controller调用MyBatis列表查询时的加解密功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -258,6 +322,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试MyBatis Map查询 验证通过Controller调用MyBatis Map查询时的加解密功能
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -268,6 +335,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试深拷贝新增入库后不改变源对象引用 验证新增数据时的深拷贝功能，确保源对象引用不被改变
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -278,6 +348,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试新增后修改同一对象引用再更新 验证新增后如果修改同一个对象引用，再进行更新时能够正常加密
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -288,6 +361,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试存量未加密数据解密 验证存量未加密数据解密时能够原值返回
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -298,6 +374,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试避免重复加密 验证系统能够避免对已加密数据进行重复加密
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -308,6 +387,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试兼容旧版本加解密 验证系统能够兼容旧版本的加解密方式
+	 */
 	@Test
 	@Transactional()
 	@Rollback
@@ -318,6 +400,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试嵌套解密 验证系统能够正确处理嵌套解密场景
+	 */
 	@Test
 	@DisplayName("加解密-嵌套解密")
 	public void testNestedMapper() throws Exception {
@@ -326,6 +411,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试缓存隔离 验证系统能够正确处理缓存隔离场景
+	 */
 	@Test
 	@Transactional
 	@Rollback
@@ -336,6 +424,9 @@ public class SecurityTest {
 			.andReturn();
 	}
 
+	/**
+	 * 测试查询返回null不抛异常 验证系统在查询返回null时不会抛出异常
+	 */
 	@Test
 	@DisplayName("加解密-查询返回null不抛异常")
 	public void selectNull() throws Exception {

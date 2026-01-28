@@ -15,6 +15,7 @@
  */
 package com.rpamis.security.test;
 
+import com.rpamis.security.core.properties.Algorithm;
 import com.rpamis.security.starter.autoconfigure.SecurityAutoConfiguration;
 import com.rpamis.security.starter.properties.SecurityProperties;
 import org.assertj.core.api.Assertions;
@@ -41,6 +42,9 @@ public class PropertiesTest {
 
 	}
 
+	/**
+	 * 测试SM4密钥为空的情况 验证当SM4密钥为空时，应用启动会失败并抛出相应的异常
+	 */
 	@Test
 	@DisplayName("SM4密钥为空测试")
 	public void testWithEmptyKey() {
@@ -66,6 +70,9 @@ public class PropertiesTest {
 			.hasMessageContaining("sm4 encryption key is null, please set");
 	}
 
+	/**
+	 * 测试SM4密钥长度不足16位的情况 验证当SM4密钥长度不足16位时，应用启动会失败并抛出相应的异常
+	 */
 	@Test
 	@DisplayName("SM4密钥长度不足16位测试")
 	public void testWithNotEnoughKey() {
@@ -89,6 +96,65 @@ public class PropertiesTest {
 			.getCause()
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessageContaining("sm4 encryption key length is not 16 bytes, please check");
+	}
+
+	/**
+	 * 测试SecurityProperties类的方法覆盖 验证SecurityProperties类的getter和setter方法是否正常工作
+	 */
+	@Test
+	@DisplayName("SecurityProperties 方法覆盖测试")
+	public void testSecurityPropertiesMethods() {
+		SecurityProperties securityProperties = new SecurityProperties();
+
+		// 测试 getEnable 和 setEnable 方法
+		securityProperties.setEnable(true);
+		Assertions.assertThat(securityProperties.getEnable()).isTrue();
+
+		securityProperties.setEnable(false);
+		Assertions.assertThat(securityProperties.getEnable()).isFalse();
+
+		// 测试 getDesensitizationEnable 和 setDesensitizationEnable 方法
+		securityProperties.setDesensitizationEnable(true);
+		Assertions.assertThat(securityProperties.getDesensitizationEnable()).isTrue();
+
+		securityProperties.setDesensitizationEnable(false);
+		Assertions.assertThat(securityProperties.getDesensitizationEnable()).isFalse();
+
+		// 测试其他方法
+		Assertions.assertThat(securityProperties.getIgnoreDecryptFailed()).isTrue();
+		Assertions.assertThat(securityProperties.getCustomPointcut()).isEmpty();
+	}
+
+	/**
+	 * 测试Algorithm类的方法覆盖 验证Algorithm类的getter和setter方法是否正常工作
+	 */
+	@Test
+	@DisplayName("Algorithm 方法覆盖测试")
+	public void testAlgorithmMethods() {
+		Algorithm algorithm = new Algorithm();
+
+		// 测试 getActive 和 setActive 方法
+		algorithm.setActive("sm4");
+		Assertions.assertThat(algorithm.getActive()).isEqualTo("sm4");
+
+		// 测试 getEnumActive 方法 - 正常情况
+		algorithm.setActive("sm4");
+		Assertions.assertThat(algorithm.getEnumActive()).isNotNull();
+
+		// 测试 getEnumActive 方法 - 空值情况
+		algorithm.setActive(null);
+		Assertions.assertThat(algorithm.getEnumActive()).isNull();
+
+		// 测试 getEnumActive 方法 - 空字符串情况
+		algorithm.setActive("");
+		Assertions.assertThat(algorithm.getEnumActive()).isNull();
+
+		// 测试 getEnumActive 方法 - 无效值情况
+		algorithm.setActive("invalid");
+		Assertions.assertThat(algorithm.getEnumActive()).isNull();
+
+		// 测试 getSm4 和 setSm4 方法
+		Assertions.assertThat(algorithm.getSm4()).isNull();
 	}
 
 }
