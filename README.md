@@ -314,7 +314,9 @@ Note: Encrypted fields are longer, please pay attention to the database length o
 
 ### Unit Test Cases
 
-[Click here](https://github.com/benym/rpamis-security/blob/master/rpamis-security-test/src/test/java/com/rpamis/security/test) to find the corresponding unit test cases
+[Click here](https://github.com/benym/rpamis-security/blob/master/rpamis-security-test/src/test/java/com/rpamis/security/test) to find the corresponding unit test cases, there are a total of 78 unit test cases.
+
+The core unit test cases are as follows:
 
 | Test Case                                                  | Test Result |
 | ---------------------------------------------------------- | ----------- |

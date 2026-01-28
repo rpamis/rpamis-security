@@ -90,7 +90,7 @@ public class SecurityUtilsTest {
 	public void testEncryptWithPrefixWithEmptySource() {
 		SecurityUtils securityUtils = new SecurityUtils(securityAlgorithm, securityConfigProvider);
 		assertEquals("", securityUtils.encryptWithPrefix(""));
-        assertNull(securityUtils.encryptWithPrefix(null));
+		assertNull(securityUtils.encryptWithPrefix(null));
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class SecurityUtilsTest {
 	public void testDecryptWithPrefixWithEmptySource() {
 		SecurityUtils securityUtils = new SecurityUtils(securityAlgorithm, securityConfigProvider);
 		assertEquals("", securityUtils.decryptWithPrefix(""));
-        assertNull(securityUtils.decryptWithPrefix(null));
+		assertNull(securityUtils.decryptWithPrefix(null));
 	}
 
 	/**

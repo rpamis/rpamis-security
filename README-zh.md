@@ -314,7 +314,9 @@ public class TestVersionDO implements Serializable {
 
 ### 单测用例
 
-[点击这里](https://github.com/benym/rpamis-security/blob/master/rpamis-security-test/src/test/java/com/rpamis/security/test)找到对应的单测用例
+[点击这里](https://github.com/benym/rpamis-security/blob/master/rpamis-security-test/src/test/java/com/rpamis/security/test)找到对应的单测用例，全部单测用例78个
+
+核心单测用例如下
 
 | 测试用例                                                     | 测试结果 |
 | ------------------------------------------------------------ | -------- |
