@@ -53,6 +53,8 @@ jobs:
             good first issue
             help wanted
             question
+            deps-dev
+            deps
           # e.g. feat(core): add new feature
           # if false: feat: add new feature
           requireScope: false
