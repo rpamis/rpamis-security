@@ -55,7 +55,7 @@
         <bcprov-jdk15to18.version>1.76</bcprov-jdk15to18.version>
         <!-- 开源相关 -->
         <jacoco.version>0.8.10</jacoco.version>
-        <spring-javaformat-maven-plugin.version>0.0.39</spring-javaformat-maven-plugin.version>
+        <spring-javaformat-maven-plugin.version>0.0.47</spring-javaformat-maven-plugin.version>
         <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
         <maven-source-plugin.version>2.4</maven-source-plugin.version>
