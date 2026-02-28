@@ -86,7 +86,7 @@
         <profile>
             <id>release</id>
             <properties>
-                <revision>1.1.0</revision>
+                <revision>1.1.1</revision>
             </properties>
             <distributionManagement>
                 <repository>
@@ -113,7 +113,7 @@
         <profile>
             <id>sonatype</id>
             <properties>
-                <revision>1.1.0-SNAPSHOT</revision>
+                <revision>1.1.1-SNAPSHOT</revision>
             </properties>
             <build>
                 <plugins>
