@@ -1,3 +1,19 @@
+#
+# Copyright 2023-2026 the original author or authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
 # 在master分支发生push事件时触发。
 name: CodeCoverageTest
 
@@ -15,14 +31,14 @@ jobs:
     steps:
       - name: Check out master code
         uses: actions/checkout@master
-      - name: Set up JDK 8
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: '8'
+          java-version: '17'
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn clean compile test
+        run: mvn clean compile test -Psonatype
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
