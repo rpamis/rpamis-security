@@ -48,16 +48,6 @@ public class SecurityResolver {
     private final SecurityUtils securityUtils;
 
     /**
-     * 防重复加密Set
-     */
-    private static final Set<Object> REFERENCE_SET = Collections.newSetFromMap(new IdentityHashMap<>(128));
-
-    /**
-     * 防重复解密Set
-     */
-    private static final Set<Object> DECRYPT_REFERENCE_SET = Collections.newSetFromMap(new IdentityHashMap<>(128));
-
-    /**
      * Filed处理者list
      */
     private static final List<FieldProcess> PROCESS_LIST = new ArrayList<>();
@@ -87,31 +77,33 @@ public class SecurityResolver {
         if (Objects.isNull(deepCloneParam)) {
             return null;
         }
-        if (deepCloneParam instanceof List) {
+		Set<Object> referenceSet = Collections.newSetFromMap(new IdentityHashMap<>(128));
+		if (deepCloneParam instanceof List) {
             List<?> paramsList = (List<?>) deepCloneParam;
             if (!CollectionUtils.isEmpty(paramsList)) {
                 Object deepCloneSingleObject = paramsList.get(0);
                 Class<?> paramsClass = paramsList.get(0).getClass();
                 List<Field> fields = classToFieldMap.computeIfAbsent(paramsClass, key -> getParamsFields(deepCloneSingleObject));
-                return processEncryptList(paramsList, fields);
+                return processEncryptList(paramsList, fields, referenceSet);
             }
         } else {
             Class<?> paramsClass = deepCloneParam.getClass();
             List<Field> fields = classToFieldMap.computeIfAbsent(paramsClass, key -> getParamsFields(deepCloneParam));
-            return processEncrypt(deepCloneParam, fields);
+            return processEncrypt(deepCloneParam, fields, referenceSet);
         }
         return deepCloneParam;
     }
 
     /**
-     * 处理加密-单一实体
-     *
-     * @param sourceParam   源对象
-     * @param encryptFields 需要加密字段集合
-     * @return Object
-     */
-    private Object processEncrypt(Object sourceParam, List<Field> encryptFields) {
-        if (!REFERENCE_SET.contains(sourceParam)) {
+	 * 处理加密-单一实体
+	 *
+	 * @param sourceParam   源对象
+	 * @param encryptFields 需要加密字段集合
+	 * @param referenceSet 防重复加密Set
+	 * @return Object
+	 */
+    private Object processEncrypt(Object sourceParam, List<Field> encryptFields, Set<Object> referenceSet) {
+        if (!referenceSet.contains(sourceParam)) {
             for (Field field : encryptFields) {
                 ReflectionUtils.makeAccessible(field);
                 Object sourceObject = ReflectionUtils.getField(field, sourceParam);
@@ -127,21 +119,22 @@ public class SecurityResolver {
                     continue;
                 }
                 ReflectionUtils.setField(field, sourceParam, securityUtils.encryptWithPrefix(stringObject));
-                REFERENCE_SET.add(sourceParam);
+				referenceSet.add(sourceParam);
             }
         }
         return sourceParam;
     }
 
     /**
-     * 处理加密-List
-     *
-     * @param sourceList    源对象List
-     * @param encryptFields 需要加密字段集合
-     */
-    private Object processEncryptList(List<?> sourceList, List<Field> encryptFields) {
+	 * 处理加密-List
+	 *
+	 * @param sourceList    源对象List
+	 * @param encryptFields 需要加密字段集合
+	 * @param referenceSet 防重复加密Set
+	 */
+    private Object processEncryptList(List<?> sourceList, List<Field> encryptFields, Set<Object> referenceSet) {
         for (Object sourceParam : sourceList) {
-            processEncrypt(sourceParam, encryptFields);
+            processEncrypt(sourceParam, encryptFields, referenceSet);
         }
         return sourceList;
     }
@@ -156,7 +149,9 @@ public class SecurityResolver {
         if (Objects.isNull(params)) {
             return null;
         }
-        Deque<Object> analyzeDeque = new ArrayDeque<>();
+		// 解密防重Set
+		Set<Object> decryptReferenceSet = Collections.newSetFromMap(new IdentityHashMap<>(128));
+		Deque<Object> analyzeDeque = new ArrayDeque<>();
         List<?> paramsList;
         if (params instanceof List) {
             paramsList = (List<?>) params;
@@ -175,7 +170,7 @@ public class SecurityResolver {
                 if (null != fieldValue) {
                     Class<?> fieldValueClass = fieldValue.getClass();
                     ProcessContext processContext = new ProcessContext(currentObj, fieldValue, field,
-                            fieldValueClass, DECRYPT_REFERENCE_SET, HANDLER_LIST, analyzeDeque);
+                            fieldValueClass, decryptReferenceSet, HANDLER_LIST, analyzeDeque);
                     // 字段解析并解密
                     for (FieldProcess fieldProcess : PROCESS_LIST) {
                         try {
