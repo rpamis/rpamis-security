@@ -54,7 +54,7 @@
         <disruptor.version>3.4.4</disruptor.version>
         <bcprov-jdk15to18.version>1.76</bcprov-jdk15to18.version>
         <!-- 开源相关 -->
-        <jacoco.version>0.8.10</jacoco.version>
+        <jacoco.version>0.8.14</jacoco.version>
         <spring-javaformat-maven-plugin.version>0.0.39</spring-javaformat-maven-plugin.version>
         <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
