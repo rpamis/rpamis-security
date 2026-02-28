@@ -45,7 +45,7 @@
         <!-- 存储 -->
         <mybatis-plus.version>3.5.6</mybatis-plus.version>
         <mybatis.version>3.5.16</mybatis.version>
-        <mysql.version>8.0.20</mysql.version>
+        <mysql.version>8.0.30</mysql.version>
         <!-- 工具类 -->
         <aspectj-aspectjweaver.version>1.9.5</aspectj-aspectjweaver.version>
         <commons-lang.version>2.6</commons-lang.version>
