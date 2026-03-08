@@ -12,6 +12,8 @@
   <a href="README-zh.md">中文</a>
   &nbsp;|&nbsp;
   <a href="README.md">English</a>
+  &nbsp;|&nbsp;
+  <a href="https://rpamis.github.io/rpamis-security/">Document</a>
 </p>
 
 <p align="center">
