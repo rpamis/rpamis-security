@@ -1,0 +1,210 @@
+---
+title: 介绍
+description: Rpamis-security 是一个基于 MyBatis 插件开发的安全组件，提供数据脱敏、加解密等功能
+index: 1
+---
+
+import { Cards, Card } from '@/components/card';
+import { Callout } from '@/components/callout';
+import { Files, Folder, File } from '@/components/files';
+
+# 🎯 Rpamis-Security
+
+Rpamis-security 是一个基于 MyBatis 插件开发的企业级安全组件，提供注解式的数据脱敏、数据库自动加解密功能，旨在解决企业数据安全需求。
+
+## 📋 项目概述
+
+Rpamis-security 组件提供以下核心功能：
+
+<Cards className="my-6">
+  <Card
+    icon="🔒"
+    title="数据脱敏"
+    description="支持9种内置脱敏规则，可自定义脱敏标识符、起始和结束位置"
+  />
+  <Card
+    icon="💾"
+    title="数据库加解密"
+    description="入库时自动加密，出库时自动解密，支持动态 SQL"
+  />
+  <Card
+    icon="📦"
+    title="嵌套类型支持"
+    description="支持任意实体类型、List、Map，无论是否具有实体泛型"
+  />
+  <Card
+    icon="🔑"
+    title="国密算法"
+    description="支持 SM4 国密对称加密算法"
+  />
+  <Card
+    icon="⚙️"
+    title="灵活配置"
+    description="支持脱敏、加解密开关、失败处理策略"
+  />
+  <Card
+    icon="🧩"
+    title="可扩展性"
+    description="可拓展的加密算法、加解密类型处理器、脱敏类型处理器"
+  />
+</Cards>
+
+## 🏗️ 技术架构
+
+### 📁 模块结构
+
+项目采用 Maven 多模块架构：
+
+<Files className="my-6">
+  <Folder name="rpamis-security" defaultOpen>
+    <Folder name="rpamis-security-annotation">
+      <File name="Security annotations" />
+    </Folder>
+    <Folder name="rpamis-security-core">
+      <File name="Core implementation" />
+    </Folder>
+    <Folder name="rpamis-security-spring-boot-starter">
+      <File name="Auto-configuration" />
+    </Folder>
+    <Folder name="rpamis-security-test">
+      <File name="Test cases" />
+    </Folder>
+  </Folder>
+</Files>
+
+- **rpamis-security-annotation**：📝 注解模块，定义所有安全相关的注解
+- **rpamis-security-core**：⚙️ 核心功能模块，包含脱敏、加解密的具体实现
+- **rpamis-security-spring-boot-starter**：🚀 Spring Boot 自动配置模块，简化集成
+- **rpamis-security-test**：✅ 测试模块，包含完整的单元测试和示例代码
+
+### 🔄 实现原理
+
+1. **数据脱敏**：🎯 基于 AOP 切面实现，拦截带有 `@Desensitizationed` 注解的方法
+
+2. **数据库加解密**：🔌 基于 MyBatis 插件实现，在 SQL 执行过程中自动处理
+
+3. **策略模式**：🏭 通过工厂类根据不同类型应用对应的脱敏或加密算法
+
+<Callout type="info" title="💡 设计理念">
+  Rpamis-Security 采用注解驱动的方式，最大程度减少侵入性，让开发者专注于业务逻辑开发。
+</Callout>
+
+## 🚀 快速上手
+
+### 📦 安装依赖
+
+对于 **JDK 17 及以上** 使用版本 1.1.1：
+
+```xml
+<dependency>
+    <groupId>com.rpamis</groupId>
+    <artifactId>rpamis-security-spring-boot-starter</artifactId>
+    <version>1.1.1</version>
+</dependency>
+```
+
+对于 **JDK 8-JDK 17** 使用版本 1.0.4：
+
+```xml
+<dependency>
+    <groupId>com.rpamis</groupId>
+    <artifactId>rpamis-security-spring-boot-starter</artifactId>
+    <version>1.0.4</version>
+</dependency>
+```
+
+### ⚙️ 基础配置
+
+```yaml
+rpamis:
+  security:
+    # 🚀 是否开启安全组件，落库加密，出库脱密
+    enable: true
+    # 🛡️ 忽略解密失败，如果解密失败则返回原值
+    ignore-decrypt-failed: true
+    # 👤 是否开启脱敏切面
+    desensitization-enable: true
+    # 🎯 自定义切点，比如增加 RestController 切点
+    custom-pointcut: '@within(org.springframework.web.bind.annotation.RestController)'
+    # 🔐 加解密算法配置
+    algorithm:
+      active: sm4
+      sm4:
+        key: 2U43wVWjLgToKBzG
+        prefix: Your_CUSTOM_PREFIX_
+```
+
+## 💻 使用示例
+
+### 🔒 数据脱敏
+
+```java
+@Data
+public class UserVO implements Serializable {
+    @Masked(type = MaskType.NAME_MASK)
+    private String name;
+
+    @Masked(type = MaskType.IDCARD_MASK)
+    private String idCard;
+
+    @Masked(type = MaskType.PHONE_MASK)
+    private String phone;
+
+    @Masked(type = MaskType.CUSTOM_MASK, start = 2, end = 5, symbol = "#")
+    private String customFiled;
+}
+```
+
+### 💾 数据库加解密
+
+```java
+@Data
+@TableName(value ="user")
+public class UserDO implements Serializable {
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+
+    @TableField(value = "name")
+    @SecurityField
+    private String name;
+
+    @TableField(value = "id_card")
+    @SecurityField
+    private String idCard;
+
+    @TableField(value = "phone")
+    @SecurityField
+    private String phone;
+}
+```
+
+## 🌟 项目特色
+
+### 📊 优势对比
+
+| 特性 | Rpamis-Security | 同类项目 |
+|------|----------------|----------|
+| 任意实体类型脱敏 | ✅ 支持 | ❌ 仅支持单一实体 |
+| 任意实体类型嵌套脱敏 | ✅ 支持 | ❌ 不支持 |
+| 任意实体类型落库数据自动加解密 | ✅ 支持 | ❌ 仅支持单一实体 |
+| 动态 SQL 加解密 | ✅ 支持 | ❌ 不支持 |
+| 国家标准加密算法 SM4 | ✅ 支持 | ❌ 不支持 |
+| 脱敏、加解密多项选择可配置 | ✅ 支持 | ❌ 不支持 |
+| 新增入库后不改变源对象引用 | ✅ 支持 | ❌ 不支持 |
+| 可拓展式加解密算法、类型处理器 | ✅ 支持 | ❌ 不支持 |
+| 自定义脱敏标识、起始位置、结束位置 | ✅ 支持 | ❌ 不支持 |
+| 完整的单测用例 | ✅ 78+ 个 | ❌ 无 |
+
+<Callout type="success" title="🎉 核心优势">
+  Rpamis-Security 不仅功能全面，更有完整的 78+ 个单元测试用例保障代码质量，是企业级应用的可靠选择！
+</Callout>
+
+## 👥 社区支持
+
+- **GitHub**：https://github.com/rpamis/rpamis-security
+- **Issues**：https://github.com/rpamis/rpamis-security/issues
+- **Maven**：https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter
+
+## 📄 许可证
+
+该项目遵循 Apache 2.0 许可证。详细信息请查看 [LICENSE](/LICENSE) 文件。

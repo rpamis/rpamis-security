@@ -1,0 +1,49 @@
+{
+  "title": "文档",
+  "items": [
+    {
+      "type": "doc",
+      "title": "快速开始",
+      "slug": "quick-start"
+    },
+    {
+      "type": "doc",
+      "title": "介绍",
+      "slug": "introduction"
+    },
+    {
+      "type": "doc",
+      "title": "架构设计",
+      "slug": "architecture"
+    },
+    {
+      "type": "doc",
+      "title": "数据脱敏",
+      "slug": "desensitization"
+    },
+    {
+      "type": "doc",
+      "title": "数据加密解密",
+      "slug": "encryption"
+    },
+    {
+      "type": "doc",
+      "title": "API 文档",
+      "slug": "api"
+    },
+    {
+      "type": "doc",
+      "title": "使用示例",
+      "slug": "examples"
+    }
+  ],
+  "pages": [
+    "quick-start",
+    "introduction",
+    "examples",
+    "encryption",
+    "desensitization",
+    "architecture",
+    "api"
+  ]
+}

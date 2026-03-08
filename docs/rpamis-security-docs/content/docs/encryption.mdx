@@ -1,0 +1,461 @@
+---
+title: 数据加密解密
+description: Rpamis-security 数据库加解密功能详细说明
+index: 4
+---
+
+import { Cards, Card } from '@/components/card';
+import { Callout } from '@/components/callout';
+import { Steps, Step } from '@/components/steps';
+
+# 🔐 数据加密解密
+
+Rpamis-security 提供了基于 MyBatis 插件的自动数据加密解密功能，支持在数据入库时自动加密，出库时自动解密，无需手动处理。
+
+## 🔄 工作原理
+
+### 加密过程
+
+<Steps>
+  <Step title="📝 SQL 拦截">
+    当数据通过 MyBatis 或 MyBatis Plus 插入或更新到数据库时
+  </Step>
+  <Step title="🔍 字段检测">
+    MyBatis 插件拦截 SQL 执行过程，检测到带有 <code>@SecurityField</code> 注解的字段
+  </Step>
+  <Step title="🔒 数据加密">
+    对字段值进行加密（根据配置的算法），添加加密前缀标识已加密字段
+  </Step>
+  <Step title="💾 数据保存">
+    将加密后的值存入数据库
+  </Step>
+</Steps>
+
+### 解密过程
+
+<Steps>
+  <Step title="📥 结果拦截">
+    当通过 MyBatis 或 MyBatis Plus 查询数据时
+  </Step>
+  <Step title="🔍 前缀检测">
+    MyBatis 插件拦截结果集返回过程，检测到带有加密前缀的字段
+  </Step>
+  <Step title="🔓 数据解密">
+    对字段值进行解密（根据配置的算法）
+  </Step>
+  <Step title="📤 返回结果">
+    返回解密后的原始值
+  </Step>
+</Steps>
+
+## 💻 使用方法
+
+### 1. 字段注解
+
+在需要加密的字段上添加 `@SecurityField` 注解：
+
+```java
+@Data
+@TableName(value ="user_info")
+public class UserInfoDO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+
+    /**
+     * 姓名 - 需要加密
+     */
+    @TableField(value = "name")
+    @SecurityField
+    private String name;
+
+    /**
+     * 身份证号 - 需要加密
+     */
+    @TableField(value = "id_card")
+    @SecurityField
+    private String idCard;
+
+    /**
+     * 手机号 - 需要加密
+     */
+    @TableField(value = "phone")
+    @SecurityField
+    private String phone;
+
+    /**
+     * 邮箱 - 需要加密
+     */
+    @TableField(value = "email")
+    @SecurityField
+    private String email;
+
+    /**
+     * 地址 - 需要加密
+     */
+    @TableField(value = "address")
+    @SecurityField
+    private String address;
+
+    /**
+     * 创建时间 - 不需要加密
+     */
+    @TableField(value = "create_time")
+    private LocalDateTime createTime;
+}
+```
+
+### 2. MyBatis Plus 使用
+
+```java
+@Service
+public class UserInfoService {
+
+    @Autowired
+    private UserInfoMapper userInfoMapper;
+
+    /**
+     * 新增用户 - 自动加密
+     */
+    public UserInfoDO saveUser(UserInfoDO user) {
+        user.setCreateTime(LocalDateTime.now());
+        userInfoMapper.insert(user);
+        return user;
+    }
+
+    /**
+     * 更新用户 - 自动加密
+     */
+    public boolean updateUser(UserInfoDO user) {
+        return userInfoMapper.updateById(user) > 0;
+    }
+
+    /**
+     * 查询用户 - 自动解密
+     */
+    public UserInfoDO getUser(Long id) {
+        return userInfoMapper.selectById(id);
+    }
+
+    /**
+     * 查询用户列表 - 自动解密
+     */
+    public List<UserInfoDO> getUsers(String name) {
+        QueryWrapper<UserInfoDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("name", name);
+        return userInfoMapper.selectList(queryWrapper);
+    }
+
+    /**
+     * 删除用户 - 自动处理
+     */
+    public boolean deleteUser(Long id) {
+        return userInfoMapper.deleteById(id) > 0;
+    }
+}
+```
+
+### 3. MyBatis 自定义 SQL 使用
+
+对于自定义 SQL 语句，组件同样支持自动加密解密：
+
+```xml
+<mapper namespace="com.rpamis.security.test.mapper.UserInfoMapper">
+
+    <insert id="insertCustom" parameterType="com.rpamis.security.test.entity.UserInfoDO">
+        INSERT INTO user_info (id, name, id_card, phone, email, address, create_time)
+        VALUES (#{id}, #{name}, #{idCard}, #{phone}, #{email}, #{address}, #{createTime})
+    </insert>
+
+    <update id="updateCustom" parameterType="com.rpamis.security.test.entity.UserInfoDO">
+        UPDATE user_info
+        SET name = #{name},
+            id_card = #{idCard},
+            phone = #{phone},
+            email = #{email},
+            address = #{address}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectByCustomCondition" resultType="com.rpamis.security.test.entity.UserInfoDO">
+        SELECT id, name, id_card, phone, email, address, create_time
+        FROM user_info
+        <where>
+            <if test="name != null and name != ''">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="idCard != null and idCard != ''">
+                AND id_card = #{idCard}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteCustom" parameterType="java.lang.Long">
+        DELETE FROM user_info WHERE id = #{id}
+    </delete>
+</mapper>
+```
+
+```java
+public interface UserInfoMapper extends BaseMapper<UserInfoDO> {
+
+    int insertCustom(UserInfoDO user);
+
+    int updateCustom(UserInfoDO user);
+
+    List<UserInfoDO> selectByCustomCondition(@Param("name") String name, @Param("idCard") String idCard);
+
+    int deleteCustom(Long id);
+}
+```
+
+### 4. 动态 SQL 支持
+
+对于使用 `<foreach>` 标签的动态 SQL，组件也提供支持：
+
+```xml
+<mapper namespace="com.rpamis.security.test.mapper.UserInfoMapper">
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO user_info (name, id_card, phone, email, address, create_time)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.name}, #{item.idCard}, #{item.phone}, #{item.email}, #{item.address}, #{item.createTime})
+        </foreach>
+    </insert>
+</mapper>
+```
+
+```java
+public interface UserInfoMapper extends BaseMapper<UserInfoDO> {
+    int batchInsert(List<UserInfoDO> users);
+}
+```
+
+## 🔐 加密算法
+
+### 支持的算法
+
+目前组件支持以下加密算法：
+
+| 算法 | 说明 | 密钥长度 | 类型 |
+|------|------|----------|------|
+| SM4 | 国密 SM4 算法 | 16 字节 | 对称加密 |
+
+### 配置示例
+
+```yaml
+rpamis:
+  security:
+    enable: true
+    algorithm:
+      active: sm4
+      sm4:
+        # 16 位密钥，需要自定义
+        key: 2U43wVWjLgToKBzG
+        # 加密前缀，用于标识已加密字段
+        prefix: RPAMIS_SECURE_
+```
+
+### 算法扩展性
+
+组件支持自定义加密算法，只需要实现 `SecurityAlgorithm` 接口：
+
+```java
+public interface SecurityAlgorithm {
+
+    /**
+     * 获取算法类型
+     * @return 算法类型名称
+     */
+    String getAlgorithmType();
+
+    /**
+     * 加密
+     * @param plaintext 明文
+     * @return 密文
+     */
+    String encrypt(String plaintext);
+
+    /**
+     * 解密
+     * @param ciphertext 密文
+     * @return 明文
+     */
+    String decrypt(String ciphertext);
+}
+```
+
+## ✨ 重要特性
+
+### 1. 防止重复加密
+
+组件会检查字段值是否已包含加密前缀，如果已包含则不进行重复加密。
+
+```java
+public void testPreventDuplicateEncryption() {
+    UserInfoDO user = new UserInfoDO();
+    user.setName("张三");
+
+    // 第一次加密
+    String encrypted = encryptionService.encrypt(user.getName());
+    // encrypted = RPAMIS_SECURE_8A7B6C5D4E3F2A1B...
+
+    // 第二次加密 - 识别到前缀，直接返回
+    String duplicateEncrypted = encryptionService.encrypt(encrypted);
+    // duplicateEncrypted = RPAMIS_SECURE_8A7B6C5D4E3F2A1B...
+}
+```
+
+### 2. 存量数据兼容
+
+如果数据库中存在未加密的数据，查询时会检查是否包含加密前缀。如果没有前缀，说明是旧数据，组件会直接返回原始值。
+
+```java
+public void testLegacyDataCompatibility() {
+    // 数据库中存在未加密的旧数据
+    String legacyData = "未加密的旧数据";
+
+    // 查询时不会解密，直接返回
+    String decrypted = decryptionService.decrypt(legacyData);
+    // decrypted = "未加密的旧数据"
+}
+```
+
+### 3. 解密失败处理
+
+配置文件中可以设置解密失败时的行为：
+
+```yaml
+rpamis:
+  security:
+    ignore-decrypt-failed: true  # 默认 true
+```
+
+- `true`：解密失败时返回原始值
+- `false`：解密失败时抛出异常
+
+### 4. 深拷贝设计
+
+为了避免影响原对象引用，组件使用深拷贝技术处理加解密。
+
+```java
+public void testDeepCopy() {
+    UserInfoDO user = new UserInfoDO();
+    user.setName("张三");
+    user.setIdCard("110101199003073328");
+
+    // 保存到数据库 - 内部进行深拷贝
+    userService.saveUser(user);
+
+    // user 对象的引用没有改变，值仍然是原始值
+    System.out.println(user.getName()); // 张三（不是加密后的值）
+}
+```
+
+### 5. 重复加密检查
+
+组件通过前缀标识避免重复加密，确保数据一致性。
+
+```java
+public void testDuplicateEncryptionCheck() {
+    UserInfoDO user = new UserInfoDO();
+    user.setName("张三");
+
+    // 第一次加密
+    userService.saveUser(user);
+
+    // 修改同一对象引用后再次更新
+    user.setName("李四");
+    userService.updateUser(user); // 正常加密
+}
+```
+
+## 🚀 性能优化
+
+<Cards className="grid-cols-1 md:grid-cols-3">
+  <Card title="📦 加解密缓存" description="组件对解密操作进行了优化，避免相同密文的重复解密。">
+  </Card>
+  <Card title="🔒 线程安全" description="加解密操作是线程安全的，可以在并发场景下使用。">
+  </Card>
+  <Card title="⚡ 异常处理" description="所有加解密操作都有完整的异常处理，不会影响业务流程。">
+  </Card>
+</Cards>
+
+## ⚙️ 配置说明
+
+### MyBatis 插件配置
+
+组件会自动配置 MyBatis 插件，无需手动配置：
+
+```java
+@Configuration
+@ConditionalOnClass(SqlSessionFactory.class)
+@EnableConfigurationProperties(SecurityProperties.class)
+public class MybatisSecurityAutoConfiguration {
+
+    @Bean
+    @ConditionalOnProperty(prefix = "rpamis.security", name = "enable", havingValue = "true")
+    public MybatisEncryptInterceptor mybatisEncryptInterceptor() {
+        return new MybatisEncryptInterceptor();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "rpamis.security", name = "enable", havingValue = "true")
+    public MybatisDecryptInterceptor mybatisDecryptInterceptor() {
+        return new MybatisDecryptInterceptor();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "rpamis.security", name = "enable", havingValue = "true")
+    public MybatisDynamicSqlEncryptInterceptor mybatisDynamicSqlEncryptInterceptor() {
+        return new MybatisDynamicSqlEncryptInterceptor();
+    }
+}
+```
+
+### 字段识别原理
+
+组件通过以下方式识别需要加解密的字段：
+
+<Steps>
+  <Step title="🔍 扫描实体类字段">
+    扫描实体类中的所有字段
+  </Step>
+  <Step title="🏷️ 检查注解">
+    检查是否有 <code>@SecurityField</code> 注解
+  </Step>
+  <Step title="📝 检查类型">
+    检查字段类型是否为 String
+  </Step>
+  <Step title="🔄 继承支持">
+    支持继承字段的扫描
+  </Step>
+</Steps>
+
+## ⚠️ 注意事项
+
+### 1. 字段长度调整
+
+加密后的字段长度会增加，需要在数据库设计时预留足够的空间。
+
+### 2. 索引问题
+
+加密后的字段无法直接用于范围查询或索引优化。
+
+### 3. 查询条件加密
+
+如果需要通过加密字段作为查询条件，必须确保传入的查询值已经过加密处理。
+
+### 4. 事务一致性
+
+加解密操作不会影响事务的一致性。
+
+### 5. 异常处理
+
+配置 `ignore-decrypt-failed` 为 true 可以防止解密失败导致整个查询失败。
+
+<Callout type="success" title="🎉 总结">
+  Rpamis-Security 提供了企业级的数据加密解密功能，通过 MyBatis 插件实现自动化处理，让开发者能够轻松实现数据安全保护！
+</Callout>

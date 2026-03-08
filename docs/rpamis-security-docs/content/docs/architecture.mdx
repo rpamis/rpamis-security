@@ -1,0 +1,628 @@
+---
+title: 架构设计
+description: Rpamis-security 项目架构设计和技术实现原理
+index: 2
+---
+
+# 🏗️ 架构设计
+
+Rpamis-security 是一个基于 MyBatis 插件开发的企业级数据安全组件，旨在提供简单易用的注解式数据脱敏和加密解密功能。
+
+## 📚 项目背景
+
+### 🚨 问题分析
+
+在传统的企业应用开发中，数据安全处理通常存在以下痛点：
+
+1. **繁琐的脱敏操作**：需要在每一个需要脱敏的接口中手动处理
+2. **重复的加密逻辑**：相同的加密算法在各个项目中重复实现
+3. **缺乏统一标准**：不同项目的脱敏和加密方式不一致
+4. **性能开销大**：在高并发场景下，传统的反射和 AOP 方法可能导致性能问题
+5. **开发效率低**：安全需求分散在代码各处，维护成本高
+
+### 💡 解决方案
+
+Rpamis-security 提供了以下解决方案：
+
+- **注解式编程**：使用注解标记需要处理的字段和方法，简化开发
+- **自动装配**：Spring Boot 自动配置，无需复杂的 XML 配置
+- **MyBatis 插件**：基于 MyBatis 插件实现数据入库加密和出库解密
+- **AOP 切面**：基于 Spring AOP 实现方法级的脱敏控制
+- **策略模式**：支持多种加密算法和脱敏规则
+- **高性能设计**：优化的反射、缓存和深拷贝策略
+
+## 总体架构
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   注解模块      │    │   核心模块      │    │ Spring Boot 自动配置 │
+│ SecurityField   │    │ SecurityAlgorithm │    │ SecurityAutoConfiguration │
+│ Masked          │    │ MaskFunction     │    │ SecurityProperties  │
+│ Desensitizationed│   │ SecurityResolver │    │                     │
+│ NestedMasked    │    │ DesensitizationAspect ││                     │
+└─────────┬───────┘    └─────────┬───────┘    └─────────┬─────────┘
+          │                     │                      │
+          └─────────────────────┼───────────────────────┘
+                                │
+                ┌────────────────┴─────────────────┐
+                │          技术架构                 │
+                └────────────────┬─────────────────┘
+                                 │
+                ┌────────────────┴─────────────────┐
+                │         运行时流程                │
+                └────────────────┬─────────────────┘
+                                 │
+                ┌────────────────┴─────────────────┐
+                │        存储层处理（MyBatis）       │
+                │  MybatisEncryptInterceptor       │
+                │  MybatisDecryptInterceptor        │
+                │  MybatisDynamicSqlEncryptInterceptor │
+                └────────────────┬─────────────────┘
+                                 │
+                ┌────────────────┴─────────────────┐
+                │        应用层处理（AOP）           │
+                │    DesensitizationAspect        │
+                │    DesensitizationInterceptor   │
+                └───────────────────────────────────┘
+```
+
+## 技术架构
+
+### 1. 核心组件
+
+#### SecurityResolver（安全解析器）
+
+```java
+public class SecurityResolver {
+
+    // 字段注解缓存
+    private final ConcurrentHashMap<Class<?>, List<Field>> classToFieldMap;
+
+    // 解密字段缓存
+    private final ConcurrentHashMap<Class<?>, List<Field>> classToDecryptFieldMap;
+
+    // 安全工具类
+    private final SecurityUtils securityUtils;
+
+    // 防重复加密/解密的引用跟踪
+    private static final Set<Object> REFERENCE_SET;
+    private static final Set<Object> DECRYPT_REFERENCE_SET;
+
+    // 字段处理器和类型处理器列表
+    private static final List<FieldProcess> PROCESS_LIST;
+    private static final List<TypeHandler> HANDLER_LIST;
+}
+```
+
+**功能**：
+- 负责字段级别的加密解密处理
+- 提供字段注解的解析和缓存
+- 防止字段的重复加密和解密
+- 支持多种类型的字段处理（数组、集合、Map、嵌套对象）
+
+#### MaskFunctionFactory（脱敏函数工厂）
+
+```java
+public class MaskFunctionFactory {
+    private static final Map<MaskType, MaskFunction> MASK_FUNCTION_MAP = new ConcurrentHashMap<>();
+
+    public MaskFunctionFactory() {
+        MASK_FUNCTION_MAP.put(MaskType.NO_MASK, this::noMask);
+        MASK_FUNCTION_MAP.put(MaskType.NAME_MASK, this::nameMask);
+        MASK_FUNCTION_MAP.put(MaskType.PHONE_MASK, this::phoneMask);
+        MASK_FUNCTION_MAP.put(MaskType.IDCARD_MASK, this::idCardMask);
+        MASK_FUNCTION_MAP.put(MaskType.EMAIL_MASK, this::emailMask);
+        MASK_FUNCTION_MAP.put(MaskType.BANKCARD_MASK, this::bankCardMask);
+        MASK_FUNCTION_MAP.put(MaskType.ADDRESS_MASK, this::addressMask);
+        MASK_FUNCTION_MAP.put(MaskType.ALL_MASK, this::allMask);
+        MASK_FUNCTION_MAP.put(MaskType.CUSTOM_MASK, this::customMask);
+    }
+}
+```
+
+**功能**：
+- 使用策略模式管理多种脱敏规则
+- 提供工厂方法根据脱敏类型获取对应的脱敏函数
+- 支持自定义脱敏类型的扩展
+
+#### 类型处理器（TypeHandler）
+
+```java
+// 数组类型处理器
+public class ArrayTypeHandler implements TypeHandler {
+    public void handleType(ProcessContext context) { ... }
+}
+
+// 集合类型处理器
+public class CollectionTypeHandler implements TypeHandler {
+    public void handleType(ProcessContext context) { ... }
+}
+
+// Map 类型处理器
+public class MapTypeHandler implements TypeHandler {
+    public void handleType(ProcessContext context) { ... }
+}
+
+// 其他类型处理器
+public class OtherTypeHandler implements TypeHandler {
+    public void handleType(ProcessContext context) { ... }
+}
+```
+
+**功能**：
+- 处理不同类型的字段值
+- 提供统一的类型处理接口
+- 支持嵌套类型的递归处理
+
+### 2. MyBatis 插件组件
+
+#### MybatisEncryptInterceptor（加密拦截器）
+
+```java
+@Intercepts({ @Signature(type = ParameterHandler.class, method = "setParameters", args = PreparedStatement.class) })
+public class MybatisEncryptInterceptor implements Interceptor {
+
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable {
+        // 拦截 ParameterHandler 的 setParameters 方法
+        // 在 SQL 执行前对参数进行加密处理
+        // 支持 MyBatis Plus 的特殊参数格式
+        // 对对象进行深拷贝，防止修改源对象引用
+        return invocation.proceed();
+    }
+}
+```
+
+**特点**：
+- 在 ParameterHandler 级别拦截
+- 支持 MyBatis 和 MyBatis Plus
+- 使用深拷贝防止源对象被修改
+- 忽略 select 操作（只处理 insert/update）
+
+#### MybatisDecryptInterceptor（解密拦截器）
+
+```java
+@Intercepts({ @Signature(type = ResultSetHandler.class, method = "handleResultSets", args = Statement.class) })
+public class MybatisDecryptInterceptor implements Interceptor {
+
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable {
+        Object result = invocation.proceed();
+        // 对查询结果进行解密处理
+        return securityResolver.decryptFiled(result);
+    }
+}
+```
+
+**特点**：
+- 在 ResultSetHandler 级别拦截
+- 自动解密查询结果
+- 支持各种类型的返回值（单一对象、List、Map 等）
+
+#### MybatisDynamicSqlEncryptInterceptor（动态 SQL 加密拦截器）
+
+```java
+@Intercepts({ @Signature(type = Executor.class, method = "update", args = MappedStatement.class, Object.class) })
+public class MybatisDynamicSqlEncryptInterceptor implements Interceptor {
+
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable {
+        // 处理使用 foreach 标签的动态 SQL 场景
+        // 对参数进行加密处理
+    }
+}
+```
+
+**特点**：
+- 专门处理动态 SQL 场景
+- 支持 foreach 标签的参数加密
+- 在 Executor 级别拦截
+
+### 3. AOP 组件
+
+#### DesensitizationAspect（脱敏切面）
+
+```java
+public class DesensitizationAspect {
+
+    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object[] args = joinPoint.getArgs();
+        Object result = joinPoint.proceed(args);
+        try {
+            result = MaskAnnotationResolver.processObjectAndMask(result);
+        }
+        catch (Exception e) {
+            LOGGER.error("DesensitizationAspect process unknown error", e);
+        }
+        return result;
+    }
+}
+```
+
+**功能**：
+- 拦截带有 `@Desensitizationed` 注解的方法
+- 对返回值进行脱敏处理
+- 容错处理，不影响业务逻辑
+
+#### DesensitizationAdvisor（脱敏顾问）
+
+```java
+public class DesensitizationAdvisor implements Advisor {
+    // 配置 AOP 切面和拦截器
+}
+```
+
+**功能**：
+- 配置 AOP 的 pointcut 和 advice
+- 支持自定义切点表达式
+
+### 4. 加密算法组件
+
+#### SecurityAlgorithm（加密算法接口）
+
+```java
+public interface SecurityAlgorithm {
+    String encrypt(String sourceValue);
+    String decrypt(String sourceValue);
+}
+```
+
+#### Sm4SecurityAlgorithmImpl（SM4 算法实现）
+
+```java
+@Component
+public class Sm4SecurityAlgorithmImpl implements SecurityAlgorithm {
+
+    private final String key;
+    private final String prefix;
+
+    public Sm4SecurityAlgorithmImpl(SecurityConfigProvider configProvider) {
+        this.key = configProvider.getAlgorithmConfig().getSm4().getKey();
+        this.prefix = configProvider.getAlgorithmConfig().getSm4().getPrefix();
+    }
+
+    @Override
+    public String encrypt(String sourceValue) {
+        // SM4 加密逻辑
+        return prefix + encryptedValue;
+    }
+
+    @Override
+    public String decrypt(String sourceValue) {
+        // SM4 解密逻辑
+        return decryptedValue;
+    }
+}
+```
+
+**支持的算法**：
+- **SM4**（国密算法）：128位对称加密算法，支持自定义密钥和前缀
+- **可扩展**：实现 SecurityAlgorithm 接口添加新算法
+
+### 5. 配置组件
+
+#### SecurityProperties（配置属性类）
+
+```java
+@Data
+@ConfigurationProperties(prefix = "rpamis.security")
+public class SecurityProperties {
+
+    private boolean enable = true;
+    private boolean desensitizationEnable = true;
+    private boolean ignoreDecryptFailed = true;
+    private String customPointcut;
+    private Algorithm algorithm;
+
+    @Data
+    public static class Algorithm {
+        private String active;
+        private Sm4Config sm4;
+    }
+
+    @Data
+    public static class Sm4Config {
+        private String key;
+        private String prefix = DefaultPrefix.DEFAULT_PREFIX;
+    }
+}
+```
+
+#### SecurityAutoConfiguration（自动配置类）
+
+```java
+@Configuration
+@ConditionalOnClass(SqlSessionFactory.class)
+@EnableConfigurationProperties(SecurityProperties.class)
+public class SecurityAutoConfiguration {
+
+    @Bean
+    @ConditionalOnProperty(prefix = "rpamis.security", name = "enable", havingValue = "true")
+    public MybatisEncryptInterceptor mybatisEncryptInterceptor() {
+        return new MybatisEncryptInterceptor(securityResolver());
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "rpamis.security", name = "enable", havingValue = "true")
+    public MybatisDecryptInterceptor mybatisDecryptInterceptor() {
+        return new MybatisDecryptInterceptor(securityResolver());
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "rpamis.security", name = "desensitization-enable", havingValue = "true")
+    public DesensitizationAspect desensitizationAspect() {
+        return new DesensitizationAspect();
+    }
+}
+```
+
+## 工作原理分析
+
+### 1. 数据脱敏流程
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     请求处理流程                               │
+└─────────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌──────────────────────┐        ┌──────────────────────┐
+│  Controller 方法     │        │ DesensitizationAspect│
+│  @Desensitizationed  │───────▶│ 拦截请求，调用 MaskAnnotationResolver │
+│  返回需要脱敏的对象    │        └──────────────────────┘
+└──────────────────────┘                 │
+                                        ▼
+                 ┌──────────────────────────────────┐
+                 │  MaskAnnotationResolver.processObjectAndMask │
+                 └──────────────────────────────────┘
+                                        │
+                ┌──────────────────────┬──────────────────────┐
+                ▼                      ▼                      ▼
+        ┌──────────────┐        ┌──────────────┐        ┌──────────────┐
+        │ 处理字段脱敏  │        │ 处理集合脱敏  │        │ 处理嵌套对象  │
+        │ Masked 注解  │        │ 支持 List 类型│        │ NestedMasked │
+        │ MaskFunction  │        │ 支持 Map 类型 │        │ 递归处理     │
+        └──────────────┘        └──────────────┘        └──────────────┘
+```
+
+### 2. 数据加密流程
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     数据入库流程                               │
+└─────────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌──────────────────────┐        ┌──────────────────────┐
+│    Service 方法       │        │ MyBatis 操作        │
+│ save(user)           │───────▶│ insert into user...  │
+└──────────────────────┘        └──────────────────────┘
+                                        │
+                                        ▼
+                ┌──────────────────────────────────┐
+                │  MybatisEncryptInterceptor.intercept  │
+                └──────────────────────────────────┘
+                                        │
+                ┌──────────────────────┬──────────────────────┐
+                ▼                      ▼                      ▼
+        ┌──────────────┐        ┌──────────────┐        ┌──────────────┐
+        │ 深拷贝源对象  │        │ 加密字段值    │        │ 修改参数      │
+        │ 防止修改源引用│        │ SecurityUtils.encrypt │  设置到 parameterHandler │
+        │ SerializationUtils  │        │ 支持前缀检查防止重复加密 │        │              │
+        └──────────────┘        └──────────────┘        └──────────────┘
+                                        │
+                                        ▼
+                ┌──────────────────────────────────┐
+                │  执行加密后的 SQL 语句            │
+                └──────────────────────────────────┘
+```
+
+### 3. 数据解密流程
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     数据出库流程                               │
+└─────────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌──────────────────────┐        ┌──────────────────────┐
+│    Service 方法       │        │ MyBatis 查询        │
+│ getUser(id)          │───────▶│ select * from user...│
+└──────────────────────┘        └──────────────────────┘
+                                        │
+                                        ▼
+                ┌──────────────────────────────────┐
+                │  MybatisDecryptInterceptor.intercept  │
+                └──────────────────────────────────┘
+                                        │
+                ┌──────────────────────┬──────────────────────┐
+                ▼                      ▼                      ▼
+        ┌──────────────┐        ┌──────────────┐        ┌──────────────┐
+        │ 处理结果集    │        │ 解密字段值    │        │ 返回给应用程序  │
+        │ 支持各种返回类型 │        │ SecurityUtils.decrypt │ 用户获取解密后对象 │
+        │ List、Map 等  │        │ 支持前缀检查防止重复解密 │              │
+        └──────────────┘        └──────────────┘        └──────────────┘
+```
+
+## 高性能优化策略
+
+### 1. 缓存策略
+
+```java
+// 字段注解缓存
+private final ConcurrentHashMap<Class<?>, List<Field>> classToFieldMap;
+
+// 解密字段缓存
+private final ConcurrentHashMap<Class<?>, List<Field>> classToDecryptFieldMap;
+
+// 防重复加密/解密的引用跟踪
+private static final Set<Object> REFERENCE_SET =
+    Collections.newSetFromMap(new IdentityHashMap<>(128));
+```
+
+**优化说明**：
+
+- 缓存类的字段信息，避免重复解析
+- 使用 ConcurrentHashMap 提高并发访问性能
+- 防止重复加密/解密，避免性能损耗
+
+### 2. 深拷贝策略
+
+```java
+public static <T> T deepClone(T source) {
+    try {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(source);
+        oos.close();
+        ObjectInputStream ois = new ObjectInputStream(
+            new ByteArrayInputStream(baos.toByteArray())
+        );
+        @SuppressWarnings("unchecked")
+        T clone = (T) ois.readObject();
+        ois.close();
+        return clone;
+    } catch (Exception e) {
+        throw new SecurityException(e);
+    }
+}
+```
+
+**优化说明**：
+
+- 使用序列化实现深拷贝
+- 避免修改源对象的引用
+- 支持循环引用和复杂对象结构
+
+### 3. 防重复处理
+
+```java
+// 防重复加密
+private static final Set<Object> REFERENCE_SET =
+    Collections.newSetFromMap(new IdentityHashMap<>(128));
+
+// 防重复解密
+private static final Set<Object> DECRYPT_REFERENCE_SET =
+    Collections.newSetFromMap(new IdentityHashMap<>(128));
+```
+
+**优化说明**：
+
+- 使用 IdentityHashMap 跟踪对象引用
+- 同一对象在处理过程中只被处理一次
+- 防止循环引用导致的栈溢出
+
+### 4. 字段处理优化
+
+```java
+// 字段处理者列表（链式处理）
+private static final List<FieldProcess> PROCESS_LIST = new ArrayList<>();
+
+// 类型处理者列表（策略模式）
+private static final List<TypeHandler> HANDLER_LIST = new ArrayList<>();
+
+// 初始化
+PROCESS_LIST.add(new FinderSecurityProcessor());
+PROCESS_LIST.add(new SecurityAnnotationProcessor(securityUtils));
+HANDLER_LIST.add(new ArrayTypeHandler());
+HANDLER_LIST.add(new CollectionTypeHandler());
+HANDLER_LIST.add(new MapTypeHandler());
+HANDLER_LIST.add(new OtherTypeHandler());
+```
+
+**优化说明**：
+
+- 使用责任链模式处理字段
+- 使用策略模式处理不同类型
+- 高性能的字段处理算法
+
+## 配置与扩展性
+
+### 1. 加密算法扩展
+
+```java
+@Component
+public class CustomSecurityAlgorithm implements SecurityAlgorithm {
+
+    @Override
+    public String encrypt(String sourceValue) {
+        // 自定义加密逻辑
+        return "custom:" + sourceValue;
+    }
+
+    @Override
+    public String decrypt(String sourceValue) {
+        // 自定义解密逻辑
+        return sourceValue.replace("custom:", "");
+    }
+}
+```
+
+```yaml
+rpamis:
+  security:
+    algorithm:
+      active: custom  # 使用自定义算法
+      custom:
+        key: your-custom-key
+        prefix: CUSTOM_
+```
+
+### 2. 脱敏规则扩展
+
+```java
+// 1. 添加枚举值
+public enum MaskType {
+    CUSTOM_TYPE_MASK
+}
+
+// 2. 实现脱敏函数
+public class CustomTypeMaskFunction implements MaskFunction {
+    @Override
+    public String mask(String value) {
+        return value.replaceAll("[0-9]", "*"); // 数字脱敏
+    }
+}
+
+// 3. 注册到工厂
+@Configuration
+public class SecurityConfiguration {
+    @Bean
+    public MaskFunction customTypeMaskFunction() {
+        return new CustomTypeMaskFunction();
+    }
+}
+
+// 4. 使用
+@Data
+public class TestVO {
+    @Masked(type = MaskType.CUSTOM_TYPE_MASK)
+    private String testField;
+}
+```
+
+### 3. 自定义切点
+
+```yaml
+rpamis:
+  security:
+    custom-pointcut: '@within(org.springframework.web.bind.annotation.RestController)'
+```
+
+**用途**：
+
+- 自定义 AOP 切点表达式
+- 更精确地控制哪些方法需要脱敏
+- 可以与其他 AOP 框架集成
+
+## 总结
+
+Rpamis-security 提供了一个完整的数据安全解决方案，具有以下特点：
+
+1. **简单易用**：注解式编程，Spring Boot 自动装配
+2. **高性能**：优化的反射、缓存和深拷贝策略
+3. **高扩展性**：支持自定义加密算法和脱敏规则
+4. **完整的功能**：支持数据脱敏、加密解密、嵌套类型处理
+5. **健壮的设计**：容错机制、防重复处理、兼容性支持
+
+该项目采用了架构设计模式，具有良好的可维护性和可扩展性，适用于各种企业级应用场景。

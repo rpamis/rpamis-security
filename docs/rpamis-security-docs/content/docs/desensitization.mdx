@@ -1,0 +1,321 @@
+---
+title: 数据脱敏
+description: Rpamis-security 数据脱敏功能详细说明
+index: 3
+---
+
+import { Cards, Card } from '@/components/card';
+import { Callout } from '@/components/callout';
+import { Tabs, TabList, TabTrigger, TabContent } from '@/components/tabs';
+
+# 🎭 数据脱敏
+
+数据脱敏是 Rpamis-security 的核心功能之一，通过注解式编程方式，开发者只需要对需要处理的字段或方法加上对应注解，无需关心脱敏的具体实现，由组件自动完成。
+
+## 📋 内置脱敏规则
+
+组件内置了 **9种** 脱敏规则：
+
+| 规则 | 说明 | 示例 |
+|------|------|------|
+| `NO_MASK` | 不脱敏 | 原始值 |
+| `NAME_MASK` | 姓名脱敏 | 张三 → 张* |
+| `PHONE_MASK` | 电话脱敏 | 13812345678 → 138****5678 |
+| `IDCARD_MASK` | 身份证脱敏 | 110101199003073328 → 110***********3328 |
+| `EMAIL_MASK` | 邮箱脱敏 | zhangsan@example.com → zhan****@example.com |
+| `BANKCARD_MASK` | 银行卡脱敏 | 6222020200099998888 → 6222 **** **** 8888 |
+| `ADDRESS_MASK` | 地址脱敏 | 北京市朝阳区XX街道 → 北京市朝阳区******** |
+| `ALL_MASK` | 全脱敏 | 所有字符替换为 * |
+| `CUSTOM_MASK` | 自定义脱敏 | 可指定起始和结束位置 |
+
+<Callout type="info" title="💡 灵活配置">
+  所有脱敏规则都支持自定义脱敏标识符，默认为 <code>*</code>。
+</Callout>
+
+## 🔧 使用方法
+
+### 1. 单一实体脱敏
+
+在需要脱敏的字段上使用 `@Masked` 注解：
+
+```java
+@Data
+public class TestVO implements Serializable {
+
+    private static final long serialVersionUID = 1142843493987112387L;
+
+    /**
+     * 主键 id，不脱敏
+     */
+    private Long id;
+
+    /**
+     * 姓名 - 使用姓名脱敏规则
+     */
+    @Masked(type = MaskType.NAME_MASK)
+    private String name;
+
+    /**
+     * 身份证号 - 使用身份证脱敏规则
+     */
+    @Masked(type = MaskType.IDCARD_MASK)
+    private String idCard;
+
+    /**
+     * 手机号 - 使用手机号脱敏规则
+     */
+    @Masked(type = MaskType.PHONE_MASK)
+    private String phone;
+
+    /**
+     * 邮箱 - 使用邮箱脱敏规则
+     */
+    @Masked(type = MaskType.EMAIL_MASK)
+    private String email;
+
+    /**
+     * 银行卡号 - 使用银行卡脱敏规则
+     */
+    @Masked(type = MaskType.BANKCARD_MASK)
+    private String bankCard;
+
+    /**
+     * 地址 - 使用地址脱敏规则
+     */
+    @Masked(type = MaskType.ADDRESS_MASK)
+    private String address;
+
+    /**
+     * 自定义标识字段 - 自定义脱敏
+     * 从第 2 位开始脱敏到第 5 位，使用 # 作为脱敏符号
+     */
+    @Masked(type = MaskType.CUSTOM_MASK, start = 2, end = 5, symbol = "#")
+    private String customFiled;
+}
+```
+
+在 Controller 方法上使用 `@Desensitizationed` 注解来开启脱敏：
+
+```java
+@RestController
+@RequestMapping("/api")
+public class TestController {
+
+    /**
+     * 获取脱敏数据 - 单一实体
+     *
+     * @return TestVO
+     */
+    @PostMapping("/single")
+    @Desensitizationed
+    public TestVO testSingle() {
+        TestVO vo = new TestVO();
+        vo.setId(1L);
+        vo.setName("张三");
+        vo.setIdCard("110101199003073328");
+        vo.setPhone("13812345678");
+        vo.setEmail("zhangsan@example.com");
+        vo.setBankCard("6222020200099998888");
+        vo.setAddress("北京市朝阳区建国路88号");
+        vo.setCustomFiled("1234567890");
+        return vo;
+    }
+}
+```
+
+### 2. List 类型脱敏
+
+List 类型同样支持脱敏：
+
+```java
+@RestController
+@RequestMapping("/api")
+public class TestController {
+
+    /**
+     * 获取脱敏数据 - List 类型
+     *
+     * @return List<TestVO>
+     */
+    @PostMapping("/list")
+    @Desensitizationed
+    public List<TestVO> testList() {
+        List<TestVO> list = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            TestVO vo = new TestVO();
+            vo.setId((long) i);
+            vo.setName("张三" + i);
+            vo.setIdCard("11010119900307332" + i);
+            vo.setPhone("1381234567" + i);
+            list.add(vo);
+        }
+        return list;
+    }
+}
+```
+
+### 3. Map 类型脱敏
+
+Map 类型也支持脱敏：
+
+```java
+@RestController
+@RequestMapping("/api")
+public class TestController {
+
+    /**
+     * 获取脱敏数据 - Map 类型
+     *
+     * @return Map<String, TestVO>
+     */
+    @PostMapping("/map")
+    @Desensitizationed
+    public Map<String, TestVO> testMap() {
+        Map<String, TestVO> map = new HashMap<>();
+        TestVO vo1 = new TestVO();
+        vo1.setId(1L);
+        vo1.setName("张三");
+        vo1.setIdCard("110101199003073328");
+        vo1.setPhone("13812345678");
+
+        TestVO vo2 = new TestVO();
+        vo2.setId(2L);
+        vo2.setName("李四");
+        vo2.setIdCard("110101199003073329");
+        vo2.setPhone("13812345679");
+
+        map.put("user1", vo1);
+        map.put("user2", vo2);
+        return map;
+    }
+}
+```
+
+### 4. 统一返回体脱敏
+
+支持统一返回体类型，无论是否有泛型：
+
+```java
+@Data
+public class R<T> implements Serializable {
+    private Integer code;
+    private String message;
+    private T data;
+    private long timestamp;
+}
+
+@RestController
+@RequestMapping("/api")
+public class TestController {
+
+    /**
+     * 获取脱敏数据 - 统一返回体（泛型）
+     *
+     * @return R<TestVO>
+     */
+    @PostMapping("/result/generic")
+    @Desensitizationed
+    public R<TestVO> testGenericResult() {
+        TestVO vo = new TestVO();
+        vo.setId(1L);
+        vo.setName("张三");
+        vo.setIdCard("110101199003073328");
+        vo.setPhone("13812345678");
+        return R.ok(vo);
+    }
+
+    /**
+     * 获取脱敏数据 - 统一返回体（无泛型）
+     *
+     * @return R
+     */
+    @PostMapping("/result/raw")
+    @Desensitizationed
+    public R testRawResult() {
+        TestVO vo = new TestVO();
+        vo.setId(1L);
+        vo.setName("张三");
+        vo.setIdCard("110101199003073328");
+        vo.setPhone("13812345678");
+        return R.ok(vo);
+    }
+}
+```
+
+## 🎨 自定义脱敏
+
+使用 `CUSTOM_MASK` 类型可以实现自定义脱敏：
+
+```java
+@Data
+public class CustomTestVO implements Serializable {
+
+    /**
+     * 自定义脱敏 - 从第 1 位开始到第 8 位，使用 *
+     */
+    @Masked(type = MaskType.CUSTOM_MASK, start = 1, end = 8)
+    private String data1;
+
+    /**
+     * 自定义脱敏 - 从第 3 位开始到第 6 位，使用 #
+     */
+    @Masked(type = MaskType.CUSTOM_MASK, start = 3, end = 6, symbol = "#")
+    private String data2;
+}
+```
+
+**参数说明：**
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| `type` | 脱敏类型 | MaskType | 必填 |
+| `start` | 起始位置（包含） | int | 0 |
+| `end` | 结束位置（不包含） | int | 0 |
+| `symbol` | 脱敏符号 | String | * |
+
+## 🔄 脱敏原理
+
+<Callout type="info" title="💡 脱敏实现机制">
+  Rpamis-Security 的脱敏功能基于 **AOP 切面** 实现，通过拦截带有 <code>@Desensitizationed</code> 注解的方法，对其返回值进行脱敏处理。
+</Callout>
+
+## ⚠️ 注意事项
+
+### 1. @Desensitizationed 注解是必需的
+
+即使字段上有 `@Masked` 注解，如果 Controller 方法上没有 `@Desensitizationed` 注解，脱敏也不会生效。
+
+### 2. 不依赖 Jackson 序列化
+
+Rpamis-security 的脱敏功能不依赖 Jackson 序列化，因此不会影响全局 Jackson 的行为。
+
+### 3. 支持任意类型返回值
+
+无论是单一实体、List、Map、统一返回体，还是嵌套类型，都能正确处理。
+
+### 4. 脱敏的范围控制
+
+通过 `@Desensitizationed` 注解实现方法级的脱敏控制，可以精确控制哪些接口返回脱敏数据。
+
+### 5. 空值处理
+
+如果字段值为 null，脱敏处理器会直接返回 null，不会抛出异常。
+
+### 6. 非字符串类型
+
+脱敏功能主要针对字符串类型字段，非字符串类型字段会被忽略。
+
+## 📊 性能优化
+
+<Cards className="grid-cols-1 md:grid-cols-2">
+  <Card title="🚀 高性能" description="脱敏过程采用高效算法，对系统性能影响极小">
+    组件优化了脱敏算法，确保在高并发场景下的性能。
+  </Card>
+  <Card title="🔒 安全设计" description="脱敏后的字段不可恢复原始值">
+    脱敏过程是单向的，无法从脱敏后的值恢复原始数据。
+  </Card>
+</Cards>
+
+<Callout type="success" title="🎉 总结">
+  Rpamis-Security 提供了强大而灵活的数据脱敏功能，让开发者能够快速集成数据安全保护，同时保持代码的简洁性和可读性。
+</Callout>

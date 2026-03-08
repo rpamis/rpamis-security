@@ -1,0 +1,567 @@
+---
+title: API 文档
+description: Rpamis-security 提供的注解和配置 API 详细说明
+index: 5
+---
+
+# 📚 API 文档
+
+## 🎯 注解 API
+
+### 1. 脱敏注解
+
+#### @Desensitizationed
+
+**类型**：方法级注解
+**用途**：标识需要进行数据脱敏的方法
+
+**示例：**
+
+```java
+@PostMapping("/user")
+@Desensitizationed
+public UserVO getUser() {
+    // 方法逻辑
+}
+```
+
+**说明**：该注解用于 Controller 层方法上，表示该方法的返回值需要进行脱敏处理。只有标注了该注解的方法，返回值中的 `@Masked` 注解才会生效。
+
+#### @Masked
+
+**类型**：字段级注解
+**用途**：标识需要进行脱敏处理的字段
+
+**参数：**
+
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+|------|------|------|--------|------|
+| `type` | MaskType | ✅ 是 | 无 | 脱敏类型（必填） |
+| `start` | int | ❌ 否 | 0 | 自定义脱敏起始位置（包含） |
+| `end` | int | ❌ 否 | 0 | 自定义脱敏结束位置（不包含） |
+| `symbol` | String | ❌ 否 | * | 脱敏符号 |
+
+**示例：**
+
+```java
+@Data
+public class UserVO implements Serializable {
+
+    @Masked(type = MaskType.NAME_MASK)
+    private String name;
+
+    @Masked(type = MaskType.CUSTOM_MASK, start = 2, end = 5, symbol = "#")
+    private String customField;
+}
+```
+
+**脱敏类型（MaskType）：**
+
+```java
+public enum MaskType {
+    /** 不脱敏 */
+    NO_MASK,
+    /** 姓名脱敏 */
+    NAME_MASK,
+    /** 电话脱敏 */
+    PHONE_MASK,
+    /** 身份证脱敏 */
+    IDCARD_MASK,
+    /** 邮箱脱敏 */
+    EMAIL_MASK,
+    /** 银行卡脱敏 */
+    BANKCARD_MASK,
+    /** 地址脱敏 */
+    ADDRESS_MASK,
+    /** 全脱敏 */
+    ALL_MASK,
+    /** 自定义脱敏 */
+    CUSTOM_MASK
+}
+```
+
+#### @NestedMasked
+
+**类型**：字段级注解
+**用途**：标识需要进行嵌套脱敏的字段
+
+**示例：**
+
+```java
+@Data
+public class TestNestVO implements Serializable {
+
+    @Masked(type = MaskType.NAME_MASK)
+    private String name;
+
+    @NestedMasked
+    private TestVO testVO;
+
+    @NestedMasked
+    private List<TestVO> testVOList;
+
+    @NestedMasked
+    private Map<String, TestVO> testVOMap;
+}
+```
+
+**说明**：对于包含脱敏字段的嵌套对象、List、Map 等，需要使用 `@NestedMasked` 注解来标记，组件会递归处理嵌套对象中的 `@Masked` 注解。
+
+### 2. 加密解密注解
+
+#### @SecurityField
+
+**类型**：字段级注解
+**用途**：标识需要进行加解密处理的字段
+
+**示例：**
+
+```java
+@Data
+@TableName(value ="user_info")
+public class UserInfoDO implements Serializable {
+
+    @TableField(value = "name")
+    @SecurityField
+    private String name;
+
+    @TableField(value = "id_card")
+    @SecurityField
+    private String idCard;
+}
+```
+
+**说明**：该注解用于实体类字段上，表示该字段在落库时需要加密，出库时需要解密。
+
+## ⚙️ 配置 API
+
+### 1. 全局配置
+
+#### 配置结构
+
+```yaml
+rpamis:
+  security:
+    # 是否开启安全组件，落库加密，出库脱密
+    enable: true
+    # 忽略解密失败，如果解密失败则返回原值
+    ignore-decrypt-failed: true
+    # 是否开启脱敏切面
+    desensitization-enable: true
+    # 自定义切点，比如增加 RestController 切点
+    custom-pointcut: '@within(org.springframework.web.bind.annotation.RestController)'
+    # 加解密算法配置
+    algorithm:
+      # 激活的加密算法
+      active: sm4
+      sm4:
+        # 加密算法 key，需要自己生成，满足 16 位即可，下面只是样例
+        key: 2U43wVWjLgToKBzG
+        # 加解密唯一识别前缀
+        prefix: Your_CUSTOM_PREFIX_
+```
+
+#### 配置详解
+
+**基本配置：**
+
+| 配置项 | 类型 | 必填 | 默认值 | 说明 |
+|--------|------|------|--------|------|
+| `enable` | boolean | ✅ 是 | true | 是否开启安全组件 |
+| `desensitization-enable` | boolean | ❌ 否 | true | 是否开启脱敏切面 |
+| `ignore-decrypt-failed` | boolean | ❌ 否 | true | 解密失败时是否忽略，true 返回原值，false 抛出异常 |
+| `custom-pointcut` | String | ❌ 否 | 无 | 自定义 AOP 切点表达式 |
+
+**算法配置：**
+
+| 配置项 | 类型 | 必填 | 默认值 | 说明 |
+|--------|------|------|--------|------|
+| `algorithm.active` | String | ✅ 是 | 无 | 激活的加密算法（目前支持 sm4） |
+| `algorithm.sm4.key` | String | ✅ 是 | 无 | SM4 算法密钥，必须满足 16 位 |
+| `algorithm.sm4.prefix` | String | ✅ 是 | 无 | 加密字段前缀，用于识别已加密字段 |
+
+**配置类（SecurityProperties）：**
+
+```java
+@Data
+@ConfigurationProperties(prefix = "rpamis.security")
+public class SecurityProperties {
+
+    /**
+     * 是否开启安全组件，落库加密，出库脱密
+     */
+    private boolean enable = true;
+
+    /**
+     * 忽略解密失败，如果解密失败则返回原值，否则抛出异常
+     */
+    private boolean ignoreDecryptFailed = true;
+
+    /**
+     * 是否开启脱敏切面
+     */
+    private boolean desensitizationEnable = true;
+
+    /**
+     * 自定义切点，比如增加 RestController 切点
+     */
+    private String customPointcut;
+
+    /**
+     * 加密算法配置
+     */
+    private AlgorithmProperties algorithm = new AlgorithmProperties();
+
+    @Data
+    public static class AlgorithmProperties {
+        private String active;
+        private Sm4Properties sm4 = new Sm4Properties();
+    }
+
+    @Data
+    public static class Sm4Properties {
+        private String key;
+        private String prefix;
+    }
+}
+```
+
+### 2. 算法扩展接口
+
+#### SecurityAlgorithm
+
+**用途**：加密算法扩展接口，实现该接口可以添加新的加密算法
+
+```java
+public interface SecurityAlgorithm {
+
+    /**
+     * 获取算法类型标识
+     *
+     * @return 算法类型标识
+     */
+    String getAlgorithmType();
+
+    /**
+     * 加密操作
+     *
+     * @param plaintext 明文
+     * @return 密文
+     */
+    String encrypt(String plaintext);
+
+    /**
+     * 解密操作
+     *
+     * @param ciphertext 密文
+     * @return 明文
+     */
+    String decrypt(String ciphertext);
+}
+```
+
+**实现示例（SM4 算法）：**
+
+```java
+@Component
+public class Sm4SecurityAlgorithm implements SecurityAlgorithm {
+
+    @Override
+    public String getAlgorithmType() {
+        return "sm4";
+    }
+
+    @Override
+    public String encrypt(String plaintext) {
+        // 实现 SM4 加密
+    }
+
+    @Override
+    public String decrypt(String ciphertext) {
+        // 实现 SM4 解密
+    }
+}
+```
+
+#### MaskFunction
+
+**用途**：脱敏函数接口，实现该接口可以添加新的脱敏规则
+
+```java
+@FunctionalInterface
+public interface MaskFunction {
+
+    /**
+     * 脱敏方法
+     *
+     * @param value 原始值
+     * @return 脱敏后的值
+     */
+    String mask(String value);
+}
+```
+
+**实现示例（姓名脱敏）：**
+
+```java
+public class NameMaskFunction implements MaskFunction {
+    @Override
+    public String mask(String value) {
+        if (value.length() == 1) {
+            return value;
+        }
+        return value.charAt(0) + "*".repeat(value.length() - 1);
+    }
+}
+```
+
+### 3. 核心组件接口
+
+#### DataMaskingProcessor
+
+**用途**：数据脱敏处理器，负责处理字段的脱敏逻辑
+
+```java
+public interface DataMaskingProcessor {
+
+    /**
+     * 处理对象的脱敏
+     *
+     * @param value 需要处理的对象
+     * @return 处理后的对象
+     */
+    Object process(Object value);
+}
+```
+
+#### MybatisEncryptInterceptor
+
+**用途**：MyBatis 加密拦截器，负责处理数据入库时的加密
+
+```java
+@Intercepts({
+    @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class}),
+})
+public class MybatisEncryptInterceptor implements Interceptor {
+
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable {
+        // 加密逻辑
+    }
+}
+```
+
+#### MybatisDecryptInterceptor
+
+**用途**：MyBatis 解密拦截器，负责处理数据出库时的解密
+
+```java
+@Intercepts({
+    @Signature(type = ResultSetHandler.class, method = "handleResultSets", args = {Statement.class}),
+})
+public class MybatisDecryptInterceptor implements Interceptor {
+
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable {
+        // 解密逻辑
+    }
+}
+```
+
+#### DesensitizationAspect
+
+**用途**：脱敏切面，负责拦截带有 `@Desensitizationed` 注解的方法
+
+```java
+@Aspect
+@Component
+public class DesensitizationAspect {
+
+    @Pointcut("@annotation(com.rpamis.security.annotation.Desensitizationed)")
+    public void pointcut() {
+    }
+
+    @Around("pointcut()")
+    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+        // 脱敏处理逻辑
+    }
+}
+```
+
+## 🧩 扩展接口
+
+### 1. 自定义加密算法
+
+```java
+@Component
+public class CustomSecurityAlgorithm implements SecurityAlgorithm {
+
+    @Override
+    public String getAlgorithmType() {
+        return "custom"; // 自定义算法标识
+    }
+
+    @Override
+    public String encrypt(String plaintext) {
+        // 实现自定义加密逻辑
+        return "encrypted:" + plaintext;
+    }
+
+    @Override
+    public String decrypt(String ciphertext) {
+        // 实现自定义解密逻辑
+        return ciphertext.replace("encrypted:", "");
+    }
+}
+```
+
+**配置使用：**
+
+```yaml
+rpamis:
+  security:
+    algorithm:
+      active: custom  # 使用自定义算法
+```
+
+### 2. 自定义脱敏类型
+
+```java
+// 1. 添加枚举值
+public enum MaskType {
+    // 内置类型...
+    CUSTOM_TYPE_MASK
+}
+
+// 2. 实现脱敏函数
+public class CustomTypeMaskFunction implements MaskFunction {
+    @Override
+    public String mask(String value) {
+        return value.replaceAll("[0-9]", "*"); // 数字脱敏
+    }
+}
+
+// 3. 注册脱敏函数
+@Configuration
+public class SecurityConfiguration {
+    @Bean
+    public MaskFunction customTypeMaskFunction() {
+        return new CustomTypeMaskFunction();
+    }
+}
+
+// 4. 使用
+@Data
+public class TestVO {
+    @Masked(type = MaskType.CUSTOM_TYPE_MASK)
+    private String testField;
+}
+```
+
+## 系统属性
+
+### 自动配置类
+
+组件提供了自动配置类，会自动装配所有核心组件：
+
+```java
+@Configuration
+@ConditionalOnClass(SqlSessionFactory.class)
+@EnableConfigurationProperties(SecurityProperties.class)
+public class MybatisSecurityAutoConfiguration {
+
+    @Bean
+    @ConditionalOnProperty(prefix = "rpamis.security", name = "enable", havingValue = "true")
+    public MybatisEncryptInterceptor mybatisEncryptInterceptor() {
+        return new MybatisEncryptInterceptor();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "rpamis.security", name = "enable", havingValue = "true")
+    public MybatisDecryptInterceptor mybatisDecryptInterceptor() {
+        return new MybatisDecryptInterceptor();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "rpamis.security", name = "enable", havingValue = "true")
+    public MybatisDynamicSqlEncryptInterceptor mybatisDynamicSqlEncryptInterceptor() {
+        return new MybatisDynamicSqlEncryptInterceptor();
+    }
+}
+
+@Configuration
+@ConditionalOnClass(DesensitizationAspect.class)
+@EnableConfigurationProperties(SecurityProperties.class)
+@ConditionalOnProperty(prefix = "rpamis.security", name = "desensitization-enable", havingValue = "true", matchIfMissing = true)
+public class DesensitizationAutoConfiguration {
+
+    @Bean
+    public DesensitizationAspect desensitizationAspect() {
+        return new DesensitizationAspect();
+    }
+}
+```
+
+## 依赖类
+
+### 1. 工具类
+
+#### RpamisBeanUtil
+
+**用途**：Bean 工具类，用于对象的深拷贝和属性拷贝
+
+```java
+public class RpamisBeanUtil {
+
+    /**
+     * 对象深拷贝
+     *
+     * @param source 源对象
+     * @param targetClass 目标类
+     * @param <T> 目标类型
+     * @return 深拷贝后的对象
+     */
+    public static <T> T copy(Object source, Class<T> targetClass) {
+        // 实现深拷贝
+    }
+}
+```
+
+**使用示例：**
+
+```java
+TestVO target = RpamisBeanUtil.copy(source, TestVO.class);
+```
+
+### 2. 异常类
+
+#### SecurityException
+
+**用途**：安全组件的基础异常类
+
+```java
+public class SecurityException extends RuntimeException {
+    public SecurityException(String message) {
+        super(message);
+    }
+
+    public SecurityException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+```
+
+## 核心接口总结
+
+| 接口/类 | 用途 | 所在包 |
+|--------|------|--------|
+| `@Desensitizationed` | 方法级脱敏注解 | com.rpamis.security.annotation |
+| `@Masked` | 字段级脱敏注解 | com.rpamis.security.annotation |
+| `@NestedMasked` | 字段级嵌套脱敏注解 | com.rpamis.security.annotation |
+| `@SecurityField` | 字段级加解密注解 | com.rpamis.security.annotation |
+| `SecurityAlgorithm` | 加密算法接口 | com.rpamis.security.algorithm |
+| `DataMaskingProcessor` | 数据脱敏处理器 | com.rpamis.security.mask |
+| `DesensitizationAspect` | 脱敏切面 | com.rpamis.security.aspect |
+| `MybatisEncryptInterceptor` | MyBatis 加密拦截器 | com.rpamis.security.mybatis |
+| `MybatisDecryptInterceptor` | MyBatis 解密拦截器 | com.rpamis.security.mybatis |
+| `SecurityProperties` | 配置属性类 | com.rpamis.security.properties |
