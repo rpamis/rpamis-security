@@ -1,0 +1,334 @@
+---
+title: 快速开始
+description: Rpamis-security 快速上手和基本使用方法
+index: 0
+---
+
+import { Steps, Step } from '@/components/steps';
+import { Callout } from '@/components/callout';
+import { Tabs, TabList, TabTrigger, TabContent } from '@/components/tabs';
+
+# 🚀 快速开始
+
+## 📋 环境要求
+
+| 软件 | 版本要求 |
+|------|----------|
+| Java | 8 或更高版本 |
+| Spring Boot | 2.x 或 3.x |
+| MyBatis | 3.x 或 MyBatis Plus 3.x+ |
+
+<Callout type="success" title="💡 版本兼容性提示">
+  对于 **JDK 17+** 使用版本 <code>1.1.1</code>，**JDK 8-JDK 17** 使用版本 <code>1.0.4</code>。
+</Callout>
+
+## 📦 依赖引入
+
+<Steps>
+  <Step title="🎯 选择构建工具">
+    根据您的项目构建工具选择相应的依赖配置。
+  </Step>
+  <Step title="📄 配置依赖">
+    在项目配置文件中添加 Rpamis-Security 依赖。
+  </Step>
+</Steps>
+
+### Maven
+
+对于 JDK 17 及以上使用版本 1.1.1：
+
+```xml
+<dependency>
+    <groupId>com.rpamis</groupId>
+    <artifactId>rpamis-security-spring-boot-starter</artifactId>
+    <version>1.1.1</version>
+</dependency>
+```
+
+对于 JDK 8-JDK 17 使用版本 1.0.4：
+
+```xml
+<dependency>
+    <groupId>com.rpamis</groupId>
+    <artifactId>rpamis-security-spring-boot-starter</artifactId>
+    <version>1.0.4</version>
+</dependency>
+```
+
+### Gradle
+
+```groovy
+// JDK 17+
+implementation 'com.rpamis:rpamis-security-spring-boot-starter:1.1.1'
+
+// JDK 8-JDK 17
+implementation 'com.rpamis:rpamis-security-spring-boot-starter:1.0.4'
+```
+
+## ⚙️ 配置文件
+
+在 `application.yml` 或 `application.properties` 中添加以下配置：
+
+```yaml
+rpamis:
+  # 🛡️ rpamis-security 配置
+  security:
+    # 是否开启安全组件，落库加密，出库脱密，如果不指定加密算法，则默认返回原值
+    # 当此开关为 false 时，无论脱敏切面是否开启，均不生效
+    enable: true
+    # 忽略解密失败，如果解密失败则返回原值，否则抛出异常，如果不填写默认 true
+    ignore-decrypt-failed: true
+    # 是否开启脱敏切面
+    desensitization-enable: true
+    # 自定义切点，比如增加 RestController 切点
+    custom-pointcut: '@within(org.springframework.web.bind.annotation.RestController)'
+    # 🔐 加解密算法配置
+    algorithm:
+      # 激活的加密算法
+      active: sm4
+      sm4:
+        # 加密算法 key，需要自己生成，满足 16 位即可，下面只是样例
+        key: 1234567890123456
+        # 加解密唯一识别前缀，默认值为 ENC_SM4_
+        prefix: ENC_SM4_
+```
+
+## 📋 配置说明
+
+### 必需配置
+
+| 配置项 | 说明 | 类型 | 默认值 |
+|--------|------|------|--------|
+| `rpamis.security.enable` | 是否开启安全组件 | boolean | true |
+| `rpamis.security.algorithm.active` | 激活的加密算法（目前仅支持 sm4） | string | 无 |
+| `rpamis.security.algorithm.sm4.key` | SM4 算法密钥，必须满足 16 位 | string | 无 |
+| `rpamis.security.algorithm.sm4.prefix` | 加密字段前缀，用于标识已加密字段 | string | ENC_SM4_ |
+
+### 可选配置
+
+| 配置项 | 说明 | 类型 | 默认值 |
+|--------|------|------|--------|
+| `rpamis.security.ignore-decrypt-failed` | 是否忽略解密失败，解密失败时返回原值 | boolean | true |
+| `rpamis.security.desensitization-enable` | 是否开启脱敏切面 | boolean | true |
+| `rpamis.security.custom-pointcut` | 自定义切点，用于 AOP 拦截 | string | "" |
+
+## 💻 基础使用
+
+### 1. 数据脱敏 🎭
+
+<Steps>
+  <Step title="🎨 在字段上添加注解">
+    在需要脱敏的字段上添加 <code>@Masked</code> 注解。
+  </Step>
+  <Step title="🚀 在方法上开启脱敏">
+    在需要脱敏的接口方法上添加 <code>@Desensitizationed</code> 注解。
+  </Step>
+  <Step title="✨ 验证结果">
+    调用接口验证脱敏效果。
+  </Step>
+</Steps>
+
+在需要脱敏的字段上添加 `@Masked` 注解：
+
+```java
+@Data
+public class UserVO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 姓名 - 使用姓名脱敏规则
+     */
+    @Masked(type = MaskType.NAME_MASK)
+    private String name;
+
+    /**
+     * 身份证号 - 使用身份证脱敏规则
+     */
+    @Masked(type = MaskType.IDCARD_MASK)
+    private String idCard;
+
+    /**
+     * 手机号 - 使用手机号脱敏规则
+     */
+    @Masked(type = MaskType.PHONE_MASK)
+    private String phone;
+
+    /**
+     * 银行卡号 - 使用银行卡脱敏规则
+     */
+    @Masked(type = MaskType.BANKCARD_MASK)
+    private String bankCard;
+
+    /**
+     * 邮箱 - 使用邮箱脱敏规则
+     */
+    @Masked(type = MaskType.EMAIL_MASK)
+    private String email;
+
+    /**
+     * 地址 - 使用地址脱敏规则
+     */
+    @Masked(type = MaskType.ADDRESS_MASK)
+    private String address;
+
+    /**
+     * 自定义脱敏 - 从第2位开始到第5位，使用 # 作为标识符
+     */
+    @Masked(type = MaskType.CUSTOM_MASK, start = 2, end = 5, symbol = "#")
+    private String customField;
+}
+```
+
+在需要脱敏的接口方法上添加 `@Desensitizationed` 注解：
+
+```java
+@RestController
+@RequestMapping("/api")
+public class UserController {
+
+    @PostMapping("/user")
+    @Desensitizationed
+    public UserVO getUser() {
+        UserVO user = new UserVO();
+        user.setName("张三");
+        user.setIdCard("110101199003073328");
+        user.setPhone("13812345678");
+        user.setBankCard("6222020200099998888");
+        user.setEmail("zhangsan@example.com");
+        user.setAddress("北京市朝阳区XX街道XX小区");
+        user.setCustomField("1234567890");
+        return user;
+    }
+}
+```
+
+### 2. 数据库加解密 🔒
+
+<Steps>
+  <Step title="💾 在字段上添加注解">
+    在需要加密的字段上添加 <code>@SecurityField</code> 注解。
+  </Step>
+  <Step title="🚀 正常使用 MyBatis">
+    使用 MyBatis 或 MyBatis Plus 进行数据库操作。
+  </Step>
+  <Step title="✨ 自动处理">
+    组件会自动处理加密入库和解密出库。
+  </Step>
+</Steps>
+
+在需要加密的字段上添加 `@SecurityField` 注解：
+
+```java
+@Data
+@TableName(value ="user")
+public class UserDO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+
+    @TableField(value = "name")
+    @SecurityField
+    private String name;
+
+    @TableField(value = "id_card")
+    @SecurityField
+    private String idCard;
+
+    @TableField(value = "phone")
+    @SecurityField
+    private String phone;
+
+    @TableField(value = "email")
+    @SecurityField
+    private String email;
+}
+```
+
+当使用 MyBatis 或 MyBatis Plus 进行数据库操作时，字段会自动加密入库，查询时自动解密：
+
+```java
+@Mapper
+public interface UserMapper extends BaseMapper<UserDO> {
+    // 所有操作都会自动加解密
+}
+
+@Service
+public class UserService {
+
+    @Autowired
+    private UserMapper userMapper;
+
+    public void saveUser(UserDO user) {
+        userMapper.insert(user); // 自动加密
+    }
+
+    public UserDO getUser(Long id) {
+        return userMapper.selectById(id); // 自动解密
+    }
+}
+```
+
+## 🎯 验证结果
+
+### 脱敏结果
+
+请求 `/api/user` 接口，返回结果：
+
+```json
+{
+  "name": "张*",
+  "idCard": "110***********3328",
+  "phone": "138****5678",
+  "bankCard": "6222 **** **** 8888",
+  "email": "zhan****@example.com",
+  "address": "北京市朝阳区**********",
+  "customField": "1####67890"
+}
+```
+
+### 加密结果
+
+数据库中的数据会被加密：
+
+```sql
+-- 加密后的效果（实际值会因密钥和前缀不同而变化）
+Your_CUSTOM_PREFIX_8A7B6C5D4E3F2A1B...
+```
+
+## ❓ 常见问题
+
+### 1. 为什么注解不生效？
+
+<Callout type="warning" title="🔍 检查清单">
+  - ✅ 配置文件是否开启了相应功能
+  - ✅ 注解所在的类或方法是否被 Spring 容器管理
+  - ✅ 类路径是否正确
+  - ✅ 是否添加了 <code>@Desensitizationed</code> 注解
+</Callout>
+
+### 2. 为什么脱敏没有效果？
+
+<Callout type="info" title="🎯 关键点">
+  - 确保在 Controller 方法上添加了 <code>@Desensitizationed</code> 注解
+  - 检查配置文件中 <code>desensitization-enable</code> 是否为 true
+  - 确保返回值是经过 Spring 容器管理的对象
+</Callout>
+
+### 3. 加密字段查询后是乱码？
+
+- 检查是否配置了正确的前缀
+- 确保使用了相同的密钥和算法
+- 检查是否启用了加解密功能
+
+### 4. 支持哪些类型的返回值？
+
+- 单一实体类型
+- `List<Entity>`
+- `Map<String, Entity>`
+- 统一返回体（如 `R<Entity>`）
+- 嵌套类型（支持多层嵌套）
+
+<Callout type="success" title="🎉 恭喜！">
+  您已成功集成 Rpamis-Security！现在可以开始使用数据脱敏和数据库加解密功能了。
+</Callout>

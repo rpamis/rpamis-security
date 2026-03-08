@@ -1,0 +1,740 @@
+---
+title: 使用示例
+description: Rpamis-security 各种场景的使用示例
+index: 6
+---
+
+# 🎯 使用示例
+
+## 🏁 基础使用示例
+
+### 1. 单一实体脱敏
+
+```java
+@Data
+public class UserVO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Masked(type = MaskType.NAME_MASK)
+    private String name;
+
+    @Masked(type = MaskType.IDCARD_MASK)
+    private String idCard;
+
+    @Masked(type = MaskType.PHONE_MASK)
+    private String phone;
+
+    @Masked(type = MaskType.EMAIL_MASK)
+    private String email;
+
+    @Masked(type = MaskType.BANKCARD_MASK)
+    private String bankCard;
+}
+
+@RestController
+@RequestMapping("/api")
+public class UserController {
+
+    @PostMapping("/user")
+    @Desensitizationed
+    public UserVO getUser() {
+        UserVO user = new UserVO();
+        user.setName("张三");
+        user.setIdCard("110101199003073328");
+        user.setPhone("13812345678");
+        user.setEmail("zhangsan@example.com");
+        user.setBankCard("6222020200099998888");
+        return user;
+    }
+}
+```
+
+**返回结果：**
+
+```json
+{
+  "name": "张*",
+  "idCard": "110***********3328",
+  "phone": "138****5678",
+  "email": "zhan****@example.com",
+  "bankCard": "6222 **** **** 8888"
+}
+```
+
+### 2. List 类型脱敏
+
+```java
+@Data
+public class ProductVO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private Long id;
+
+    @Masked(type = MaskType.ALL_MASK)
+    private String productCode;
+
+    @Masked(type = MaskType.ADDRESS_MASK)
+    private String warehouseLocation;
+}
+
+@RestController
+@RequestMapping("/api")
+public class ProductController {
+
+    @PostMapping("/products")
+    @Desensitizationed
+    public List<ProductVO> getProducts() {
+        List<ProductVO> products = new ArrayList<>();
+
+        ProductVO product1 = new ProductVO();
+        product1.setId(1L);
+        product1.setProductCode("PRD202401001");
+        product1.setWarehouseLocation("上海市浦东新区张江高科技园区");
+        products.add(product1);
+
+        ProductVO product2 = new ProductVO();
+        product2.setId(2L);
+        product2.setProductCode("PRD202401002");
+        product2.setWarehouseLocation("北京市朝阳区建国路88号");
+        products.add(product2);
+
+        return products;
+    }
+}
+```
+
+**返回结果：**
+
+```json
+[
+  {
+    "id": 1,
+    "productCode": "***********",
+    "warehouseLocation": "上海市浦东新区**********"
+  },
+  {
+    "id": 2,
+    "productCode": "***********",
+    "warehouseLocation": "北京市朝阳区********"
+  }
+]
+```
+
+### 3. Map 类型脱敏
+
+```java
+@Data
+public class OrderVO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private String orderId;
+
+    @Masked(type = MaskType.PHONE_MASK)
+    private String customerPhone;
+
+    @Masked(type = MaskType.ADDRESS_MASK)
+    private String shippingAddress;
+}
+
+@RestController
+@RequestMapping("/api")
+public class OrderController {
+
+    @PostMapping("/orders")
+    @Desensitizationed
+    public Map<String, OrderVO> getOrders() {
+        Map<String, OrderVO> orders = new HashMap<>();
+
+        OrderVO order1 = new OrderVO();
+        order1.setOrderId("ORD202401001");
+        order1.setCustomerPhone("13912345678");
+        order1.setShippingAddress("广州市天河区珠江新城");
+        orders.put("order1", order1);
+
+        OrderVO order2 = new OrderVO();
+        order2.setOrderId("ORD202401002");
+        order2.setCustomerPhone("13612345678");
+        order2.setShippingAddress("深圳市南山区科技园");
+        orders.put("order2", order2);
+
+        return orders;
+    }
+}
+```
+
+**返回结果：**
+
+```json
+{
+  "order1": {
+    "orderId": "ORD202401001",
+    "customerPhone": "139****5678",
+    "shippingAddress": "广州市天河区****"
+  },
+  "order2": {
+    "orderId": "ORD202401002",
+    "customerPhone": "136****5678",
+    "shippingAddress": "深圳市南山区****"
+  }
+}
+```
+
+## 📦 嵌套类型示例
+
+### 1. 嵌套实体脱敏
+
+```java
+@Data
+public class UserDetailVO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Masked(type = MaskType.NAME_MASK)
+    private String name;
+
+    @NestedMasked
+    private ContactInfoVO contactInfo;
+}
+
+@Data
+public class ContactInfoVO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Masked(type = MaskType.PHONE_MASK)
+    private String phone;
+
+    @Masked(type = MaskType.EMAIL_MASK)
+    private String email;
+
+    @NestedMasked
+    private AddressVO address;
+}
+
+@Data
+public class AddressVO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Masked(type = MaskType.ADDRESS_MASK)
+    private String homeAddress;
+
+    @Masked(type = MaskType.ADDRESS_MASK)
+    private String officeAddress;
+}
+
+@RestController
+@RequestMapping("/api")
+public class UserDetailController {
+
+    @PostMapping("/user/detail")
+    @Desensitizationed
+    public UserDetailVO getUserDetail() {
+        AddressVO address = new AddressVO();
+        address.setHomeAddress("北京市朝阳区建国路88号");
+        address.setOfficeAddress("北京市海淀区中关村");
+
+        ContactInfoVO contactInfo = new ContactInfoVO();
+        contactInfo.setPhone("13812345678");
+        contactInfo.setEmail("zhangsan@example.com");
+        contactInfo.setAddress(address);
+
+        UserDetailVO userDetail = new UserDetailVO();
+        userDetail.setName("张三");
+        userDetail.setContactInfo(contactInfo);
+        return userDetail;
+    }
+}
+```
+
+**返回结果：**
+
+```json
+{
+  "name": "张*",
+  "contactInfo": {
+    "phone": "138****5678",
+    "email": "zhan****@example.com",
+    "address": {
+      "homeAddress": "北京市朝阳区********",
+      "officeAddress": "北京市海淀区****"
+    }
+  }
+}
+```
+
+## 🔐 加密解密示例
+
+### 1. MyBatis Plus 基础使用
+
+```java
+@Data
+@TableName(value ="customer")
+public class CustomerDO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+
+    @TableField(value = "name")
+    @SecurityField
+    private String name;
+
+    @TableField(value = "id_card")
+    @SecurityField
+    private String idCard;
+
+    @TableField(value = "phone")
+    @SecurityField
+    private String phone;
+
+    @TableField(value = "email")
+    @SecurityField
+    private String email;
+}
+
+@Mapper
+public interface CustomerMapper extends BaseMapper<CustomerDO> {
+    // 继承 BaseMapper 获得基本的 CRUD 方法
+}
+
+@Service
+public class CustomerService {
+
+    @Autowired
+    private CustomerMapper customerMapper;
+
+    public void saveCustomer() {
+        CustomerDO customer = new CustomerDO();
+        customer.setName("李四");
+        customer.setIdCard("110101199003073329");
+        customer.setPhone("13912345678");
+        customer.setEmail("lisi@example.com");
+
+        customerMapper.insert(customer);
+    }
+
+    public CustomerDO getCustomer(Long id) {
+        return customerMapper.selectById(id);
+    }
+}
+```
+
+**数据库存储（加密后）：**
+
+```sql
+-- 使用默认前缀和密钥的效果示例
+-- 实际加密值会因密钥不同而变化
+id | name | id_card | phone | email
+---|------|---------|-------|-------
+1 | Your_CUSTOM_PREFIX_8A7B6C5D4E3F2A1B... | Your_CUSTOM_PREFIX_9C8B7A6F5E4D3C2B... | Your_CUSTOM_PREFIX_7D6C5B4A3F2E1D0C... | Your_CUSTOM_PREFIX_6A5B4C3D2E1F0A9B...
+```
+
+**查询结果（解密后）：**
+
+```json
+{
+  "id": 1,
+  "name": "李四",
+  "idCard": "110101199003073329",
+  "phone": "13912345678",
+  "email": "lisi@example.com"
+}
+```
+
+### 2. MyBatis 自定义 SQL
+
+```java
+@Data
+@TableName(value ="employee")
+public class EmployeeDO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+
+    @TableField(value = "employee_id")
+    @SecurityField
+    private String employeeId;
+
+    @TableField(value = "full_name")
+    @SecurityField
+    private String fullName;
+
+    @TableField(value = "bank_account")
+    @SecurityField
+    private String bankAccount;
+}
+
+@Mapper
+public interface EmployeeMapper extends BaseMapper<EmployeeDO> {
+
+    List<EmployeeDO> selectByDepartment(@Param("department") String department);
+
+    int insertBatch(@Param("employees") List<EmployeeDO> employees);
+}
+```
+
+```xml
+<mapper namespace="com.example.mapper.EmployeeMapper">
+
+    <select id="selectByDepartment" resultType="com.example.entity.EmployeeDO">
+        SELECT id, employee_id, full_name, bank_account
+        FROM employee
+        WHERE department = #{department}
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO employee (employee_id, full_name, bank_account, department)
+        VALUES
+        <foreach collection="employees" item="item" separator=",">
+            (#{item.employeeId}, #{item.fullName}, #{item.bankAccount}, #{item.department})
+        </foreach>
+    </insert>
+</mapper>
+```
+
+## 🎭 综合场景示例
+
+### 1. 电商订单管理
+
+```java
+@Data
+@TableName(value ="orders")
+public class OrderDO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+
+    @TableField(value = "order_no")
+    private String orderNo;
+
+    @TableField(value = "customer_name")
+    @SecurityField
+    private String customerName;
+
+    @TableField(value = "customer_phone")
+    @SecurityField
+    private String customerPhone;
+
+    @TableField(value = "shipping_address")
+    @SecurityField
+    private String shippingAddress;
+
+    @TableField(value = "total_amount")
+    private BigDecimal totalAmount;
+
+    @TableField(value = "status")
+    private Integer status;
+}
+
+@Data
+public class OrderVO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private Long id;
+    private String orderNo;
+
+    @Masked(type = MaskType.NAME_MASK)
+    private String customerName;
+
+    @Masked(type = MaskType.PHONE_MASK)
+    private String customerPhone;
+
+    @Masked(type = MaskType.ADDRESS_MASK)
+    private String shippingAddress;
+
+    private BigDecimal totalAmount;
+    private String status;
+}
+
+@RestController
+@RequestMapping("/api/orders")
+public class OrderController {
+
+    @Autowired
+    private OrderService orderService;
+
+    @PostMapping("/save")
+    public void saveOrder(@RequestBody OrderDO order) {
+        orderService.saveOrder(order);
+    }
+
+    @GetMapping("/{id}")
+    @Desensitizationed
+    public OrderVO getOrder(@PathVariable Long id) {
+        OrderDO orderDO = orderService.getOrder(id);
+        return convertToVO(orderDO);
+    }
+
+    @GetMapping("/list")
+    @Desensitizationed
+    public List<OrderVO> getOrders() {
+        List<OrderDO> orders = orderService.getOrders();
+        return orders.stream().map(this::convertToVO).collect(Collectors.toList());
+    }
+
+    private OrderVO convertToVO(OrderDO orderDO) {
+        OrderVO orderVO = new OrderVO();
+        orderVO.setId(orderDO.getId());
+        orderVO.setOrderNo(orderDO.getOrderNo());
+        orderVO.setCustomerName(orderDO.getCustomerName());
+        orderVO.setCustomerPhone(orderDO.getCustomerPhone());
+        orderVO.setShippingAddress(orderDO.getShippingAddress());
+        orderVO.setTotalAmount(orderDO.getTotalAmount());
+
+        // 状态转换
+        String statusText;
+        switch (orderDO.getStatus()) {
+            case 0:
+                statusText = "待支付";
+                break;
+            case 1:
+                statusText = "已支付";
+                break;
+            case 2:
+                statusText = "已发货";
+                break;
+            case 3:
+                statusText = "已收货";
+                break;
+            default:
+                statusText = "未知";
+        }
+        orderVO.setStatus(statusText);
+        return orderVO;
+    }
+}
+```
+
+**返回结果：**
+
+```json
+{
+  "id": 1,
+  "orderNo": "ORD202401001",
+  "customerName": "李*",
+  "customerPhone": "139****5678",
+  "shippingAddress": "上海市浦东新区****",
+  "totalAmount": 299.00,
+  "status": "已发货"
+}
+```
+
+### 2. 用户管理系统
+
+```java
+@Data
+@TableName(value ="users")
+public class UserDO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+
+    @TableField(value = "username")
+    private String username;
+
+    @TableField(value = "password")
+    @SecurityField
+    private String password;
+
+    @TableField(value = "email")
+    @SecurityField
+    private String email;
+
+    @TableField(value = "phone")
+    @SecurityField
+    private String phone;
+
+    @TableField(value = "id_card")
+    @SecurityField
+    private String idCard;
+
+    @TableField(value = "create_time")
+    private LocalDateTime createTime;
+}
+
+@Data
+public class UserProfileVO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private Long id;
+    private String username;
+
+    @Masked(type = MaskType.EMAIL_MASK)
+    private String email;
+
+    @Masked(type = MaskType.PHONE_MASK)
+    private String phone;
+
+    @Masked(type = MaskType.IDCARD_MASK)
+    private String idCard;
+
+    private String createTime;
+}
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/register")
+    public void register(@RequestBody UserDO user) {
+        user.setCreateTime(LocalDateTime.now());
+        userService.saveUser(user);
+    }
+
+    @GetMapping("/profile/{id}")
+    @Desensitizationed
+    public UserProfileVO getProfile(@PathVariable Long id) {
+        UserDO userDO = userService.getUser(id);
+        UserProfileVO vo = new UserProfileVO();
+        vo.setId(userDO.getId());
+        vo.setUsername(userDO.getUsername());
+        vo.setEmail(userDO.getEmail());
+        vo.setPhone(userDO.getPhone());
+        vo.setIdCard(userDO.getIdCard());
+        vo.setCreateTime(userDO.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        return vo;
+    }
+}
+```
+
+**返回结果：**
+
+```json
+{
+  "id": 2,
+  "username": "john_doe",
+  "email": "joh****@example.com",
+  "phone": "136****5678",
+  "idCard": "110***********3329",
+  "createTime": "2024-01-15"
+}
+```
+
+## ⚡ 高级用法示例
+
+### 1. 自定义切点表达式
+
+```yaml
+rpamis:
+  security:
+    desensitization-enable: true
+    # 自定义切点：所有标注了 @RestController 的类中的所有方法
+    custom-pointcut: '@within(org.springframework.web.bind.annotation.RestController)'
+```
+
+**说明：** 通过自定义切点表达式，可以实现更细粒度的脱敏控制。
+
+### 2. 自定义加密密钥
+
+```yaml
+rpamis:
+  security:
+    algorithm:
+      active: sm4
+      sm4:
+        # 自定义密钥（16位）
+        key: YourCustomSecretKey1
+        # 自定义前缀
+        prefix: MY_SECURE_
+```
+
+**说明：** 密钥是加密解密的核心，请确保密钥的安全性。
+
+### 3. 自定义脱敏规则
+
+```java
+// 创建自定义脱敏函数
+public class CustomMaskFunction implements MaskFunction {
+    @Override
+    public String mask(String value) {
+        // 将敏感字段中的数字替换为星号
+        return value.replaceAll("[0-9]", "*");
+    }
+}
+
+// 使用自定义脱敏
+@Data
+public class CardVO implements Serializable {
+    @Masked(type = MaskType.CUSTOM_MASK, start = 0, end = value.length(), symbol = "#")
+    private String cardNumber;
+}
+```
+
+### 4. 集成其他安全框架
+
+```java
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+}
+```
+
+## 🚀 性能优化示例
+
+### 1. 批量操作优化
+
+```java
+@Service
+public class BatchService {
+
+    @Autowired
+    private BatchMapper batchMapper;
+
+    @Transactional
+    public void batchInsert(List<DataDO> dataList) {
+        // 使用 MyBatis 的 foreach 批量插入
+        batchMapper.batchInsert(dataList);
+    }
+}
+
+@Mapper
+public interface BatchMapper {
+    void batchInsert(@Param("list") List<DataDO> dataList);
+}
+```
+
+```xml
+<mapper namespace="com.example.mapper.BatchMapper">
+    <insert id="batchInsert">
+        INSERT INTO data_table (field1, field2, field3)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.field1}, #{item.field2}, #{item.field3})
+        </foreach>
+    </insert>
+</mapper>
+```
+
+### 2. 查询优化
+
+```java
+@Service
+public class QueryService {
+
+    @Autowired
+    private QueryMapper queryMapper;
+
+    public List<DataVO> queryByCondition(String keyword) {
+        List<DataDO> dataList = queryMapper.selectByKeyword(keyword);
+        return dataList.stream()
+                .map(this::convertToVO)
+                .collect(Collectors.toList());
+    }
+}
+```
+
+**说明：** 加解密操作会带来一定的性能开销，建议合理使用。
