@@ -78,8 +78,8 @@ const faqs = [
     title: '📦 它支持哪些JDK版本？',
     content: (
       <p>
-        对于 <strong>JDK 17+</strong> 使用版本 <code>1.1.1</code>，
-        对于 <strong>JDK 8-JDK 17</strong> 使用版本 <code>1.0.4</code>。
+        对于 <strong>JDK 17+</strong> 使用版本 <code>1.1.2</code>，
+        对于 <strong>JDK 8-JDK 17</strong> 使用版本 <code>1.0.5</code>。
       </p>
     ),
   },
@@ -273,7 +273,7 @@ export default function HomePage() {
           <div className="flex justify-center gap-4 mb-10">
             <span className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-full text-sm font-medium bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
               <Star className="size-4 inline-block mr-1 fill-yellow-400 text-yellow-400" />
-              v1.1.1
+              v1.1.2
             </span>
             <span className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-full text-sm font-medium bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
               <CheckCircle2 className="size-4 inline-block mr-1 text-green-500" />
@@ -358,7 +358,7 @@ export default function HomePage() {
 
           <Callout type="info" title="💡 版本说明">
             <p>
-              请根据您的 JDK 版本选择合适的组件版本。JDK 17+ 请使用 1.1.1 版本，JDK 8-17 请使用 1.0.4 版本。
+              请根据您的 JDK 版本选择合适的组件版本。JDK 17+ 请使用 1.1.2 版本，JDK 8-17 请使用 1.0.5 版本。
             </p>
           </Callout>
 
@@ -380,7 +380,7 @@ export default function HomePage() {
 {`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>`}
                       </code>
                     </pre>
@@ -394,7 +394,7 @@ export default function HomePage() {
 {`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 </dependency>`}
                       </code>
                     </pre>
@@ -410,7 +410,7 @@ export default function HomePage() {
                     </h4>
                     <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
                       <code className="text-gray-800 dark:text-gray-200">
-{`implementation 'com.rpamis:rpamis-security-spring-boot-starter:1.1.1'`}
+{`implementation 'com.rpamis:rpamis-security-spring-boot-starter:1.1.2'`}
                       </code>
                     </pre>
                   </div>
@@ -420,7 +420,7 @@ export default function HomePage() {
                     </h4>
                     <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
                       <code className="text-gray-800 dark:text-gray-200">
-{`implementation 'com.rpamis:rpamis-security-spring-boot-starter:1.0.4'`}
+{`implementation 'com.rpamis:rpamis-security-spring-boot-starter:1.0.5'`}
                       </code>
                     </pre>
                   </div>
