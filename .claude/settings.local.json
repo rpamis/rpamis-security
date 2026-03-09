@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(npm run build)",
-      "Bash(npm run dev -- --port 3000)"
+      "Bash(npm run dev -- --port 3000)",
+      "Bash(pnpm dlx eslint src/components/graph-view.tsx --rule \"no-unused-vars: warn\" --rule \"no-unused-imports: warn\")",
+      "Bash(npx tsc --noEmit --skipLibCheck false)",
+      "Bash(pnpm build)"
     ]
   }
 }
