@@ -19,22 +19,41 @@ export function LLMCopyButton({
   const [isLoading, setLoading] = useState(false);
   const [checked, onClick] = useCopyButton(async () => {
     const cached = cache.get(markdownUrl);
-    if (cached) return navigator.clipboard.writeText(cached);
+    if (cached) {
+      return navigator.clipboard.writeText(cached);
+    }
 
     setLoading(true);
 
     try {
+      // 1. 发送请求获取 Markdown 内容
+      const response = await fetch(markdownUrl);
+
+      // 2. 检查响应状态是否成功
+      if (!response.ok) {
+        throw new Error(`Failed to fetch markdown content: ${response.status} ${response.statusText}`);
+      }
+
+      // 3. 读取响应内容
+      const content = await response.text();
+
+      // 4. 缓存内容以避免重复请求
+      cache.set(markdownUrl, content);
+
+      // 5. 复制到剪贴板
       await navigator.clipboard.write([
         new ClipboardItem({
-          'text/plain': fetch(markdownUrl).then(async (res) => {
-            const content = await res.text();
-            cache.set(markdownUrl, content);
-
-            return content;
-          }),
+          'text/plain': new Blob([content], { type: 'text/plain' }),
         }),
       ]);
+    } catch (error) {
+      // 6. 错误处理和日志记录
+      console.error('Error copying markdown content:', error);
+
+      // 可选：添加用户可见的错误反馈（这里保持原样以符合要求）
+      // 可以使用 toast 或 alert 显示错误信息
     } finally {
+      // 7. 确保在任何情况下都停止加载状态
       setLoading(false);
     }
   });

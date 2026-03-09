@@ -6,7 +6,8 @@ import { Callout } from '@/components/callout';
 import { Accordions, Accordion } from '@/components/accordion';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/tabs';
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
-import { useEffect, useRef } from 'react';
+import { HeroCanvas } from '@/components/hero-canvas';
+import { CopyButton } from '@/components/copy-button';
 import {
   Shield,
   Lock,
@@ -107,149 +108,10 @@ const faqs = [
 
 
 export default function HomePage() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // 设置画布尺寸
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    // 球形点阵系统 - 优化性能版本
-    const gridSize = 8; // 增大网格，减少粒子数量
-    const dots: {
-      x: number;
-      y: number;
-      size: number;
-      opacity: number;
-      phase: number;
-      speed: number;
-    }[] = [];
-
-    // 初始化球形点阵
-    const centerX = canvas.width * 0.75;
-    const centerY = canvas.height * 0.35;
-    const maxRadius = 280;
-
-    for (let x = centerX - maxRadius; x < centerX + maxRadius; x += gridSize) {
-      for (let y = centerY - maxRadius; y < centerY + maxRadius; y += gridSize) {
-        const dx = x - centerX;
-        const dy = y - centerY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        // 只在球形区域内创建点
-        if (distance < maxRadius) {
-          // 计算球形效果的大小和不透明度
-          const normalizedDistance = distance / maxRadius;
-          const falloff = 1 - normalizedDistance;
-          const sizeFalloff = Math.pow(falloff, 0.5);
-
-          dots.push({
-            x: x,
-            y: y,
-            size: (Math.random() * 2.5 + 1) * sizeFalloff, // 稍微增大点的尺寸
-            opacity: Math.random() * 0.8 + 0.2, // 提高基础不透明度
-            phase: Math.random() * Math.PI * 2,
-            speed: Math.random() * 0.0012 + 0.0003, // 稍微降低速度
-          });
-        }
-      }
-    }
-
-    // 绘制球形点阵（移除轨迹以提升性能）
-    const drawDots = (time: number) => {
-      dots.forEach((dot) => {
-        // 波动效果（让点有微小的运动）
-        const waveX = Math.sin(time * dot.speed + dot.phase) * 2;
-        const waveY = Math.cos(time * dot.speed * 1.3 + dot.phase) * 1.5;
-        const px = dot.x + waveX;
-        const py = dot.y + waveY;
-
-        // 呼吸效果
-        const breathe = 0.85 + Math.sin(time * dot.speed + dot.phase) * 0.15;
-        const size = dot.size * breathe;
-
-        // 不透明度波动
-        const opacityWave = 0.6 + Math.sin(time * dot.speed * 1.2 + dot.phase) * 0.4;
-        const finalOpacity = dot.opacity * opacityWave;
-
-        // 暖色调 - 中心更亮
-        const hue = 30;
-        const saturation = 85 + Math.sin(time * 0.0001 + dot.phase) * 10;
-
-        ctx.beginPath();
-        ctx.arc(px, py, size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${hue}, ${saturation}%, 55%, ${finalOpacity})`;
-        ctx.fill();
-      });
-    };
-
-    // 绘制中心光晕（球形）
-    const drawGlow = (time: number) => {
-      const pulse = 0.7 + Math.sin(time * 0.0005) * 0.3;
-
-      const gradient = ctx.createRadialGradient(
-        centerX, centerY, 0,
-        centerX, centerY, 400
-      );
-      gradient.addColorStop(0, `rgba(249, 115, 22, ${0.25 * pulse})`);
-      gradient.addColorStop(0.3, `rgba(251, 146, 60, ${0.15 * pulse})`);
-      gradient.addColorStop(0.6, `rgba(253, 224, 71, ${0.08 * pulse})`);
-      gradient.addColorStop(1, 'rgba(251, 146, 60, 0)');
-
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    };
-
-    // 动画循环
-    let startTime = Date.now();
-    let lastTime = startTime;
-    const animate = () => {
-      const time = Date.now() - startTime;
-
-      // 性能优化：使用 requestAnimationFrame 的原生时间戳
-      const deltaTime = Date.now() - lastTime;
-      lastTime = Date.now();
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // 绘制渐变背景
-      const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      bgGradient.addColorStop(0, 'rgba(249, 115, 22, 0.03)');
-      bgGradient.addColorStop(0.5, 'rgba(251, 146, 60, 0.02)');
-      bgGradient.addColorStop(1, 'rgba(253, 224, 71, 0.01)');
-      ctx.fillStyle = bgGradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // 绘制中心光晕
-      drawGlow(time);
-
-      // 绘制球形点阵
-      drawDots(time);
-
-      requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => {
-      window.removeEventListener('resize', resizeCanvas);
-    };
-  }, []);
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900 relative overflow-hidden">
       {/* Canvas 粒子背景 */}
-      <canvas ref={canvasRef} className="absolute inset-0 z-0" />
+      <HeroCanvas />
 
       {/* 渐变光晕效果 */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -397,31 +259,11 @@ export default function HomePage() {
     <version>1.1.2</version>
 </dependency>`}</code>
                     </pre>
-                    <button
-                      onClick={(event) => {
-                        navigator.clipboard.writeText(`<dependency>
+                    <CopyButton code={`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
     <version>1.1.2</version>
-</dependency>`);
-                        // 改变按钮图标为已复制状态
-                        const button = event.currentTarget;
-                        button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-                        button.title = '已复制';
-                        // 2秒后恢复
-                        setTimeout(() => {
-                          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
-                          button.title = '复制代码';
-                        }, 2000);
-                      }}
-                      className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-gray-800/80 rounded-md hover:bg-white dark:hover:bg-gray-700 transition-colors flex items-center justify-center"
-                      title="复制代码"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                      </svg>
-                    </button>
+</dependency>`} />
                   </div>
                 </div>
                 <div>
@@ -436,31 +278,11 @@ export default function HomePage() {
     <version>1.0.5</version>
 </dependency>`}</code>
                     </pre>
-                    <button
-                      onClick={(event) => {
-                        navigator.clipboard.writeText(`<dependency>
+                    <CopyButton code={`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
     <version>1.0.5</version>
-</dependency>`);
-                        // 改变按钮图标为已复制状态
-                        const button = event.currentTarget;
-                        button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-                        button.title = '已复制';
-                        // 2秒后恢复
-                        setTimeout(() => {
-                          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
-                          button.title = '复制代码';
-                        }, 2000);
-                      }}
-                      className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-gray-800/80 rounded-md hover:bg-white dark:hover:bg-gray-700 transition-colors flex items-center justify-center"
-                      title="复制代码"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                      </svg>
-                    </button>
+</dependency>`} />
                   </div>
                 </div>
               </div>

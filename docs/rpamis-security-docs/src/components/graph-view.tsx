@@ -60,6 +60,27 @@ function ClientOnly({
     y: number;
     content: string;
   } | null>(null);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
+
+  // 优化：添加 ResizeObserver 清理逻辑
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container) {
+      resizeObserverRef.current = new ResizeObserver(() => {
+        // 可以在这里添加响应容器大小变化的逻辑
+        // 目前保持空实现，确保 observer 被正确创建和清理
+      });
+      resizeObserverRef.current.observe(container);
+    }
+
+    // 组件卸载时清理 ResizeObserver
+    return () => {
+      if (resizeObserverRef.current) {
+        resizeObserverRef.current.disconnect();
+        resizeObserverRef.current = null;
+      }
+    };
+  }, [containerRef]);
 
   const handleNodeHover = (node: Node | null) => {
     const graph = graphRef.current;
@@ -67,12 +88,24 @@ function ClientOnly({
     hoveredRef.current = node;
 
     if (node) {
-      const coords = graph.graph2ScreenCoords(node.x!, node.y!);
-      setTooltip({
-        x: coords.x + 4,
-        y: coords.y + 4,
-        content: node.description ?? 'No description',
-      });
+      // 优化：为 node.x 和 node.y 添加类型安全检查，替代非空断言
+      if (node.x == null || node.y == null) {
+        console.warn('Node coordinates are missing', node);
+        setTooltip(null);
+        return;
+      }
+
+      try {
+        const coords = graph.graph2ScreenCoords(node.x, node.y);
+        setTooltip({
+          x: coords.x + 4,
+          y: coords.y + 4,
+          content: node.description ?? 'No description',
+        });
+      } catch (error) {
+        console.error('Failed to convert node coordinates to screen coords', error);
+        setTooltip(null);
+      }
     } else {
       setTooltip(null);
     }
@@ -86,24 +119,34 @@ function ClientOnly({
     const fontSize = 14;
     const radius = 5;
 
-    // Draw circle
-    ctx.beginPath();
-    ctx.arc(node.x!, node.y!, radius, 0, 2 * Math.PI, false);
+    // 优化：添加节点坐标有效性检查
+    if (node.x == null || node.y == null) {
+      console.warn('Node rendering skipped due to missing coordinates', node);
+      return;
+    }
 
-    const hoverNode = hoveredRef.current;
-    const isActive = hoverNode?.id === node.id || hoverNode?.neighbors?.includes(node.id as string);
+    try {
+      // Draw circle
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI, false);
 
-    ctx.fillStyle = isActive
-      ? style.getPropertyValue('--color-fd-primary')
-      : style.getPropertyValue('--color-purple-300');
-    ctx.fill();
+      const hoverNode = hoveredRef.current;
+      const isActive = hoverNode?.id === node.id || hoverNode?.neighbors?.includes(node.id as string);
 
-    // Draw text below the node
-    ctx.font = `${fontSize}px Sans-Serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = getComputedStyle(container).getPropertyValue('color');
-    ctx.fillText(node.text, node.x!, node.y! + radius + fontSize);
+      ctx.fillStyle = isActive
+        ? style.getPropertyValue('--color-fd-primary')
+        : style.getPropertyValue('--color-purple-300');
+      ctx.fill();
+
+      // Draw text below the node
+      ctx.font = `${fontSize}px Sans-Serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = getComputedStyle(container).getPropertyValue('color');
+      ctx.fillText(node.text, node.x, node.y + radius + fontSize);
+    } catch (error) {
+      console.error('Node rendering failed', error);
+    }
   };
 
   const linkColor = (link: Link) => {
@@ -126,19 +169,30 @@ function ClientOnly({
 
   // Enrich nodes with neighbors for hover effects
   const enrichedNodes = useMemo(() => {
-    const { nodes, links } = structuredClone(graph);
-    for (const node of nodes) {
-      node.neighbors = links.flatMap((link) => {
-        if (link.source === node.id) return link.target as string;
-        if (link.target === node.id) return link.source as string;
-        return [];
-      });
+    // 优化：添加对输入数据的有效性检查
+    if (!graph || !Array.isArray(graph.nodes) || !Array.isArray(graph.links)) {
+      console.warn('Invalid graph data structure');
+      return { nodes: [], links: [] };
     }
 
-    return {
-      nodes,
-      links,
-    };
+    try {
+      const { nodes, links } = structuredClone(graph);
+      for (const node of nodes) {
+        node.neighbors = links.flatMap((link) => {
+          if (link.source === node.id) return link.target as string;
+          if (link.target === node.id) return link.source as string;
+          return [];
+        });
+      }
+
+      return {
+        nodes,
+        links,
+      };
+    } catch (error) {
+      console.error('Failed to process graph data', error);
+      return { nodes: [], links: [] };
+    }
   }, [graph]);
 
   return (
@@ -151,9 +205,14 @@ function ClientOnly({
           set current(fg) {
             graphRef.current = fg;
             if (fg) {
-              fg.d3Force('link', forceLink().distance(200));
-              fg.d3Force('charge', forceManyBody().strength(10));
-              fg.d3Force('collision', forceCollide(60));
+              // 优化：确保 d3-force 初始化的安全性
+              try {
+                fg.d3Force('link', forceLink().distance(200));
+                fg.d3Force('charge', forceManyBody().strength(10));
+                fg.d3Force('collision', forceCollide(60));
+              } catch (error) {
+                console.error('Failed to initialize d3-force simulation', error);
+              }
             }
           },
         }}
@@ -162,7 +221,11 @@ function ClientOnly({
         linkColor={linkColor}
         onNodeHover={handleNodeHover}
         onNodeClick={(node) => {
-          router.push(node.url);
+          try {
+            router.push(node.url);
+          } catch (error) {
+            console.error('Failed to navigate to node URL', error);
+          }
         }}
         linkWidth={2}
         enableNodeDrag
