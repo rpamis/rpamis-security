@@ -9,7 +9,6 @@ import {
   type ReactNode,
   Suspense,
   use,
-  useDeferredValue,
 } from 'react';
 import { Fragment, jsx, jsxs } from 'react/jsx-runtime';
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
@@ -97,11 +96,9 @@ function Pre(props: ComponentProps<'pre'>) {
 const processor = createProcessor();
 
 export function Markdown({ text }: { text: string }) {
-  const deferredText = useDeferredValue(text);
-
   return (
     <Suspense fallback={<p className="invisible">{text}</p>}>
-      <Renderer text={deferredText} />
+      <Renderer text={text} />
     </Suspense>
   );
 }
