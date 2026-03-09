@@ -6,7 +6,7 @@ import { Callout } from '@/components/callout';
 import { Accordions, Accordion } from '@/components/accordion';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/tabs';
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   Shield,
   Lock,

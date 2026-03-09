@@ -1,5 +1,6 @@
 'use client';
-import { lazy, type RefObject, useEffect, useMemo, useRef, useState } from 'react';
+import { type RefObject, useEffect, useMemo, useRef, useState } from 'react';
+import ForceGraph2D from 'react-force-graph-2d';
 import type {
   ForceGraphMethods,
   ForceGraphProps,
@@ -29,10 +30,6 @@ export type LinkType = Record<string, unknown>;
 export interface GraphViewProps {
   graph: Graph;
 }
-
-const ForceGraph2D = lazy(
-  () => import('react-force-graph-2d'),
-) as typeof import('react-force-graph-2d').default;
 
 export function GraphView(props: GraphViewProps) {
   const ref = useRef<HTMLDivElement>(null);
