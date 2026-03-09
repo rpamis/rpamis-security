@@ -5,7 +5,8 @@ import { Cards, Card } from '@/components/card';
 import { Callout } from '@/components/callout';
 import { Accordions, Accordion } from '@/components/accordion';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/tabs';
-import { useEffect, useRef } from 'react';
+import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
+import { useEffect, useRef, useState } from 'react';
 import {
   Shield,
   Lock,
@@ -102,6 +103,8 @@ const faqs = [
     ),
   },
 ];
+
+
 
 export default function HomePage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -251,26 +254,26 @@ export default function HomePage() {
       {/* 渐变光晕效果 */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl opacity-20 animate-pulse"></div>
-        <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-purple-500 rounded-full blur-3xl opacity-20 animate-pulse" style={{animationDelay: '1s'}}></div>
-        <div className="absolute bottom-1/4 left-1/2 w-72 h-72 bg-cyan-400 rounded-full blur-3xl opacity-20 animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-purple-500 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute bottom-1/4 left-1/2 w-72 h-72 bg-cyan-400 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
 
-      <div className="container mx-auto px-4 py-12 relative z-10">
+      <div className="container mx-auto px-4 py-16 relative z-10">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium mb-6 backdrop-blur-sm">
+        <div className="text-center mb-20">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium mb-8 backdrop-blur-sm">
             <Zap className="size-4" />
             <span>企业级数据安全组件</span>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
             Rpamis-Security
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
             一个基于 MyBatis 插件开发的企业级数据安全组件，
             提供<strong className="text-gray-900 dark:text-white">注解式数据脱敏</strong>和
             <strong className="text-gray-900 dark:text-white">数据库自动加解密</strong>功能
           </p>
-          <div className="flex justify-center gap-4 mb-10">
+          <div className="flex justify-center gap-4 mb-12 flex-wrap">
             <span className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-full text-sm font-medium bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
               <Star className="size-4 inline-block mr-1 fill-yellow-400 text-yellow-400" />
               v1.1.2
@@ -279,11 +282,15 @@ export default function HomePage() {
               <CheckCircle2 className="size-4 inline-block mr-1 text-green-500" />
               82% 单测覆盖率
             </span>
+            <span className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-full text-sm font-medium bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
+              <CheckCircle2 className="size-4 inline-block mr-1 text-blue-500" />
+              78+生产级单测场景
+            </span>
           </div>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-6">
             <Link
               href="/docs/quick-start"
-              className="inline-flex items-center px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors font-medium transform hover:-translate-y-0.5"
+              className="inline-flex items-center px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors font-medium transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl"
             >
               快速开始
               <ArrowRight className="size-4 ml-2" />
@@ -292,7 +299,7 @@ export default function HomePage() {
               href="https://github.com/rpamis/rpamis-security"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors transform hover:-translate-y-0.5"
+              className="inline-flex items-center px-8 py-4 border border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors transform hover:-translate-y-0.5 shadow-md hover:shadow-lg"
             >
               <Github className="size-4 mr-2" />
               GitHub
@@ -301,14 +308,16 @@ export default function HomePage() {
         </div>
 
         {/* Features Section */}
-        <div className="mb-20">
-          <h2 className="text-2xl md:text-4xl font-bold text-center mb-4 text-gray-900 dark:text-white">
-            核心特性 ✨
-          </h2>
-          <p className="text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">
-            开箱即用的企业级数据安全解决方案，让您专注于业务开发
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="mb-24">
+          <div className="text-center mb-16">
+            <h2 className="text-2xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
+              核心特性 ✨
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              开箱即用的企业级数据安全解决方案，让您专注于业务开发
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => {
               // 彩色渐变方案
               const gradients = [
@@ -327,14 +336,14 @@ export default function HomePage() {
               return (
                 <div
                   key={index}
-                  className="group relative bg-white/60 dark:bg-gray-800/60 backdrop-blur-lg rounded-xl border border-gray-200 dark:border-gray-700 p-5 transition-all duration-300 hover:border-transparent"
+                  className="group relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-xl border border-gray-200 dark:border-gray-700 p-6 transition-all duration-300 hover:shadow-xl"
                 >
-                  <div className={`absolute inset-0 rounded-xl ${gradient} opacity-0 group-hover:opacity-10 transition-opacity`}></div>
+                  <div className={`absolute inset-0 rounded-xl ${gradient} opacity-0 group-hover:opacity-10 transition-all duration-300`}></div>
                   <div className="relative">
-                    <div className={`flex items-center justify-center w-10 h-10 rounded-lg ${gradient} text-white mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    <div className={`flex items-center justify-center w-12 h-12 rounded-lg ${gradient} text-white mb-5 group-hover:scale-110 transition-transform duration-300`}>
                       {feature.icon}
                     </div>
-                    <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                       {feature.title}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
@@ -347,107 +356,320 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Installation Section */}
-        <div className="mb-20">
-          <h2 className="text-2xl md:text-4xl font-bold text-center mb-4 text-gray-900 dark:text-white">
-            快速安装 🚀
-          </h2>
-          <p className="text-center text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
-            只需几个简单步骤，即可将 Rpamis-Security 集成到您的项目中
-          </p>
-
-          <Callout type="info" title="💡 版本说明">
-            <p>
-              请根据您的 JDK 版本选择合适的组件版本。JDK 17+ 请使用 1.1.2 版本，JDK 8-17 请使用 1.0.5 版本。
+        {/* Quick Start & Features Section */}
+        <div className="mb-24">
+          <div className="text-center mb-16">
+            <h2 className="text-2xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
+              快速接入 🚀
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              只需几个简单步骤，即可将 Rpamis-Security 集成到您的项目中
             </p>
-          </Callout>
+          </div>
 
-          <div className="max-w-4xl mx-auto mt-8">
-            <Tabs defaultValue="maven" className="rounded-xl border bg-white dark:bg-gray-800 overflow-hidden">
-              <TabsList className="border-b bg-gray-50 dark:bg-gray-900">
-                <TabsTrigger value="maven">Maven</TabsTrigger>
-                <TabsTrigger value="gradle">Gradle</TabsTrigger>
-              </TabsList>
-              <TabsContent value="maven" className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Maven 依赖</h3>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      ☕ JDK 17 及以上
-                    </h4>
-                    <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
-                      <code className="text-gray-800 dark:text-gray-200">
-{`<dependency>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Quick Installation Card */}
+            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-gray-700 p-8 shadow-md transition-all duration-300 hover:shadow-lg">
+              <h3 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">快速安装</h3>
+
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-5 h-5 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 dark:text-blue-400 text-xs">💡</span>
+                  </div>
+                  <h4 className="text-sm font-medium text-blue-700 dark:text-blue-300">版本说明</h4>
+                </div>
+                <p className="text-sm text-blue-600 dark:text-blue-400">
+                  请根据您的 JDK 版本选择合适的组件版本。JDK 17+ 请使用 1.1.2 版本，JDK 8-17 请使用 1.0.5 版本。
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    ☕ JDK 17 及以上
+                  </h4>
+                  <div className="relative bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto">
+                    <pre className="font-mono text-sm whitespace-pre">
+                      <code className="text-gray-800 dark:text-gray-200">{`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
     <version>1.1.2</version>
-</dependency>`}
-                      </code>
+</dependency>`}</code>
                     </pre>
+                    <button
+                      onClick={(event) => {
+                        navigator.clipboard.writeText(`<dependency>
+    <groupId>com.rpamis</groupId>
+    <artifactId>rpamis-security-spring-boot-starter</artifactId>
+    <version>1.1.2</version>
+</dependency>`);
+                        // 改变按钮图标为已复制状态
+                        const button = event.currentTarget;
+                        button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                        button.title = '已复制';
+                        // 2秒后恢复
+                        setTimeout(() => {
+                          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+                          button.title = '复制代码';
+                        }, 2000);
+                      }}
+                      className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-gray-800/80 rounded-md hover:bg-white dark:hover:bg-gray-700 transition-colors flex items-center justify-center"
+                      title="复制代码"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                    </button>
                   </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      📦 JDK 8-JDK 17
-                    </h4>
-                    <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
-                      <code className="text-gray-800 dark:text-gray-200">
-{`<dependency>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    📦 JDK 8-JDK 17
+                  </h4>
+                  <div className="relative bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto">
+                    <pre className="font-mono text-sm whitespace-pre">
+                      <code className="text-gray-800 dark:text-gray-200">{`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
     <version>1.0.5</version>
-</dependency>`}
-                      </code>
+</dependency>`}</code>
+                    </pre>
+                    <button
+                      onClick={(event) => {
+                        navigator.clipboard.writeText(`<dependency>
+    <groupId>com.rpamis</groupId>
+    <artifactId>rpamis-security-spring-boot-starter</artifactId>
+    <version>1.0.5</version>
+</dependency>`);
+                        // 改变按钮图标为已复制状态
+                        const button = event.currentTarget;
+                        button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                        button.title = '已复制';
+                        // 2秒后恢复
+                        setTimeout(() => {
+                          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+                          button.title = '复制代码';
+                        }, 2000);
+                      }}
+                      className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-gray-800/80 rounded-md hover:bg-white dark:hover:bg-gray-700 transition-colors flex items-center justify-center"
+                      title="复制代码"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Annotations Usage Card */}
+            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-gray-700 p-8 shadow-md transition-all duration-300 hover:shadow-lg">
+              <h3 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">注解使用</h3>
+
+              <div className="space-y-6">
+                {/* 加解密注解示例 */}
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    🔒 加解密注解
+                  </h4>
+                  <div className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto">
+                    <pre className="font-mono text-sm whitespace-pre">
+                      <code className="text-gray-800 dark:text-gray-200">{`public class User {
+    private Long id;
+
+    private String username;
+    
+    `}<span className="relative inline-block px-2 py-0.5 rounded-md transition-all duration-200 hover:shadow-md">
+                          <span className="absolute inset-0 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/40 dark:to-purple-900/40 rounded-md transition-all duration-200 hover:from-blue-200 hover:to-purple-200 dark:hover:from-blue-800/50 dark:hover:to-purple-800/50"></span>
+                          <span className="relative bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-purple-700 dark:from-blue-300 dark:to-purple-300 font-medium transition-all duration-200 hover:from-blue-800 hover:to-purple-800 dark:hover:from-blue-200 dark:hover:to-purple-200">@SecurityField</span>
+                        </span>{`
+    private String password;
+}`}</code>
                     </pre>
                   </div>
                 </div>
-              </TabsContent>
-              <TabsContent value="gradle" className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Gradle 依赖</h3>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      ☕ JDK 17 及以上
-                    </h4>
-                    <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
-                      <code className="text-gray-800 dark:text-gray-200">
-{`implementation 'com.rpamis:rpamis-security-spring-boot-starter:1.1.2'`}
-                      </code>
-                    </pre>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      📦 JDK 8-JDK 17
-                    </h4>
-                    <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
-                      <code className="text-gray-800 dark:text-gray-200">
-{`implementation 'com.rpamis:rpamis-security-spring-boot-starter:1.0.5'`}
-                      </code>
+
+                {/* 脱敏注解示例 */}
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    🎭 脱敏注解
+                  </h4>
+                  <div className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto">
+                    <pre className="font-mono text-sm whitespace-pre">
+                      <code className="text-gray-800 dark:text-gray-200">{`public class User {
+    private Long id;
+
+    private String username;
+    
+    `}<span className="relative inline-block px-2 py-0.5 rounded-md transition-all duration-200 hover:shadow-md">
+                          <span className="absolute inset-0 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/40 dark:to-red-900/40 rounded-md transition-all duration-200 hover:from-orange-200 hover:to-red-200 dark:hover:from-orange-800/50 dark:hover:to-red-800/50"></span>
+                          <span className="relative bg-clip-text text-transparent bg-gradient-to-r from-orange-700 to-red-700 dark:from-orange-300 dark:to-red-300 font-medium transition-all duration-200 hover:from-orange-800 hover:to-red-800 dark:hover:from-orange-200 dark:hover:to-red-200">@Masked(type = MaskType.NAME_MASK)</span>
+                        </span>{`
+    private String name;
+}`}</code>
                     </pre>
                   </div>
                 </div>
-              </TabsContent>
-            </Tabs>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* FAQ Section */}
-        <div className="mb-12">
-          <h2 className="text-2xl md:text-4xl font-bold text-center mb-4 text-gray-900 dark:text-white">
-            常见问题 ❓
-          </h2>
-          <p className="text-center text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
-            看看其他开发者都在问什么
-          </p>
-          <div className="max-w-3xl mx-auto">
+        <div className="mb-24">
+          <div className="text-center mb-16">
+            <h2 className="text-2xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
+              常见问题 ❓
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              看看其他开发者都在问什么
+            </p>
+          </div>
+          <div className="max-w-3xl mx-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-lg">
             <Accordions type="single">
               {faqs.map((faq, index) => (
-                <Accordion key={index} title={faq.title}>
-                  {faq.content}
+                <Accordion key={index} title={faq.title} className="border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                  <div className="p-6">
+                    {faq.content}
+                  </div>
                 </Accordion>
               ))}
+              <Accordion title="🧪 测试场景覆盖情况如何？" className="border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                <div className="p-6">
+                  <p className="mb-4">
+                    Rpamis-Security 包含 <strong>78 个生产级单测场景</strong>，覆盖了各种实际使用场景，确保组件在不同环境下的稳定性和可靠性。
+                  </p>
+                  <p>
+                    测试场景包括但不限于：各种实体类型的脱敏、嵌套对象脱敏、不同加密算法的使用、异常处理、边界情况等，确保组件在生产环境中能够稳定运行。
+                  </p>
+                </div>
+              </Accordion>
             </Accordions>
           </div>
         </div>
+
+        {/* Community Section */}
+        <div className="mb-24">
+          <div className="text-center mb-16">
+            <h2 className="text-2xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
+              社区驱动的安全组件
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Rpamis-Security 由社区驱动，持续改进和优化
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Community Card */}
+            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-gray-700 p-8 shadow-md transition-all duration-300 hover:shadow-lg">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                  <span className="text-red-600 dark:text-red-400 font-bold">❤️</span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">由您驱动</h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                Rpamis-Security 100% 由开源社区的热情驱动，欢迎您的贡献和反馈。
+              </p>
+              <div className="flex flex-wrap gap-3 mb-8">
+                <a
+                  href="https://github.com/rpamis/rpamis-security/stargazers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-lg text-sm font-medium hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors"
+                >
+                  ⭐ Star
+                </a>
+                <a
+                  href="https://github.com/rpamis/rpamis-security/contributors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                >
+                  贡献者
+                </a>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {/* Placeholder for contributor avatars */}
+                {[...Array(12)].map((_, index) => (
+                  <div key={index} className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm">
+                    {index + 1}
+                  </div>
+                ))}
+                <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm">
+                  +
+                </div>
+              </div>
+              <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                我们的优秀贡献者
+              </p>
+            </div>
+
+            {/* Features Card */}
+            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-gray-700 p-8 shadow-md transition-all duration-300 hover:shadow-lg">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                企业级数据安全
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-8">
+                为您的项目提供可靠的数据安全保障，让您专注于业务开发
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mt-0.5">
+                    <span className="text-green-600 dark:text-green-400 text-sm">✓</span>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    <strong className="text-gray-900 dark:text-white">持续维护</strong> - 积极更新，欢迎贡献
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mt-0.5">
+                    <span className="text-green-600 dark:text-green-400 text-sm">✓</span>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    <strong className="text-gray-900 dark:text-white">完全开源</strong> - 开源项目，可在 GitHub 上获取
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mt-0.5">
+                    <span className="text-green-600 dark:text-green-400 text-sm">✓</span>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    <strong className="text-gray-900 dark:text-white">易于集成</strong> - 几行代码即可集成到项目中
+                  </p>
+                </div>
+              </div>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link
+                  href="/docs/quick-start"
+                  className="inline-flex items-center px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-medium"
+                >
+                  阅读文档
+                </Link>
+                <a
+                  href="https://github.com/rpamis/rpamis-security"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <Github className="size-4 mr-2" />
+                  打开 GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <footer className="border-t border-gray-200 dark:border-gray-800 pt-8 pb-8">
+          <div className="text-center text-gray-600 dark:text-gray-400 text-sm">
+            <p>© 2026 Rpamis. All rights reserved.</p>
+          </div>
+        </footer>
       </div>
     </div>
   );
