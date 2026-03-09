@@ -39,7 +39,7 @@ rpamis-security/
 ## Build System
 
 **Build Tool:** Maven 3.x
-**Java Version:** JDK 17+ (for v1.1.1+), JDK 8-17 (for v1.0.4)
+**Java Version:** JDK 17+ (for v1.1.2+), JDK 8-17 (for v1.0.5)
 
 ### Build Commands
 
@@ -73,7 +73,7 @@ mvn spring-javaformat:validate
 <dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 
@@ -82,7 +82,7 @@ mvn spring-javaformat:validate
 <dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 </dependency>
 ```
 
