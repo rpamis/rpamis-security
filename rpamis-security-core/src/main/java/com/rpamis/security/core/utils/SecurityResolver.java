@@ -159,7 +159,9 @@ public class SecurityResolver {
             paramsList = Collections.singletonList(params);
         }
         for (Object sourceParam : paramsList) {
-            analyzeDeque.offer(sourceParam);
+            if (sourceParam != null) {
+                analyzeDeque.offer(sourceParam);
+            }
         }
         while (!analyzeDeque.isEmpty()) {
             Object currentObj = analyzeDeque.poll();
