@@ -66,7 +66,7 @@ export function CopyButton({ code, className = '' }: CopyButtonProps) {
   return (
     <button
       onClick={handleCopy}
-      className={`absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-gray-800/80 rounded-md hover:bg-white dark:hover:bg-gray-700 transition-colors flex items-center justify-center ${className}`}
+      className={`absolute top-2 right-2 z-10 p-1.5 bg-white/80 dark:bg-gray-800/80 rounded-md hover:bg-white dark:hover:bg-gray-700 transition-colors flex items-center justify-center ${className}`}
       title={isCopied ? '已复制' : '复制代码'}
       aria-label={isCopied ? '已复制' : '复制代码'}
     >
