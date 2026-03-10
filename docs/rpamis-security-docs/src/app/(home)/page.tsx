@@ -188,7 +188,6 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => {
-              // 彩色渐变方案
               const gradients = [
                 'bg-gradient-to-br from-blue-500 to-purple-600',
                 'bg-gradient-to-br from-purple-500 to-pink-600',
@@ -443,7 +442,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex flex-wrap gap-4">
                   <a
-                    href="https://github.com/rpamis/rpamis-security"
+                    href="https://github.com/rpamis/rpamis-security/stargazers"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-400 text-white rounded-xl font-medium hover:from-amber-500 hover:to-orange-500 transition-all duration-300 shadow-md"

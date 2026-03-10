@@ -9,6 +9,7 @@ const config = {
   reactStrictMode: true,
   // GitHub Pages 配置 - 项目名
   basePath: process.env.NODE_ENV === 'production' ? '/rpamis-security' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/rpamis-security' : '',
   // 只在开发模式下使用 rewrites，静态导出模式下不支持
   ...(process.env.NODE_ENV !== 'production' ? {
     async rewrites() {

@@ -1,6 +1,5 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 
-// rpamis-security 项目配置
 export const gitConfig = {
   user: 'rpamis',
   repo: 'rpamis-security',
