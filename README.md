@@ -6,53 +6,48 @@
   />
 </p>
 
-<h3 align="center">A mybatis encryption, decryption and desensitization component</h3>
+<h3 align="center">🔐 Rpamis-Security</h3>
+
+[中文](README-zh.md) | [English](README.md) | [📖Documentation](https://rpamis.github.io/rpamis-security/)
+
+[![Version](https://img.shields.io/maven-central/v/com.rpamis/rpamis-security-spring-boot-starter?style=flat-square)](https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.1.2)
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square)](LICENSE)
+[![Java](https://img.shields.io/badge/JDK-8%2B-orange.svg?style=flat-square)](https://openjdk.org/)
+[![Codecov](https://img.shields.io/codecov/c/gh/rpamis/rpamis-security?color=%23&style=flat-square)](https://app.codecov.io/github/rpamis/rpamis-security)
+[![Deepwiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/rpamis/rpamis-security)
+
+---
 
 <p align="center">
-  <a href="README-zh.md">中文</a>
-  &nbsp;|&nbsp;
-  <a href="README.md">English</a>
-  &nbsp;|&nbsp;
-  <a href="https://rpamis.github.io/rpamis-security/">Document</a>
-</p>
-
-<p align="center">
-  <a href="https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.1.2">
-    <img alt="maven" src="https://img.shields.io/maven-central/v/com.rpamis/rpamis-security-spring-boot-starter?style=flat-square">
-  </a>
-
-
-  <a href="https://www.apache.org/licenses/LICENSE-2.0">
-    <img alt="code style" src="https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square">
-  </a>
-
-  <a href="">
-    <img alt="code style" src="https://img.shields.io/badge/JDK-8%2B-orange.svg?style=flat-square">
-  </a>
-
-  <a href="https://app.codecov.io/github/rpamis/rpamis-security" > 
-    <img alt="codecov" src="https://img.shields.io/codecov/c/gh/rpamis/rpamis-security?color=%23&style=flat-square"/> 
-  </a>
-
-  <a href="https://deepwiki.com/rpamis/rpamis-security">
-    <img alt="code style" src="https://deepwiki.com/badge.svg">
-  </a>
+  <b>🎉 A MyBatis-based enterprise data security component</b><br>
+  <sub>Providing annotation-based data masking and automatic database encryption/decryption</sub>
 </p>
 
 ---
 
-🎄Rpamis-security is a security component developed based on Mybatis plugin, designed to provide superior enterprise data security solutions such as desensitization, encryption/decryption for database storage, etc. The component provides annotation-based programming, allowing developers to simply add corresponding annotations to fields or methods that need processing, without concerning about security-related requirements. The component automatically completes functions such as desensitization, encryption/decryption, etc.
+## ✨ Core Features
 
-## Principle Analysis
-[Rpamis-security Technical Background](https://benym.cn/notes/08-open-source-project/01-rpamis/03-security/02-rpamis-security-technical-background)
+**🚀 Ready-to-use enterprise data security solution, letting you focus on business development**
 
-[Rpamis-security Principle Analysis](https://benym.cn/notes/08-open-source-project/01-rpamis/03-security/03-rpamis-security-principle-analysis)
+| Feature | Description |
+|---------|-------------|
+| 🎭 **Data Masking** | Supports 9 built-in masking rules, flexible custom masking, supports any entity type |
+| 🔒 **Database Encryption** | MyBatis plugin-based automatic encryption/decryption, encrypt on insert, decrypt on select |
+| 🛡️ **SM4 Support** | Supports national standard SM4 symmetric encryption algorithm, secure and reliable |
+| 📦 **Any Type Support** | Supports any entity, List, Map, with or without generics, all support masking and encryption/decryption |
+| 🔄**Nested Masking** | Supports multi-level nested entity masking, meeting complex scenario requirements |
+| ⚡ **Zero Impact** | Encryption/decryption failure supports returning original value, does not affect normal business operation |
+| 📋 **Deep Copy Design** | New insertions do not change source object reference, supports continued object operations after save |
+| 🔧 **High Extensibility** | Supports custom encryption algorithms, encryption/decryption type handlers, masking type handlers |
 
-### Quick Start
+## 📦 Quick Installation
 
-SpringBoot project integration method
+> 💡 **Version Note**: Choose the appropriate version based on your JDK
+> - JDK 17+ use version `1.1.2`
+> - JDK 8-17 use version `1.0.5`
 
-JDK17 and above
+### ☕ JDK 17 and above
+
 ```xml
 <dependency>
     <groupId>com.rpamis</groupId>
@@ -61,7 +56,8 @@ JDK17 and above
 </dependency>
 ```
 
-JDK8-JDK17
+### 📦 JDK 8 - JDK 17
+
 ```xml
 <dependency>
     <groupId>com.rpamis</groupId>
@@ -69,289 +65,71 @@ JDK8-JDK17
     <version>1.0.5</version>
 </dependency>
 ```
-yml configuration
 
-```yaml
-rpamis:
-  # rpamis-security configuration
-  security:
-    # Whether to enable security component, database encryption, decryption when retrieving, if encryption algorithm is not specified, return original value by default
-    # When this switch is false, regardless of whether desensitization aspect is enabled, it will not take effect
-    enable: true
-    # Ignore decryption failure, return original value if decryption fails, otherwise throw exception, if not specified default is true
-    ignore-decrypt-failed: true
-    # Whether to enable desensitization aspect
-    desensitization-enable: true
-    # Custom pointcut, such as adding RestController pointcut
-    custom-pointcut: '@within(org.springframework.web.bind.annotation.RestController)'
-    # Encryption/decryption algorithm
-    algorithm:
-      # Active encryption algorithm
-      active: sm4
-      sm4:
-        # Encryption algorithm key, needs to be generated by yourself, meet 16 digits, below is just an example
-        key: 2U43wVWjLgToKBzG
-        # Unique identification prefix for encryption/decryption
-        prefix: Your_CUSTOM_PREFIX_
-```
+## 🎯 Quick Usage
 
-Component Features
-
-| rpamis-security                                          | Component Advantages                                         | Similar Projects                                             |
-| -------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Supports desensitization of arbitrary entity types       | ✅Custom entities, List, Map, regardless of whether they have entity generics, **as long as the return value contains desensitization annotations, desensitization is supported**, **not Jackson serialization solution, does not affect global Jackson output behavior** | **❌Supports only single entity desensitization, cannot desensitize when generics are not specified**, **Jackson serialization solution, may affect Jackson output behavior** |
-| Supports nested desensitization of arbitrary entity types| ✅For entities marked with nested desensitization annotations, their internal custom entities, List, Map, regardless of whether they have entity generics, **as long as the return value contains desensitization annotations, desensitization is supported** | **❌Does not support nested desensitization**                  |
-| Supports automatic encryption/decryption of arbitrary entity type data for database storage | ✅For **any entity marked with encrypted fields**, automatic encryption occurs when entering Mybatis/MybatisPlus for database storage, **automatic decryption when data is retrieved from database, supports dynamic SQL encryption/decryption** | ❌Supports only single entity automatic encryption/decryption, **cannot support automatic encryption/decryption of multiple entities in List, Map**, **cannot support dynamic SQL encryption/decryption** |
-| Supports national standard encryption algorithm Sm4        | Supports national cryptography Sm4 symmetric encryption algorithm, supports expansion | sm2/sm3/sm4/md5 and other algorithms                           |
-| Desensitization, encryption/decryption multiple-choice configurable | ✅**Supports desensitization, encryption/decryption switch, supports zero-impact encryption/decryption failure** | **❌Not supported**                                           |
-| New additions do not change source object reference      | ✅**Supported**, encryption/decryption process is deep copy, supports save operations followed by continued object manipulation, and object reference is not encrypted | **❌Not supported**                                           |
-| After addition, if the same object reference is modified, then updated, encryption works properly | **Supported**                                                | **Supported**                                                |
-| Extensible encryption algorithm, encryption/decryption type processor, desensitization type processor | **✅Supported**                                               | **❌Not supported**                                           |
-| Custom desensitization identifier, start position, end position | ✅**Supported**                                               | ❌**Not supported**                                           |
-| Complete unit test cases                                 | ✅**Complete unit test cases**                                | ❌**None**                                                    |
-
-## Usage
-
-### Built-in Desensitization Rules
-
-The component has built-in 9 desensitization rules
-
-- `MaskType.NO_MASK`-No desensitization
-- `MaskType.NAME_MASK`-Name desensitization
-- `MaskType.PHONE_MASK`-Phone desensitization
-- `MaskType.IDCARD_MASK`-ID card desensitization
-- `MaskType.EMAIL_MASK`-Email desensitization
-- `MaskType.BANKCARD_MASK`-Bank card desensitization
-- `MaskType.ADDRESS_MASK`-Address desensitization
-- `MaskType.ALL_MASK`-Full desensitization
-- `MaskType.CUSTOM_MASK`-Custom desensitization
-
-All desensitization rules support custom desensitization symbols, default is *, where custom desensitization allows users to select the start and end positions of the desensitized field
-
-### Desensitization Usage-Single Desensitization
-
-For fields that need desensitization, use `@Masked` for identification
-
-Such as the following entity
+### 🔒 Encryption Annotation
 
 ```java
-@Data
-public class TestVO implements Serializable {
-
-    private static final long serialVersionUID = 1142843493987112387L;
-
-    /**
-     * Primary key id
-     */
+public class User {
     private Long id;
 
-    /**
-     * Name
-     */
+    private String username;
+    
+    @SecurityField
+    private String password;
+}
+```
+
+### 🎭 Masking Annotation
+
+```java
+public class User {
+    private Long id;
+
+    private String username;
+    
     @Masked(type = MaskType.NAME_MASK)
     private String name;
-
-    /**
-     * ID card number
-     */
-    @Masked(type = MaskType.IDCARD_MASK)
-    private String idCard;
-
-    /**
-     * Phone number
-     */
-    @Masked(type = MaskType.PHONE_MASK)
-    private String phone;
-
-    /**
-     * Custom identifier field
-     */
-    @Masked(type = MaskType.CUSTOM_MASK, start = 2, end = 5, symbol = "#")
-    private String customFiled;
 }
 ```
 
-In the `Controller` layer, annotate with `@Desensitizationed` annotation to identify method-level desensitization
+## 📚 Resources
 
-If this annotation is not included, even if the entity class contains desensitization annotations, automatic desensitization will not occur when returning to the frontend, used for finer-grained desensitization control
+| Resource | Link |
+|----------|------|
+| 📖 **Full Documentation** | [Website](https://rpamis.github.io/rpamis-security/) |
+| 🚀 **Quick Start** | [Quick Start Guide](https://rpamis.github.io/rpamis-security/docs/quick-start) |
+| 📐 **Architecture** | [Architecture Design](https://rpamis.github.io/rpamis-security/docs/architecture) |
+| 💡 **Examples** | [Code Examples](https://rpamis.github.io/rpamis-security/docs/examples) |
+| 🔧 **API Reference** | [API Documentation](https://rpamis.github.io/rpamis-security/docs/api) |
+| 🧠 **Principle Analysis** | [Technical Background](https://benym.cn/notes/08-open-source-project/01-rpamis/03-security/02-rpamis-security-technical-background) / [Principle Analysis](https://benym.cn/notes/08-open-source-project/01-rpamis/03-security/03-rpamis-security-principle-analysis) |
 
-As follows
+## 🏆 Advantages
 
-```java
-/**
- * Get desensitized data-base type
- *
- * @return TestVO
- */
-@PostMapping("/baseType")
-@Desensitizationed
-public TestVO testBase() {
-    TestVersionDO result = testVersionDOService.testDesensite();
-    return RpamisBeanUtil.copy(result, TestVO.class);
-}
-```
+| Feature | Rpamis-Security | Similar Projects |
+|---------|-----------------|------------------|
+| Any entity type masking | ✅ List, Map, non-generic entities | ❌ Single entity only |
+| Nested masking | ✅ Multi-level nesting | ❌ Not supported |
+| Auto encryption/decryption | ✅ Dynamic SQL support | ❌ Limited functionality |
+| SM4 encryption | ✅ Supported | Partial support |
+| Encryption failure handling | ✅ Return original value | ❌ Not supported |
+| Deep copy design | ✅ Preserves source reference | ❌ Not supported |
+| Test coverage | ✅ 82%+ / 78+ scenarios | ❌ None |
 
-### Desensitization Usage-Nested Desensitization
+## 🤝 Contributing
 
-Nested desensitization is used for cases where the entity field also contains desensitized entities. For fields that require nested desensitization, use the `@NestedMasked` annotation
+<p align="center">
+  <b>Rpamis-Security is 100% driven by the open source community</b><br>
+  <sub>Contributions and feedback are welcome! Check out the <a href="https://github.com/rpamis/rpamis-security/blob/master/.github/CONTRIBUTING.md">Contributing Guide</a> for more details</sub>
+</p>
 
-Sample entity class as follows
+## 📄 License
 
-```java
-@Data
-public class TestNestVO implements Serializable {
+This project is licensed under the [Apache 2.0](LICENSE) License.
 
-    private static final long serialVersionUID = -5559148350211559748L;
+---
 
-    /**
-     * Primary key id
-     */
-    private Long id;
-
-    /**
-     * Name
-     */
-    @Masked(type = MaskType.NAME_MASK)
-    private String name;
-
-    /**
-     * Nested validation-Direct return entity
-     */
-    @NestedMasked
-    private TestVO testVO;
-
-    /**
-     * Nested validation-Return List
-     */
-    @NestedMasked
-    private List<TestVO> testVOList;
-
-    /**
-     * Nested validation-Return Map
-     */
-    @NestedMasked
-    private Map<String, TestVO> testVOMap;
-}
-```
-
-The above entity will desensitize name, as well as all fields marked with `@NestedMasked` in testVO, testVOList, testVOMap entities
-
-Outer layer usage is consistent with single desensitization
-
-As follows
-
-```java
-/**
- * Get desensitized data-nested desensitization-base
- *
- * @return TestNestVO
- */
-@PostMapping("/nest/baseType")
-@Desensitizationed
-public TestNestVO testNestVO() {
-    TestVersionDO testVersionDO = testVersionDOService.testDesensite();
-    TestVO test = RpamisBeanUtil.copy(testVersionDO, TestVO.class);
-    TestNestVO testNestVO = new TestNestVO();
-    testNestVO.setId(1L);
-    testNestVO.setName("Zhang San");
-    testNestVO.setTestVO(test);
-    return testNestVO;
-}
-```
-
-### Encryption/Decryption Usage
-
-For entities passed to `Mybatis Mapper` or `Mybatis Plus` built-in `Insert/update/Wrapper` operations, fields will be automatically encrypted when storing to database
-
-For `Mybatis/Mybatis Plus` query operations, encrypted fields will be automatically decrypted when retrieving from database
-
-Encryption/decryption fields are marked with `@SecurityField` annotation. When yml configuration enables encryption/decryption, no additional annotations are needed, the process is fully automated
-
-Entity as follows
-
-```java
-@TableName(value ="test_version")
-@Data
-public class TestVersionDO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * Primary key id
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
-
-    /**
-     * Name
-     */
-    @TableField(value = "name")
-    @SecurityField
-    private String name;
-
-    /**
-     * ID card number
-     */
-    @TableField(value = "id_card")
-    @SecurityField
-    private String idCard;
-
-    /**
-     * Phone
-     */
-    @TableField(value = "phone")
-    @SecurityField
-    private String phone;
-
-    /**
-     * Version number
-     */
-    @TableField(value = "version")
-    private Integer version;
-
-}
-```
-
-Note: Encrypted fields are longer, please pay attention to the database length of encrypted fields, for example, ID card is 18 digits, after encryption it can reach 64 digits
-
-### Unit Test Cases
-
-[Click here](https://github.com/benym/rpamis-security/blob/master/rpamis-security-test/src/test/java/com/rpamis/security/test) to find the corresponding unit test cases, there are a total of 78 unit test cases.
-
-The core unit test cases are as follows:
-
-| Test Case                                                  | Test Result |
-| ---------------------------------------------------------- | ----------- |
-| Mybatis-plus insert interface, insert data then query, simultaneously verify encryption/decryption results | ✅Passed     |
-| Mybatis-plus saveBatch interface, insert data then query, simultaneously verify encryption/decryption results | ✅Passed     |
-| Mybatis-plus update interface, insert data then query, then update data, simultaneously verify encryption/decryption results | ✅Passed     |
-| Mybatis-plus updateWrapper, insert data then query, then update data, simultaneously verify encryption/decryption results | ✅Passed     |
-| Mybatis-plus delete interface, insert data then delete, simultaneously verify encryption/decryption results | ✅Passed     |
-| Mybatis custom insert interface, insert data then query, simultaneously verify encryption/decryption results | ✅Passed     |
-| Mybatis custom insertBatch interface (foreach dynamic SQL concatenation), insert data then query, simultaneously verify encryption/decryption results | ✅Passed     |
-| Mybatis custom update interface, insert data then query, then update data, simultaneously verify encryption/decryption results | ✅Passed     |
-| Mybatis custom delete interface, insert data then delete, simultaneously verify encryption/decryption results | ✅Passed     |
-| Get desensitized data-Single custom entity                | ✅Passed     |
-| Get desensitized data-List type                           | ✅Passed     |
-| Get desensitized data-Map type                            | ✅Passed     |
-| Get desensitized data-Unified return body (generic custom entity) | ✅Passed     |
-| Get desensitized data-Unified return body (no generics)   | ✅Passed     |
-| Get desensitized data-Nested desensitization-Single custom entity | ✅Passed     |
-| Get desensitized data-Nested desensitization-List type    | ✅Passed     |
-| Get desensitized data-Nested desensitization-Map type     | ✅Passed     |
-| Get decrypted data-Mybatis-plus-selectOne                 | ✅Passed     |
-| Get decrypted data-Mybatis-plus-selectList                | ✅Passed     |
-| Get decrypted data-Mybatis-selectOne                      | ✅Passed     |
-| Get decrypted data-Mybatis-selectList                     | ✅Passed     |
-| Get decrypted data-Mybatis-selectMap                      | ✅Passed     |
-| New additions do not change source object reference-Deep copy | ✅Passed     |
-| After addition, if the same object reference is modified, then updated, encryption works properly | ✅Passed     |
-| Decrypt existing unencrypted data, support original value return | ✅Passed     |
-| Prevent duplicate encryption                              | ✅Passed     |
-| Compatible with encryption/decryption in versions below 1.0.3 | ✅Passed     |
-| Nested decryption                                         | ✅Passed     |
-| Encryption/decryption cache isolation                     | ✅Passed     |
-| Normal handling when query data returns null              | ✅Passed     |
-| Default security algorithm-Insert data return original value | ✅Passed     |
-| SM4 key is empty-Throw prompt                             | ✅Passed     |
-| SM4 key length less than 16 digits-Throw prompt           | ✅Passed     |
+<p align="center">
+  <sub>Made with ❤️ by <a href="https://github.com/rpamis">Rpamis Team</a></sub>
+</p>
