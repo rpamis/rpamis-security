@@ -11,7 +11,7 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: (
         <div className="flex items-center gap-2">
-          <img src="/logo.png" alt="Rpamis-Security Logo" className="h-8 w-8 rounded-lg" />
+          <img src="https://rpamis.github.io/rpamis-security/logo.png" alt="Rpamis-Security Logo" className="h-8 w-8 rounded-lg" />
           <span className="font-bold">Rpamis-Security</span>
         </div>
       ),
