@@ -114,7 +114,7 @@ public class User {
 
 | 资源 | 链接 |
 |------|------|
-| 📖 **完整文档** | [https://rpamis.github.io/rpamis-security/](https://rpamis.github.io/rpamis-security/) |
+| 📖 **完整文档** | [网站文档](https://rpamis.github.io/rpamis-security/) |
 | 🚀 **快速开始** | [快速开始指南](https://rpamis.github.io/rpamis-security/docs/quick-start) |
 | 📐 **架构设计** | [架构设计文档](https://rpamis.github.io/rpamis-security/docs/architecture) |
 | 💡 **使用示例** | [示例代码](https://rpamis.github.io/rpamis-security/docs/examples) |

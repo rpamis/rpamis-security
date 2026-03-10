@@ -113,7 +113,7 @@ public class User {
 
 | Resource | Link |
 |----------|------|
-| 📖 **Full Documentation** | [https://rpamis.github.io/rpamis-security/](https://rpamis.github.io/rpamis-security/) |
+| 📖 **Full Documentation** | [Documentation Website](https://rpamis.github.io/rpamis-security/) |
 | 🚀 **Quick Start** | [Quick Start Guide](https://rpamis.github.io/rpamis-security/docs/quick-start) |
 | 📐 **Architecture** | [Architecture Design](https://rpamis.github.io/rpamis-security/docs/architecture) |
 | 💡 **Examples** | [Code Examples](https://rpamis.github.io/rpamis-security/docs/examples) |
