@@ -5,23 +5,41 @@
     width="200"
   />
 </p>
-
 <h3 align="center">🔐 Rpamis-Security</h3>
 
-[中文](README-zh.md) | [English](README.md) | [📖文档](https://rpamis.github.io/rpamis-security/)
+<p align="center">
+  <a href="README-zh.md">中文</a>
+  &nbsp;|&nbsp;
+  <a href="README.md">English</a>
+  &nbsp;|&nbsp;
+  <a href="https://rpamis.github.io/rpamis-security/">📖 文档</a>
+</p>
 
-[![Version](https://img.shields.io/maven-central/v/com.rpamis/rpamis-security-spring-boot-starter?style=flat-square)](https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.1.2)
-[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square)](LICENSE)
-[![Java](https://img.shields.io/badge/JDK-8%2B-orange.svg?style=flat-square)](https://openjdk.org/)
-[![Codecov](https://img.shields.io/codecov/c/gh/rpamis/rpamis-security?color=%23&style=flat-square)](https://app.codecov.io/github/rpamis/rpamis-security)
-[![Deepwiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/rpamis/rpamis-security)
+<p align="center">
+  <a href="https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.1.2">
+    <img alt="maven" src="https://img.shields.io/maven-central/v/com.rpamis/rpamis-security-spring-boot-starter?style=flat-square">
+  </a>
+  <a href="https://www.apache.org/licenses/LICENSE-2.0">
+    <img alt="license" src="https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square">
+  </a>
+  <a href="">
+    <img alt="jdk" src="https://img.shields.io/badge/JDK-8%2B-orange.svg?style=flat-square">
+  </a>
+  <a href="https://app.codecov.io/github/rpamis/rpamis-security" > 
+    <img alt="codecov" src="https://img.shields.io/codecov/c/gh/rpamis/rpamis-security?color=%23&style=flat-square"/> 
+  </a>
+  <a href="https://deepwiki.com/rpamis/rpamis-security">
+    <img alt="deepwiki" src="https://deepwiki.com/badge.svg">
+  </a>
+</p>
 
 ---
 
 <p align="center">
-  <b>🎉 一个基于 MyBatis 插件开发的企业级数据安全组件</b><br>
+  <b>🎉 基于 MyBatis 插件开发的企业级数据安全组件</b><br>
   <sub>提供注解式数据脱敏和数据库自动加解密功能</sub>
 </p>
+
 
 ---
 
@@ -29,16 +47,14 @@
 
 **🚀 开箱即用的企业级数据安全解决方案，让您专注于业务开发**
 
-| 特性 | 描述 |
-|------|------|
-| 🎭 **数据脱敏** | 支持9种内置脱敏规则，灵活的自定义脱敏，支持任意实体类型 |
-| 🔒 **数据库加解密** | 基于Mybatis插件的自动加解密，入库加密，出库解密 |
-| 🛡️ **国密SM4** | 支持国家标准SM4对称加密算法，安全可靠 |
-| 📦 **任意类型支持** | 支持任意实体、List、Map，无论是否具有泛型，均支持脱敏和加解密 |
-| 🔄 **嵌套脱敏** | 支持多层嵌套实体的脱敏，满足复杂场景需求 |
-| ⚡ **零影响配置** | 加解密失败支持原值返回，不影响业务正常运行 |
-| 📋 **深拷贝设计** | 新增入库后不改变源对象引用，支持save操作后继续操作对象 |
-| 🔧 **高可扩展性** | 支持自定义加密算法、加解密类型处理器、脱敏类型处理器 |
+- 🎭 **数据脱敏** - 支持9种内置脱敏规则，灵活的自定义脱敏，支持任意实体类型
+- 🔒 **数据库加解密** - 基于Mybatis插件的自动加解密，入库加密，出库解密
+- 🛡️ **国密SM4** - 支持国家标准SM4对称加密算法，安全可靠
+- 📦 **任意类型支持** - 支持任意实体、List、Map，无论是否具有泛型，均支持脱敏和加解密
+- 🔄 **嵌套脱敏** - 支持多层嵌套实体的脱敏，满足复杂场景需求
+- ⚡ **零影响配置** - 加解密失败支持原值返回，不影响业务正常运行
+- 📋 **深拷贝设计** - 新增入库后不改变源对象引用，支持save操作后继续操作对象
+- 🔧 **高可扩展性** - 支持自定义加密算法、加解密类型处理器、脱敏类型处理器
 
 ## 📦 快速安装
 
@@ -98,7 +114,7 @@ public class User {
 
 | 资源 | 链接 |
 |------|------|
-| 📖 **完整文档** | [查看网站](https://rpamis.github.io/rpamis-security/) |
+| 📖 **完整文档** | [https://rpamis.github.io/rpamis-security/](https://rpamis.github.io/rpamis-security/) |
 | 🚀 **快速开始** | [快速开始指南](https://rpamis.github.io/rpamis-security/docs/quick-start) |
 | 📐 **架构设计** | [架构设计文档](https://rpamis.github.io/rpamis-security/docs/architecture) |
 | 💡 **使用示例** | [示例代码](https://rpamis.github.io/rpamis-security/docs/examples) |

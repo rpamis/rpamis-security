@@ -5,16 +5,33 @@
     width="200"
   />
 </p>
-
 <h3 align="center">🔐 Rpamis-Security</h3>
 
-[中文](README-zh.md) | [English](README.md) | [📖Documentation](https://rpamis.github.io/rpamis-security/)
+<p align="center">
+  <a href="README-zh.md">中文</a>
+  &nbsp;|&nbsp;
+  <a href="README.md">English</a>
+  &nbsp;|&nbsp;
+  <a href="https://rpamis.github.io/rpamis-security/">📖 Documentation</a>
+</p>
 
-[![Version](https://img.shields.io/maven-central/v/com.rpamis/rpamis-security-spring-boot-starter?style=flat-square)](https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.1.2)
-[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square)](LICENSE)
-[![Java](https://img.shields.io/badge/JDK-8%2B-orange.svg?style=flat-square)](https://openjdk.org/)
-[![Codecov](https://img.shields.io/codecov/c/gh/rpamis/rpamis-security?color=%23&style=flat-square)](https://app.codecov.io/github/rpamis/rpamis-security)
-[![Deepwiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/rpamis/rpamis-security)
+<p align="center">
+  <a href="https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.1.2">
+    <img alt="maven" src="https://img.shields.io/maven-central/v/com.rpamis/rpamis-security-spring-boot-starter?style=flat-square">
+  </a>
+  <a href="https://www.apache.org/licenses/LICENSE-2.0">
+    <img alt="license" src="https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square">
+  </a>
+  <a href="">
+    <img alt="jdk" src="https://img.shields.io/badge/JDK-8%2B-orange.svg?style=flat-square">
+  </a>
+  <a href="https://app.codecov.io/github/rpamis/rpamis-security" > 
+    <img alt="codecov" src="https://img.shields.io/codecov/c/gh/rpamis/rpamis-security?color=%23&style=flat-square"/> 
+  </a>
+  <a href="https://deepwiki.com/rpamis/rpamis-security">
+    <img alt="deepwiki" src="https://deepwiki.com/badge.svg">
+  </a>
+</p>
 
 ---
 
@@ -29,16 +46,14 @@
 
 **🚀 Ready-to-use enterprise data security solution, letting you focus on business development**
 
-| Feature | Description |
-|---------|-------------|
-| 🎭 **Data Masking** | Supports 9 built-in masking rules, flexible custom masking, supports any entity type |
-| 🔒 **Database Encryption** | MyBatis plugin-based automatic encryption/decryption, encrypt on insert, decrypt on select |
-| 🛡️ **SM4 Support** | Supports national standard SM4 symmetric encryption algorithm, secure and reliable |
-| 📦 **Any Type Support** | Supports any entity, List, Map, with or without generics, all support masking and encryption/decryption |
-| 🔄**Nested Masking** | Supports multi-level nested entity masking, meeting complex scenario requirements |
-| ⚡ **Zero Impact** | Encryption/decryption failure supports returning original value, does not affect normal business operation |
-| 📋 **Deep Copy Design** | New insertions do not change source object reference, supports continued object operations after save |
-| 🔧 **High Extensibility** | Supports custom encryption algorithms, encryption/decryption type handlers, masking type handlers |
+- 🎭 **Data Masking** - Supports 9 built-in masking rules, flexible custom masking, supports any entity type
+- 🔒 **Database Encryption** - MyBatis plugin-based automatic encryption/decryption, encrypt on insert, decrypt on select
+- 🛡️ **SM4 Support** - Supports national standard SM4 symmetric encryption algorithm, secure and reliable
+- 📦 **Any Type Support** - Supports any entity, List, Map, with or without generics, all support masking and encryption/decryption
+- 🔄 **Nested Masking** - Supports multi-level nested entity masking, meeting complex scenario requirements
+- ⚡ **Zero Impact** - Encryption/decryption failure supports returning original value, does not affect normal business operation
+- 📋 **Deep Copy Design** - New insertions do not change source object reference, supports continued object operations after save
+- 🔧 **High Extensibility** - Supports custom encryption algorithms, encryption/decryption type handlers, masking type handlers
 
 ## 📦 Quick Installation
 
@@ -98,7 +113,7 @@ public class User {
 
 | Resource | Link |
 |----------|------|
-| 📖 **Full Documentation** | [Website](https://rpamis.github.io/rpamis-security/) |
+| 📖 **Full Documentation** | [https://rpamis.github.io/rpamis-security/](https://rpamis.github.io/rpamis-security/) |
 | 🚀 **Quick Start** | [Quick Start Guide](https://rpamis.github.io/rpamis-security/docs/quick-start) |
 | 📐 **Architecture** | [Architecture Design](https://rpamis.github.io/rpamis-security/docs/architecture) |
 | 💡 **Examples** | [Code Examples](https://rpamis.github.io/rpamis-security/docs/examples) |

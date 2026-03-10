@@ -251,14 +251,16 @@ export default function HomePage() {
                   <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                     ☕ JDK 17 及以上
                   </h4>
-                  <div className="relative bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto">
-                    <pre className="font-mono text-sm whitespace-pre">
-                      <code className="text-gray-800 dark:text-gray-200">{`<dependency>
+                  <div className="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden">
+                    <div className="overflow-x-auto p-4">
+                      <pre className="font-mono text-sm whitespace-pre">
+                        <code className="text-gray-800 dark:text-gray-200">{`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
     <version>1.1.2</version>
 </dependency>`}</code>
-                    </pre>
+                      </pre>
+                    </div>
                     <CopyButton code={`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
@@ -270,14 +272,16 @@ export default function HomePage() {
                   <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                     📦 JDK 8-JDK 17
                   </h4>
-                  <div className="relative bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto">
-                    <pre className="font-mono text-sm whitespace-pre">
-                      <code className="text-gray-800 dark:text-gray-200">{`<dependency>
+                  <div className="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden">
+                    <div className="overflow-x-auto p-4">
+                      <pre className="font-mono text-sm whitespace-pre">
+                        <code className="text-gray-800 dark:text-gray-200">{`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
     <version>1.0.5</version>
 </dependency>`}</code>
-                    </pre>
+                      </pre>
+                    </div>
                     <CopyButton code={`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
