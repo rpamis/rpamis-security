@@ -1,0 +1,6 @@
+前端代码的位置在docs/rpamis-security-docs目录下
+你修改代码的时候应该忽略修改node_modules目录和out目录
+优先使用vercel的设计样式来进行代码修改
+对于仅修改前端代码的工作，你不应该修改任何后端代码
+前端采用fumadocs进行构建，你应该优先采用fumadocs的组件来进行设计
+如果fumadocs没有提供你需要的组件，你可以自己定义
