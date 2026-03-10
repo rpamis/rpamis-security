@@ -22,6 +22,7 @@ import {
   Zap,
   CheckCircle2,
   Star,
+  Users,
 } from 'lucide-react';
 
 const features = [
@@ -113,11 +114,11 @@ export default function HomePage() {
       {/* Canvas 粒子背景 */}
       <HeroCanvas />
 
-      {/* 渐变光晕效果 */}
+      {/* 渐变光晕效果 - 与页面背景协调 */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl opacity-20 animate-pulse"></div>
-        <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-purple-500 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute bottom-1/4 left-1/2 w-72 h-72 bg-cyan-400 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-400 dark:bg-blue-600/30 rounded-full blur-3xl opacity-40 animate-flow"></div>
+        <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-purple-400 dark:bg-purple-600/30 rounded-full blur-3xl opacity-40 animate-flow" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute bottom-1/4 left-1/2 w-72 h-72 bg-cyan-400 dark:bg-cyan-600/30 rounded-full blur-3xl opacity-40 animate-flow" style={{ animationDelay: '2s' }}></div>
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
@@ -127,9 +128,15 @@ export default function HomePage() {
             <Zap className="size-4" />
             <span>企业级数据安全组件</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
-            Rpamis-Security
-          </h1>
+          <div className="flex flex-col items-center gap-4 mb-6 relative">
+            {/* 蓝色粒子效果 - 位于 logo 底下 */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-blue-400 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-blue-500 rounded-full blur-2xl opacity-10 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+            <img src="/logo.png" alt="Rpamis-Security Logo" className="h-40 w-40 rounded-3xl relative z-10" />
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight relative z-10">
+              Rpamis-Security
+            </h1>
+          </div>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
             一个基于 MyBatis 插件开发的企业级数据安全组件，
             提供<strong className="text-gray-900 dark:text-white">注解式数据脱敏</strong>和
@@ -391,100 +398,136 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Community Card */}
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-gray-700 p-8 shadow-md transition-all duration-300 hover:shadow-lg">
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
-                  <span className="text-red-600 dark:text-red-400 font-bold">❤️</span>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">由您驱动</h3>
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Rpamis-Security 100% 由开源社区的热情驱动，欢迎您的贡献和反馈。
-              </p>
-              <div className="flex flex-wrap gap-3 mb-8">
-                <a
-                  href="https://github.com/rpamis/rpamis-security/stargazers"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-lg text-sm font-medium hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors"
-                >
-                  ⭐ Star
-                </a>
-                <a
-                  href="https://github.com/rpamis/rpamis-security/contributors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                >
-                  贡献者
-                </a>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {/* Placeholder for contributor avatars */}
-                {[...Array(12)].map((_, index) => (
-                  <div key={index} className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm">
-                    {index + 1}
+            <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg transition-all duration-300 group">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-all duration-500"></div>
+              <div className="absolute bottom-0 left-0 w-40 h-40 bg-cyan-500/5 rounded-full blur-3xl group-hover:bg-cyan-500/10 transition-all duration-500"></div>
+
+              <div className="relative">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <Users className="size-6 text-white" />
                   </div>
-                ))}
-                <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm">
-                  +
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">由您驱动</h3>
+                </div>
+                <p className="text-gray-600 dark:text-gray-300 mb-8 text-lg leading-relaxed">
+                  Rpamis-Security 100% 由开源社区的热情驱动，欢迎您的贡献和反馈。
+                </p>
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 rounded-xl border border-amber-100 dark:border-amber-800/30 transition-all duration-300">
+                    <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-yellow-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                      <Star className="size-4 text-white fill-current" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">Star 项目</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">简单快速的支持方式</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 rounded-xl border border-rose-100 dark:border-rose-800/30 transition-all duration-300">
+                    <div className="w-8 h-8 bg-gradient-to-br from-rose-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                      <span className="text-white text-sm">💡</span>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">提出 Issue</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">分享想法和反馈</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-violet-50 to-indigo-50 dark:from-violet-900/20 dark:to-indigo-900/20 rounded-xl border border-violet-100 dark:border-violet-800/30 transition-all duration-300">
+                    <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-indigo-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                      <span className="text-white text-sm">🛠️</span>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">提交 PR</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">一起改进项目</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-4">
+                  <a
+                    href="https://github.com/rpamis/rpamis-security"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-400 text-white rounded-xl font-medium hover:from-amber-500 hover:to-orange-500 transition-all duration-300 shadow-md"
+                  >
+                    <Star className="size-5 fill-current" />
+                    Star 项目
+                  </a>
+                  <a
+                    href="https://github.com/rpamis/rpamis-security"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gray-600 to-gray-700 dark:from-gray-600 dark:to-gray-700 text-white rounded-xl font-medium hover:from-gray-700 hover:to-gray-800 transition-all duration-300 shadow-md"
+                  >
+                    <Github className="size-5" />
+                    打开 GitHub
+                  </a>
                 </div>
               </div>
-              <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                我们的优秀贡献者
-              </p>
             </div>
 
             {/* Features Card */}
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-gray-700 p-8 shadow-md transition-all duration-300 hover:shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                企业级数据安全
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-8">
-                为您的项目提供可靠的数据安全保障，让您专注于业务开发
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mt-0.5">
-                    <span className="text-green-600 dark:text-green-400 text-sm">✓</span>
+            <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg transition-all duration-300 group">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-all duration-500"></div>
+              <div className="absolute bottom-0 left-0 w-40 h-40 bg-green-500/5 rounded-full blur-3xl group-hover:bg-green-500/10 transition-all duration-500"></div>
+
+              <div className="relative">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <Shield className="size-6 text-white" />
                   </div>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    <strong className="text-gray-900 dark:text-white">持续维护</strong> - 积极更新，欢迎贡献
-                  </p>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    企业级数据安全
+                  </h3>
                 </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mt-0.5">
-                    <span className="text-green-600 dark:text-green-400 text-sm">✓</span>
+                <p className="text-gray-600 dark:text-gray-300 mb-8 text-lg leading-relaxed">
+                  为您的项目提供可靠的数据安全保障，让您专注于业务开发
+                </p>
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800/30 transition-all duration-300">
+                    <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                      <CheckCircle2 className="size-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">持续维护</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">积极更新，欢迎贡献</p>
+                    </div>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    <strong className="text-gray-900 dark:text-white">完全开源</strong> - 开源项目，可在 GitHub 上获取
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mt-0.5">
-                    <span className="text-green-600 dark:text-green-400 text-sm">✓</span>
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-sky-50 to-cyan-50 dark:from-sky-900/20 dark:to-cyan-900/20 rounded-xl border border-sky-100 dark:border-sky-800/30 transition-all duration-300">
+                    <div className="w-8 h-8 bg-gradient-to-br from-sky-500 to-cyan-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                      <CheckCircle2 className="size-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">完全开源</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">开源项目，可在 GitHub 上获取</p>
+                    </div>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    <strong className="text-gray-900 dark:text-white">易于集成</strong> - 几行代码即可集成到项目中
-                  </p>
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-fuchsia-50 to-pink-50 dark:from-fuchsia-900/20 dark:to-pink-900/20 rounded-xl border border-fuchsia-100 dark:border-fuchsia-800/30 transition-all duration-300">
+                    <div className="w-8 h-8 bg-gradient-to-br from-fuchsia-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                      <CheckCircle2 className="size-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">易于集成</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">几行代码即可集成到项目中</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Link
-                  href="/docs/quick-start"
-                  className="inline-flex items-center px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-medium"
-                >
-                  阅读文档
-                </Link>
-                <a
-                  href="https://github.com/rpamis/rpamis-security"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                >
-                  <Github className="size-4 mr-2" />
-                  打开 GitHub
-                </a>
+                <div className="flex flex-wrap gap-4">
+                  <Link
+                    href="/docs/quick-start"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-400 text-white rounded-xl font-medium hover:from-amber-500 hover:to-orange-500 transition-all duration-300 shadow-md"
+                  >
+                    <ArrowRight className="size-5" />
+                    阅读文档
+                  </Link>
+                  <a
+                    href="https://github.com/rpamis/rpamis-security"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-700 dark:to-gray-800 text-white rounded-xl font-medium hover:from-gray-900 hover:to-black dark:hover:from-gray-600 dark:hover:to-gray-700 transition-all duration-300 shadow-lg"
+                  >
+                    <Github className="size-5" />
+                    打开 GitHub
+                  </a>
+                </div>
               </div>
             </div>
           </div>
