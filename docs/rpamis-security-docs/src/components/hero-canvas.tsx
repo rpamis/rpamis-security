@@ -6,14 +6,14 @@ import { useEffect, useRef } from 'react';
  * 首页 Hero 区域 Canvas 动画组件
  *
  * 该组件实现了一个视觉效果丰富的 Canvas 动画背景，包括：
- * - 球形点阵系统：具有波动、呼吸和颜色变化效果的粒子系统
- * - 中心光晕效果：径向渐变的脉冲光晕
+ * - 球形点阵系统：具有波动、呼吸和颜色变化效果的橙色粒子系统
+ * - 粒子雨效果：从左边区域从下往上飘动的蓝色粒子
  * - 渐变背景：从暖色调到透明的线性渐变
  *
  * 动画特点：
  * - 粒子具有波动、呼吸和透明度变化效果
  * - 中心光晕有脉冲动画
- * - 整体色调为暖橙色系
+ * - 整体色调为暖橙色系和蓝色系的结合
  * - 响应式设计，支持窗口大小变化
  */
 export function HeroCanvas() {
@@ -46,9 +46,9 @@ export function HeroCanvas() {
     }[] = [];
 
     // 初始化球形点阵
-    const centerX = canvas.width * 0.75;
-    const centerY = canvas.height * 0.35;
-    const maxRadius = 280;
+    const centerX = canvas.width * 0.7; // 调整粒子球位置，稍微右移
+    const centerY = canvas.height * 0.5; // 保持垂直位置
+    const maxRadius = 300; // 进一步减小粒子球大小，使其更优雅
 
     for (let x = centerX - maxRadius; x < centerX + maxRadius; x += gridSize) {
       for (let y = centerY - maxRadius; y < centerY + maxRadius; y += gridSize) {
@@ -74,6 +74,38 @@ export function HeroCanvas() {
         }
       }
     }
+
+    // 粒子系统 - 左边粒子雨
+    const particles: {
+      x: number;
+      y: number;
+      size: number;
+      opacity: number;
+      speedX: number;
+      speedY: number;
+      phase: number;
+    }[] = [];
+
+    // 粒子数量
+    const particleCount = 100;
+
+    // 初始化粒子
+    const initParticles = () => {
+      particles.length = 0;
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas.width * 0.3, // 只在左边30%区域生成
+          y: Math.random() * canvas.height + canvas.height, // 从画布下方开始
+          size: Math.random() * 3 + 1,
+          opacity: Math.random() * 0.8 + 0.2,
+          speedX: Math.random() * 0.5 + 0.2, // 轻微向右移动
+          speedY: Math.random() * 2 + 1, // 向上移动
+          phase: Math.random() * Math.PI * 2,
+        });
+      }
+    };
+
+    initParticles();
 
     // 绘制球形点阵（移除轨迹以提升性能）
     const drawDots = (time: number) => {
@@ -120,6 +152,49 @@ export function HeroCanvas() {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     };
 
+    // 绘制粒子雨
+    const drawParticles = (time: number) => {
+      particles.forEach((particle, index) => {
+        // 更新粒子位置
+        particle.y -= particle.speedY;
+        particle.x += particle.speedX;
+
+        // 波动效果
+        const wave = Math.sin(time * 0.001 + particle.phase) * 2;
+        particle.x += wave;
+
+        // 呼吸效果
+        const breathe = 0.8 + Math.sin(time * 0.002 + particle.phase) * 0.2;
+        const size = particle.size * breathe;
+
+        // 不透明度变化
+        const opacityWave = 0.6 + Math.sin(time * 0.0015 + particle.phase) * 0.4;
+        const finalOpacity = particle.opacity * opacityWave;
+
+        // 蓝色调
+        const hue = 200 + Math.sin(time * 0.0005 + particle.phase) * 20;
+        const saturation = 70 + Math.sin(time * 0.0003 + particle.phase) * 10;
+
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${hue}, ${saturation}%, 55%, ${finalOpacity})`;
+        ctx.fill();
+
+        // 重置粒子
+        if (particle.y < -50) {
+          particles[index] = {
+            x: Math.random() * canvas.width * 0.3,
+            y: canvas.height + 50,
+            size: Math.random() * 3 + 1,
+            opacity: Math.random() * 0.8 + 0.2,
+            speedX: Math.random() * 0.5 + 0.2,
+            speedY: Math.random() * 2 + 1,
+            phase: Math.random() * Math.PI * 2,
+          };
+        }
+      });
+    };
+
     // 动画循环
     let startTime = Date.now();
     let lastTime = startTime;
@@ -132,11 +207,10 @@ export function HeroCanvas() {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // 绘制渐变背景
+      // 绘制渐变背景 - 与页面背景一致
       const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      bgGradient.addColorStop(0, 'rgba(249, 115, 22, 0.03)');
-      bgGradient.addColorStop(0.5, 'rgba(251, 146, 60, 0.02)');
-      bgGradient.addColorStop(1, 'rgba(253, 224, 71, 0.01)');
+      bgGradient.addColorStop(0, 'rgba(249, 250, 251, 0)'); // 浅色模式背景
+      bgGradient.addColorStop(1, 'rgba(255, 255, 255, 0)'); // 浅色模式背景
       ctx.fillStyle = bgGradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -145,6 +219,9 @@ export function HeroCanvas() {
 
       // 绘制球形点阵
       drawDots(time);
+
+      // 绘制粒子雨
+      drawParticles(time);
 
       requestAnimationFrame(animate);
     };

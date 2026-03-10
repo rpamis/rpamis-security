@@ -1,3 +1,20 @@
 @import 'tailwindcss';
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
+
+/* 自定义动画 */
+@keyframes flow {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(5px, -5px) scale(1.02);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.animate-flow {
+  animation: flow 12s ease-in-out infinite;
+}
