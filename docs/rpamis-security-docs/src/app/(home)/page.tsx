@@ -132,7 +132,7 @@ export default function HomePage() {
             {/* 蓝色粒子效果 - 位于 logo 底下 */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-blue-400 rounded-full blur-3xl opacity-20 animate-pulse"></div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-blue-500 rounded-full blur-2xl opacity-10 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-            <img src="/logo.png" alt="Rpamis-Security Logo" className="h-40 w-40 rounded-3xl relative z-10" />
+            <img src="https://rpamis.github.io/rpamis-security/logo.png" alt="Rpamis-Security Logo" className="h-40 w-40 rounded-3xl relative z-10" />
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight relative z-10">
               Rpamis-Security
             </h1>
