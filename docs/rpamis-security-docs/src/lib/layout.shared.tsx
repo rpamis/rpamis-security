@@ -1,4 +1,5 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+import { getAssetPath } from '@/lib/asset-utils';
 
 export const gitConfig = {
   user: 'rpamis',
@@ -7,11 +8,13 @@ export const gitConfig = {
 };
 
 export function baseOptions(): BaseLayoutProps {
+  const logoSrc = getAssetPath('/logo.png');
+
   return {
     nav: {
       title: (
         <div className="flex items-center gap-2">
-          <img src="https://rpamis.github.io/rpamis-security/logo.png" alt="Rpamis-Security Logo" className="h-8 w-8 rounded-lg" />
+          <img src={logoSrc} alt="Rpamis-Security Logo" className="h-8 w-8 rounded-lg" />
           <span className="font-bold">Rpamis-Security</span>
         </div>
       ),

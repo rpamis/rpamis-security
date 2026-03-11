@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { getAssetPath } from '@/lib/asset-utils';
 import { Cards, Card } from '@/components/card';
 import { Callout } from '@/components/callout';
 import { Accordions, Accordion } from '@/components/accordion';
@@ -106,9 +107,9 @@ const faqs = [
   },
 ];
 
-
-
 export default function HomePage() {
+  const logoSrc = getAssetPath('/logo.png');
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900 relative overflow-hidden">
       {/* Canvas 粒子背景 */}
@@ -132,7 +133,7 @@ export default function HomePage() {
             {/* 蓝色粒子效果 - 位于 logo 底下 */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-blue-400 rounded-full blur-3xl opacity-20 animate-pulse"></div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-blue-500 rounded-full blur-2xl opacity-10 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-            <img src="https://rpamis.github.io/rpamis-security/logo.png" alt="Rpamis-Security Logo" className="h-40 w-40 rounded-3xl relative z-10" />
+            <img src={logoSrc} alt="Rpamis-Security Logo" className="h-40 w-40 rounded-3xl relative z-10" />
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight relative z-10">
               Rpamis-Security
             </h1>
