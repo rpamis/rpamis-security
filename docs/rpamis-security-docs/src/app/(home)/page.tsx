@@ -7,6 +7,7 @@ import { Callout } from '@/components/callout';
 import { Accordions, Accordion } from '@/components/accordion';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/tabs';
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
+import { Steps, Step } from 'fumadocs-ui/components/steps';
 import { HeroCanvas } from '@/components/hero-canvas';
 import { CopyButton } from '@/components/copy-button';
 import {
@@ -24,6 +25,8 @@ import {
   CheckCircle2,
   Star,
   Users,
+  Download,
+  Code2,
 } from 'lucide-react';
 
 const features = [
@@ -238,8 +241,16 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Quick Installation Card */}
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-gray-700 p-8 shadow-md transition-all duration-300 hover:shadow-lg">
-              <h3 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">快速安装</h3>
+            <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg transition-all duration-300 group">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-amber-500/5 rounded-full blur-3xl group-hover:bg-amber-500/10 transition-all duration-500"></div>
+              <div className="absolute bottom-0 left-0 w-40 h-40 bg-orange-500/5 rounded-full blur-3xl group-hover:bg-orange-500/10 transition-all duration-500"></div>
+              <div className="relative">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/25">
+                    <Download className="size-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">快速安装</h3>
+                </div>
 
               <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
                 <div className="flex items-center gap-2 mb-2">
@@ -297,11 +308,20 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
+              </div>
             </div>
 
             {/* Annotations Usage Card */}
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-gray-700 p-8 shadow-md transition-all duration-300 hover:shadow-lg">
-              <h3 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">注解使用</h3>
+            <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg transition-all duration-300 group">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-rose-500/5 rounded-full blur-3xl group-hover:bg-rose-500/10 transition-all duration-500"></div>
+              <div className="absolute bottom-0 left-0 w-40 h-40 bg-pink-500/5 rounded-full blur-3xl group-hover:bg-pink-500/10 transition-all duration-500"></div>
+              <div className="relative">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-rose-400 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-rose-500/25">
+                    <Code2 className="size-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">注解使用</h3>
+                </div>
 
               <div className="space-y-6">
                 {/* 加解密注解示例 */}
@@ -347,6 +367,7 @@ export default function HomePage() {
                     </pre>
                   </div>
                 </div>
+              </div>
               </div>
             </div>
           </div>
@@ -398,66 +419,72 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Community Card */}
-            <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg transition-all duration-300 group">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-all duration-500"></div>
-              <div className="absolute bottom-0 left-0 w-40 h-40 bg-cyan-500/5 rounded-full blur-3xl group-hover:bg-cyan-500/10 transition-all duration-500"></div>
-
-              <div className="relative">
+            <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg">
+              {/* Aurora Background */}
+              <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                <div className="absolute -inset-[10px] opacity-30 dark:opacity-20">
+                  <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-300 via-cyan-200 to-blue-300 rounded-full blur-3xl animate-aurora-1"></div>
+                  <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-r from-cyan-200 via-blue-300 to-cyan-200 rounded-full blur-3xl animate-aurora-2"></div>
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-sky-200 via-blue-200 to-cyan-200 rounded-full blur-3xl animate-aurora-3"></div>
+                </div>
+              </div>
+              
+              <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
                     <Users className="size-6 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white">由您驱动</h3>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 mb-8 text-lg leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg leading-relaxed">
                   Rpamis-Security 100% 由开源社区的热情驱动，欢迎您的贡献和反馈。
                 </p>
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 rounded-xl border border-amber-100 dark:border-amber-800/30 transition-all duration-300">
-                    <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-yellow-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-                      <Star className="size-4 text-white fill-current" />
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-white/50 dark:bg-gray-900/30 backdrop-blur-sm border border-gray-100 dark:border-gray-700/50">
+                    <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-400 rounded-lg flex items-center justify-center shadow-sm">
+                      <Star className="size-4 text-white" />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-white">Star 项目</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">简单快速的支持方式</p>
+                      <h4 className="font-semibold text-gray-900 dark:text-white text-sm">Star 项目</h4>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">简单快速的支持方式</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 rounded-xl border border-rose-100 dark:border-rose-800/30 transition-all duration-300">
-                    <div className="w-8 h-8 bg-gradient-to-br from-rose-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-white/50 dark:bg-gray-900/30 backdrop-blur-sm border border-gray-100 dark:border-gray-700/50">
+                    <div className="w-8 h-8 bg-gradient-to-br from-rose-400 to-pink-400 rounded-lg flex items-center justify-center shadow-sm">
                       <span className="text-white text-sm">💡</span>
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-white">提出 Issue</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">分享想法和反馈</p>
+                      <h4 className="font-semibold text-gray-900 dark:text-white text-sm">提出 Issue</h4>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">分享想法和反馈</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-violet-50 to-indigo-50 dark:from-violet-900/20 dark:to-indigo-900/20 rounded-xl border border-violet-100 dark:border-violet-800/30 transition-all duration-300">
-                    <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-indigo-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-white/50 dark:bg-gray-900/30 backdrop-blur-sm border border-gray-100 dark:border-gray-700/50">
+                    <div className="w-8 h-8 bg-gradient-to-br from-indigo-400 to-blue-400 rounded-lg flex items-center justify-center shadow-sm">
                       <span className="text-white text-sm">🛠️</span>
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-white">提交 PR</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">一起改进项目</p>
+                      <h4 className="font-semibold text-gray-900 dark:text-white text-sm">提交 PR</h4>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">一起改进项目</p>
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-3">
                   <a
                     href="https://github.com/rpamis/rpamis-security/stargazers"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-400 text-white rounded-xl font-medium hover:from-amber-500 hover:to-orange-500 transition-all duration-300 shadow-md"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md"
                   >
-                    <Star className="size-5 fill-current" />
+                    <Star className="size-4 fill-current" />
                     Star 项目
                   </a>
                   <a
                     href="https://github.com/rpamis/rpamis-security"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gray-600 to-gray-700 dark:from-gray-600 dark:to-gray-700 text-white rounded-xl font-medium hover:from-gray-700 hover:to-gray-800 transition-all duration-300 shadow-md"
+                    className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700 bg-transparent text-gray-900 dark:text-white rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
                   >
-                    <Github className="size-5" />
+                    <Github className="size-4" />
                     打开 GitHub
                   </a>
                 </div>
@@ -465,66 +492,72 @@ export default function HomePage() {
             </div>
 
             {/* Features Card */}
-            <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg transition-all duration-300 group">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-all duration-500"></div>
-              <div className="absolute bottom-0 left-0 w-40 h-40 bg-green-500/5 rounded-full blur-3xl group-hover:bg-green-500/10 transition-all duration-500"></div>
-
-              <div className="relative">
+            <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg">
+              {/* Aurora Background */}
+              <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                <div className="absolute -inset-[10px] opacity-30 dark:opacity-20">
+                  <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-r from-cyan-300 via-blue-200 to-cyan-300 rounded-full blur-3xl animate-aurora-2"></div>
+                  <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-200 via-cyan-300 to-blue-200 rounded-full blur-3xl animate-aurora-1"></div>
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-cyan-200 via-sky-200 to-blue-200 rounded-full blur-3xl animate-aurora-3"></div>
+                </div>
+              </div>
+              
+              <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
                     <Shield className="size-6 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
                     企业级数据安全
                   </h3>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 mb-8 text-lg leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg leading-relaxed">
                   为您的项目提供可靠的数据安全保障，让您专注于业务开发
                 </p>
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800/30 transition-all duration-300">
-                    <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-white/50 dark:bg-gray-900/30 backdrop-blur-sm border border-gray-100 dark:border-gray-700/50">
+                    <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-lg flex items-center justify-center shadow-sm">
                       <CheckCircle2 className="size-4 text-white" />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-white">持续维护</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">积极更新，欢迎贡献</p>
+                      <h4 className="font-semibold text-gray-900 dark:text-white text-sm">持续维护</h4>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">积极更新，欢迎贡献</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-sky-50 to-cyan-50 dark:from-sky-900/20 dark:to-cyan-900/20 rounded-xl border border-sky-100 dark:border-sky-800/30 transition-all duration-300">
-                    <div className="w-8 h-8 bg-gradient-to-br from-sky-500 to-cyan-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-white/50 dark:bg-gray-900/30 backdrop-blur-sm border border-gray-100 dark:border-gray-700/50">
+                    <div className="w-8 h-8 bg-gradient-to-br from-sky-400 to-cyan-400 rounded-lg flex items-center justify-center shadow-sm">
                       <CheckCircle2 className="size-4 text-white" />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-white">完全开源</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">开源项目，可在 GitHub 上获取</p>
+                      <h4 className="font-semibold text-gray-900 dark:text-white text-sm">完全开源</h4>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">开源项目，可在 GitHub 上获取</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-fuchsia-50 to-pink-50 dark:from-fuchsia-900/20 dark:to-pink-900/20 rounded-xl border border-fuchsia-100 dark:border-fuchsia-800/30 transition-all duration-300">
-                    <div className="w-8 h-8 bg-gradient-to-br from-fuchsia-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-white/50 dark:bg-gray-900/30 backdrop-blur-sm border border-gray-100 dark:border-gray-700/50">
+                    <div className="w-8 h-8 bg-gradient-to-br from-fuchsia-400 to-pink-400 rounded-lg flex items-center justify-center shadow-sm">
                       <CheckCircle2 className="size-4 text-white" />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-white">易于集成</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">几行代码即可集成到项目中</p>
+                      <h4 className="font-semibold text-gray-900 dark:text-white text-sm">易于集成</h4>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">几行代码即可集成到项目中</p>
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-3">
                   <Link
                     href="/docs/quick-start"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-400 text-white rounded-xl font-medium hover:from-amber-500 hover:to-orange-500 transition-all duration-300 shadow-md"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md"
                   >
-                    <ArrowRight className="size-5" />
+                    <ArrowRight className="size-4" />
                     阅读文档
                   </Link>
                   <a
                     href="https://github.com/rpamis/rpamis-security"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-700 dark:to-gray-800 text-white rounded-xl font-medium hover:from-gray-900 hover:to-black dark:hover:from-gray-600 dark:hover:to-gray-700 transition-all duration-300 shadow-lg"
+                    className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700 bg-transparent text-gray-900 dark:text-white rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
                   >
-                    <Github className="size-5" />
+                    <Github className="size-4" />
                     打开 GitHub
                   </a>
                 </div>
