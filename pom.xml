@@ -45,7 +45,7 @@
         <!-- 存储 -->
         <mybatis-plus.version>3.5.6</mybatis-plus.version>
         <mybatis.version>3.5.16</mybatis.version>
-        <mysql.version>8.0.20</mysql.version>
+        <mysql.version>8.0.30</mysql.version>
         <!-- 工具类 -->
         <aspectj-aspectjweaver.version>1.9.5</aspectj-aspectjweaver.version>
         <commons-lang.version>2.6</commons-lang.version>
@@ -55,7 +55,7 @@
         <bcprov-jdk15to18.version>1.76</bcprov-jdk15to18.version>
         <!-- 开源相关 -->
         <jacoco.version>0.8.10</jacoco.version>
-        <spring-javaformat-maven-plugin.version>0.0.39</spring-javaformat-maven-plugin.version>
+        <spring-javaformat-maven-plugin.version>0.0.47</spring-javaformat-maven-plugin.version>
         <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
         <maven-source-plugin.version>2.4</maven-source-plugin.version>
@@ -64,7 +64,7 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
-        <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
+        <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
         <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
         <!-- 自研组件 -->
         <rpamis-architecture-build.version>1.0.0</rpamis-architecture-build.version>
