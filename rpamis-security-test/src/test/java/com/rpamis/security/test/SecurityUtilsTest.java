@@ -105,25 +105,24 @@ public class SecurityUtilsTest {
 	}
 
 	/**
-	 * 测试有效数据加密
-	 * 验证对有效数据进行加密时能够正确添加前缀
+	 * 测试有效数据加密 验证对有效数据进行加密时能够正确添加前缀
 	 */
 	@Test
 	@DisplayName("测试有效数据加密")
-    public void testEncryptWithPrefixWithValidSource() {
-        // 重置 mock 状态，确保不受其他测试影响
-        when(sm4Config.getPrefix()).thenReturn(DefaultPrefix.SM4.getPrefix());
+	public void testEncryptWithPrefixWithValidSource() {
+		// 重置 mock 状态，确保不受其他测试影响
+		when(sm4Config.getPrefix()).thenReturn(DefaultPrefix.SM4.getPrefix());
 
-        String source = "test";
-        String encrypted = "encrypted";
-        when(securityAlgorithm.encrypt(source)).thenReturn(encrypted);
+		String source = "test";
+		String encrypted = "encrypted";
+		when(securityAlgorithm.encrypt(source)).thenReturn(encrypted);
 
-        SecurityUtils securityUtils = new SecurityUtils(securityAlgorithm, securityConfigProvider);
-        String result = securityUtils.encryptWithPrefix(source);
+		SecurityUtils securityUtils = new SecurityUtils(securityAlgorithm, securityConfigProvider);
+		String result = securityUtils.encryptWithPrefix(source);
 
-        assertEquals(DefaultPrefix.SM4.getPrefix() + encrypted, result);
-        Mockito.verify(securityAlgorithm, Mockito.times(1)).encrypt(source);
-    }
+		assertEquals(DefaultPrefix.SM4.getPrefix() + encrypted, result);
+		Mockito.verify(securityAlgorithm, Mockito.times(1)).encrypt(source);
+	}
 
 	/**
 	 * 测试空值解密 验证对空字符串和null值进行解密时的行为
