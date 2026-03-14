@@ -1,0 +1,53 @@
+.card-spotlight {
+  position: relative;
+  border-radius: 1.5rem;
+  border: 1px solid transparent; /* 透明边框，避免样式冲突 */
+  padding: 2rem;
+  overflow: hidden;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  --spotlight-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 白天模式样式 */
+.light .card-spotlight {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(229, 231, 235, 1);
+  transition: all 0.3s ease;
+}
+
+/* 黑夜模式样式 */
+.dark .card-spotlight {
+  background-color: rgba(31, 41, 55, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(75, 85, 99, 1);
+  transition: all 0.3s ease;
+}
+
+.card-spotlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), var(--spotlight-color), transparent 80%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+/* 增强黑夜模式的 spotlight 效果 */
+.dark .card-spotlight:hover::before,
+.dark .card-spotlight:focus-within::before {
+  opacity: 0.8; /* 增强透明度 */
+}
+
+/* 白天模式的 spotlight 效果 */
+.light .card-spotlight:hover::before,
+.light .card-spotlight:focus-within::before {
+  opacity: 0.6;
+}

@@ -1,6 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import GradientText from '@/components/GradientText';
+import SpotlightCard from '@/components/SpotlightCard';
+import Dither from '@/components/Dither';
 import { getAssetPath } from '@/lib/asset-utils';
 import { Cards, Card } from '@/components/card';
 import { Callout } from '@/components/callout';
@@ -28,11 +31,11 @@ import {
   Download,
   Code2,
 } from 'lucide-react';
-import { useMemo, useCallback, memo } from 'react';
+import { useMemo, useCallback, memo, useState, useEffect } from 'react';
 
-// 懒加载 Canvas 组件，避免阻塞首屏
-const HeroCanvas = dynamic(() => import('@/components/hero-canvas').then((mod) => ({
-  default: mod.HeroCanvas,
+// 懒加载 ColorBends 组件，避免阻塞首屏
+const ColorBends = dynamic(() => import('@/components/ColorBends').then((mod) => ({
+  default: mod.default,
 })), {
   ssr: false,
   loading: () => null,
@@ -133,14 +136,27 @@ const FeatureCard = memo(({ feature, index }: { feature: any; index: number }) =
     'bg-gradient-to-br from-indigo-500 to-purple-600',
   ], []);
 
+  // Spotlight 颜色与渐变颜色保持一致，增强透明度让效果更明显
+  const spotlightColors = useMemo(() => [
+    'rgba(139, 92, 246, 0.4)',  // blue-purple
+    'rgba(219, 39, 119, 0.4)',  // purple-pink
+    'rgba(234, 88, 12, 0.4)',   // pink-orange
+    'rgba(202, 138, 4, 0.4)',   // orange-yellow
+    'rgba(37, 99, 235, 0.4)',   // green-blue
+    'rgba(8, 145, 178, 0.4)',   // teal-cyan
+    'rgba(37, 99, 235, 0.4)',   // cyan-blue
+    'rgba(139, 92, 246, 0.4)',  // indigo-purple
+  ], []);
+
   const gradient = useMemo(() => gradients[index % gradients.length], [gradients, index]);
+  const spotlightColor = useMemo(() => spotlightColors[index % spotlightColors.length], [spotlightColors, index]);
 
   return (
-    <div
+    <SpotlightCard
       key={index}
-      className="group relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-xl border border-gray-200 dark:border-gray-700 p-6 transition-all duration-300 hover:shadow-xl"
+      className="p-6 rounded-xl transition-all duration-300 hover:shadow-xl"
+      spotlightColor={spotlightColor}
     >
-      <div className={`absolute inset-0 rounded-xl ${gradient} opacity-0 group-hover:opacity-10 transition-all duration-300`}></div>
       <div className="relative">
         <div className={`flex items-center justify-center w-12 h-12 rounded-lg ${gradient} text-white mb-5 group-hover:scale-110 transition-transform duration-300`}>
           {feature.icon}
@@ -152,7 +168,7 @@ const FeatureCard = memo(({ feature, index }: { feature: any; index: number }) =
           {feature.description}
         </p>
       </div>
-    </div>
+    </SpotlightCard>
   );
 });
 
@@ -171,6 +187,28 @@ const FAQItem = memo(({ faq, index }: { faq: any; index: number }) => {
 FAQItem.displayName = 'FAQItem';
 
 export default function HomePage() {
+  // 检测当前主题
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
+
+  useEffect(() => {
+    // 初始检查 html 标签是否有 dark 类
+    const checkTheme = () => {
+      const html = document.documentElement;
+      setIsDarkTheme(html.classList.contains('dark'));
+    };
+
+    checkTheme();
+
+    // 监听主题变化（如果有主题切换功能的话）
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   // 缓存渐变数组，避免每次渲染重新创建
   const gradients = useMemo(() => [
     'bg-gradient-to-br from-blue-500 to-purple-600',
@@ -201,17 +239,28 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900 relative overflow-hidden">
-      {/* Canvas 粒子背景 - 懒加载优化 */}
-      <div className="hidden md:block">
-        <HeroCanvas />
+      {/* ColorBends 动画背景 - 懒加载优化 */}
+      <div className="hidden md:block absolute top-0 left-0 right-0 h-screen z-0">
+        <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+          {/* @ts-expect-error - ColorBends组件是JSX文件，TypeScript类型推断不完整 */}
+          <ColorBends
+            rotation={0}
+            speed={0.2}
+            colors={["#215be4", "#e566ff", "#f14bac", "#ef864d"]}
+            transparent
+            autoRotate={0}
+            scale={1}
+            frequency={1}
+            warpStrength={1}
+            mouseInfluence={1}
+            parallax={0.5}
+            noise={0.1}
+          />
+          {/* 渐变遮罩，让动画边缘与页面背景自然衔接 */}
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gray-50 to-transparent dark:from-gray-950 dark:to-transparent pointer-events-none"></div>
+        </div>
       </div>
 
-      {/* 渐变光晕效果 - 与页面背景协调 */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-400 dark:bg-blue-600/30 rounded-full blur-3xl opacity-40 animate-flow"></div>
-        <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-purple-400 dark:bg-purple-600/30 rounded-full blur-3xl opacity-40 animate-flow" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute bottom-1/4 left-1/2 w-72 h-72 bg-cyan-400 dark:bg-cyan-600/30 rounded-full blur-3xl opacity-40 animate-flow" style={{ animationDelay: '2s' }}></div>
-      </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
         {/* Hero Section */}
@@ -222,7 +271,17 @@ export default function HomePage() {
           </div>
           <div className="flex flex-col items-center gap-4 mb-6">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
-              Rpamis-Security
+              <GradientText
+                colors={["#29d4ff", "#FF9FFC", "#B19EEF", "#29d4ff"]}
+                animationSpeed={8}
+                showBorder={false}
+                direction="horizontal"
+                pauseOnHover={true}
+                yoyo={true}
+                className="inline-block"
+              >
+                Rpamis-Security
+              </GradientText>
             </h1>
           </div>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
@@ -247,7 +306,7 @@ export default function HomePage() {
           <div className="flex flex-wrap justify-center gap-6">
             <Link
               href="/docs/quick-start"
-              className="inline-flex items-center px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors font-medium transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl"
+              className="inline-flex items-center px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-200 shadow-sm hover:shadow-md font-medium"
               onClick={handleDocsClick}
             >
               快速开始
@@ -257,7 +316,7 @@ export default function HomePage() {
               href="https://github.com/rpamis/rpamis-security"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center px-8 py-4 border border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors transform hover:-translate-y-0.5 shadow-md hover:shadow-lg"
+              className="inline-flex items-center px-8 py-4 border border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 shadow-sm hover:shadow-md"
               onClick={handleGitHubClick}
             >
               <Github className="size-4 mr-2" />
@@ -297,8 +356,6 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Quick Installation Card */}
             <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg transition-all duration-300 group">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-amber-500/5 rounded-full blur-3xl group-hover:bg-amber-500/10 transition-all duration-500"></div>
-              <div className="absolute bottom-0 left-0 w-40 h-40 bg-orange-500/5 rounded-full blur-3xl group-hover:bg-orange-500/10 transition-all duration-500"></div>
               <div className="relative">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/25">
@@ -307,69 +364,67 @@ export default function HomePage() {
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white">快速安装</h3>
                 </div>
 
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-5 h-5 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center">
-                    <span className="text-blue-600 dark:text-blue-400 text-xs">💡</span>
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-5 h-5 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center">
+                      <span className="text-blue-600 dark:text-blue-400 text-xs">💡</span>
+                    </div>
+                    <h4 className="text-sm font-medium text-blue-700 dark:text-blue-300">版本说明</h4>
                   </div>
-                  <h4 className="text-sm font-medium text-blue-700 dark:text-blue-300">版本说明</h4>
+                  <p className="text-sm text-blue-600 dark:text-blue-400">
+                    请根据您的 JDK 版本选择合适的组件版本。JDK 17+ 请使用 1.1.2 版本，JDK 8-17 请使用 1.0.5 版本。
+                  </p>
                 </div>
-                <p className="text-sm text-blue-600 dark:text-blue-400">
-                  请根据您的 JDK 版本选择合适的组件版本。JDK 17+ 请使用 1.1.2 版本，JDK 8-17 请使用 1.0.5 版本。
-                </p>
-              </div>
 
-              <div className="space-y-6">
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    ☕ JDK 17 及以上
-                  </h4>
-                  <div className="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden">
-                    <div className="overflow-x-auto p-4">
-                      <pre className="font-mono text-sm whitespace-pre">
-                        <code className="text-gray-800 dark:text-gray-200">{`<dependency>
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                      ☕ JDK 17 及以上
+                    </h4>
+                    <div className="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden">
+                      <div className="overflow-x-auto p-4">
+                        <pre className="font-mono text-sm whitespace-pre">
+                          <code className="text-gray-800 dark:text-gray-200">{`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
     <version>1.1.2</version>
 </dependency>`}</code>
-                      </pre>
-                    </div>
-                    <CopyButton code={`<dependency>
+                        </pre>
+                      </div>
+                      <CopyButton code={`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
     <version>1.1.2</version>
 </dependency>`} />
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    📦 JDK 8-JDK 17
-                  </h4>
-                  <div className="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden">
-                    <div className="overflow-x-auto p-4">
-                      <pre className="font-mono text-sm whitespace-pre">
-                        <code className="text-gray-800 dark:text-gray-200">{`<dependency>
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                      📦 JDK 8-JDK 17
+                    </h4>
+                    <div className="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden">
+                      <div className="overflow-x-auto p-4">
+                        <pre className="font-mono text-sm whitespace-pre">
+                          <code className="text-gray-800 dark:text-gray-200">{`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
     <version>1.0.5</version>
 </dependency>`}</code>
-                      </pre>
-                    </div>
-                    <CopyButton code={`<dependency>
+                        </pre>
+                      </div>
+                      <CopyButton code={`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
     <version>1.0.5</version>
 </dependency>`} />
+                    </div>
                   </div>
                 </div>
-              </div>
               </div>
             </div>
 
             {/* Annotations Usage Card */}
             <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg transition-all duration-300 group">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-rose-500/5 rounded-full blur-3xl group-hover:bg-rose-500/10 transition-all duration-500"></div>
-              <div className="absolute bottom-0 left-0 w-40 h-40 bg-pink-500/5 rounded-full blur-3xl group-hover:bg-pink-500/10 transition-all duration-500"></div>
               <div className="relative">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 bg-gradient-to-br from-rose-400 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-rose-500/25">
@@ -378,51 +433,51 @@ export default function HomePage() {
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white">注解使用</h3>
                 </div>
 
-              <div className="space-y-6">
-                {/* 加解密注解示例 */}
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    🔒 加解密注解
-                  </h4>
-                  <div className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto">
-                    <pre className="font-mono text-sm whitespace-pre">
-                      <code className="text-gray-800 dark:text-gray-200">{`public class User {
+                <div className="space-y-6">
+                  {/* 加解密注解示例 */}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                      🔒 加解密注解
+                    </h4>
+                    <div className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto">
+                      <pre className="font-mono text-sm whitespace-pre">
+                        <code className="text-gray-800 dark:text-gray-200">{`public class User {
     private Long id;
 
     private String username;
 
     `}<span className="relative inline-block px-2 py-0.5 rounded-md transition-all duration-200 hover:shadow-md">
-                          <span className="absolute inset-0 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/40 dark:to-purple-900/40 rounded-md transition-all duration-200 hover:from-blue-200 hover:to-purple-200 dark:hover:from-blue-800/50 dark:hover:to-purple-800/50"></span>
-                          <span className="relative bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-purple-700 dark:from-blue-300 dark:to-purple-300 font-medium transition-all duration-200 hover:from-blue-800 hover:to-purple-800 dark:hover:from-blue-200 dark:hover:to-purple-200">@SecurityField</span>
-                        </span>{`
+                            <span className="absolute inset-0 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/40 dark:to-purple-900/40 rounded-md transition-all duration-200 hover:from-blue-200 hover:to-purple-200 dark:hover:from-blue-800/50 dark:hover:to-purple-800/50"></span>
+                            <span className="relative bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-purple-700 dark:from-blue-300 dark:to-purple-300 font-medium transition-all duration-200 hover:from-blue-800 hover:to-purple-800 dark:hover:from-blue-200 dark:hover:to-purple-200">@SecurityField</span>
+                          </span>{`
     private String password;
 }`}</code>
-                    </pre>
+                      </pre>
+                    </div>
                   </div>
-                </div>
 
-                {/* 脱敏注解示例 */}
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    🎭 脱敏注解
-                  </h4>
-                  <div className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto">
-                    <pre className="font-mono text-sm whitespace-pre">
-                      <code className="text-gray-800 dark:text-gray-200">{`public class User {
+                  {/* 脱敏注解示例 */}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                      🎭 脱敏注解
+                    </h4>
+                    <div className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto">
+                      <pre className="font-mono text-sm whitespace-pre">
+                        <code className="text-gray-800 dark:text-gray-200">{`public class User {
     private Long id;
 
     private String username;
 
     `}<span className="relative inline-block px-2 py-0.5 rounded-md transition-all duration-200 hover:shadow-md">
-                          <span className="absolute inset-0 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/40 dark:to-red-900/40 rounded-md transition-all duration-200 hover:from-orange-200 hover:to-red-200 dark:hover:from-orange-800/50 dark:hover:to-red-800/50"></span>
-                          <span className="relative bg-clip-text text-transparent bg-gradient-to-r from-orange-700 to-red-700 dark:from-orange-300 dark:to-red-300 font-medium transition-all duration-200 hover:from-orange-800 hover:to-red-800 dark:hover:from-orange-200 dark:hover:to-red-200">@Masked(type = MaskType.NAME_MASK)</span>
-                        </span>{`
+                            <span className="absolute inset-0 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/40 dark:to-red-900/40 rounded-md transition-all duration-200 hover:from-orange-200 hover:to-red-200 dark:hover:from-orange-800/50 dark:hover:to-red-800/50"></span>
+                            <span className="relative bg-clip-text text-transparent bg-gradient-to-r from-orange-700 to-red-700 dark:from-orange-300 dark:to-red-300 font-medium transition-all duration-200 hover:from-orange-800 hover:to-red-800 dark:hover:from-orange-200 dark:hover:to-red-200">@Masked(type = MaskType.NAME_MASK)</span>
+                          </span>{`
     private String name;
 }`}</code>
-                    </pre>
+                      </pre>
+                    </div>
                   </div>
                 </div>
-              </div>
               </div>
             </div>
           </div>
@@ -471,13 +526,6 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Community Card */}
             <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg">
-              <div className="absolute inset-0 overflow-hidden rounded-2xl hidden md:block">
-                <div className="absolute -inset-[10px] opacity-30 dark:opacity-20">
-                  <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-300 via-cyan-200 to-blue-300 rounded-full blur-3xl animate-aurora-1"></div>
-                  <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-r from-cyan-200 via-blue-300 to-cyan-200 rounded-full blur-3xl animate-aurora-2"></div>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-sky-200 via-blue-200 to-cyan-200 rounded-full blur-3xl animate-aurora-3"></div>
-                </div>
-              </div>
 
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-6">
@@ -520,7 +568,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex flex-wrap gap-3">
                   <a
-                    href="https://github.com/rpamis/rpamis-security/stargazers"
+                    href="https://github.com/rpamis/rpamis-security"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md"
@@ -545,12 +593,19 @@ export default function HomePage() {
 
             {/* Features Card */}
             <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg">
-              <div className="absolute inset-0 overflow-hidden rounded-2xl hidden md:block">
-                <div className="absolute -inset-[10px] opacity-30 dark:opacity-20">
-                  <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-r from-cyan-300 via-blue-200 to-cyan-300 rounded-full blur-3xl animate-aurora-2"></div>
-                  <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-200 via-cyan-300 to-blue-200 rounded-full blur-3xl animate-aurora-1"></div>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-cyan-200 via-sky-200 to-blue-200 rounded-full blur-3xl animate-aurora-3"></div>
-                </div>
+              <div className="absolute inset-0 z-0" style={{ width: '100%', height: '100%', opacity: isDarkTheme ? 1 : 0.15 }}>
+                <Dither
+                  key="dither-background"
+                  waveColor={isDarkTheme ? [0.4980392156862745, 0.5882352941176471, 0.9411764705882353] : [0.6, 0.7, 0.95]}
+                  disableAnimation={false}
+                  enableMouseInteraction={false}
+                  mouseRadius={0.3}
+                  colorNum={4}
+                  pixelSize={2}
+                  waveAmplitude={isDarkTheme ? 0.05 : 0.02}
+                  waveFrequency={2.5}
+                  waveSpeed={0.05}
+                />
               </div>
 
               <div className="relative z-10">
@@ -602,16 +657,6 @@ export default function HomePage() {
                     <ArrowRight className="size-4" />
                     阅读文档
                   </Link>
-                  <a
-                    href="https://github.com/rpamis/rpamis-security"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700 bg-transparent text-gray-900 dark:text-white rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
-                    onClick={handleGitHubClick}
-                  >
-                    <Github className="size-4" />
-                    打开 GitHub
-                  </a>
                 </div>
               </div>
             </div>
