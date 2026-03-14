@@ -233,10 +233,6 @@ export default function HomePage() {
     window.open('https://github.com/rpamis/rpamis-security', '_blank');
   }, []);
 
-  const handleDocsClick = useCallback(() => {
-    window.location.href = '/docs/quick-start';
-  }, []);
-
   const memoizedFeatures = useMemo(() => features, []);
   const memoizedFaqs = useMemo(() => faqs, []);
 
@@ -310,7 +306,6 @@ export default function HomePage() {
             <Link
               href="/docs/quick-start"
               className="inline-flex items-center px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-200 shadow-sm hover:shadow-md font-medium"
-              onClick={handleDocsClick}
             >
               快速开始
               <ArrowRight className="size-4 ml-2" />
