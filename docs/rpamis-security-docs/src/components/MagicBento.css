@@ -5,6 +5,9 @@
   --purple-primary: rgba(132, 0, 255, 1);
   --purple-glow: rgba(132, 0, 255, 0.2);
   --purple-border: rgba(132, 0, 255, 0.8);
+  --blue-primary: rgba(33, 91, 228, 1);
+  --blue-glow: rgba(41, 212, 255, 0.2);
+  --blue-border: rgba(33, 91, 228, 0.8);
   --border-color: #392e4e;
   --background-dark: #060010;
   --text-white: #ffffff;
@@ -275,7 +278,7 @@ html:not(.dark) .magic-bento-card .text-gray-300 {
 }
 
 html:not(.dark) .stats-number {
-  background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+  background: linear-gradient(135deg, #29d4ff 0%, #215be4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -300,4 +303,40 @@ html:not(.dark) .stats-title {
 
 html:not(.dark) .stats-desc {
   color: #6b7280;
+}
+
+/* Light theme border glow effect */
+html:not(.dark) .magic-bento-card--border-glow::after {
+  background: radial-gradient(
+    var(--glow-radius) circle at var(--glow-x) var(--glow-y),
+    rgba(41, 212, 255, calc(var(--glow-intensity) * 0.8)) 0%,
+    rgba(33, 91, 228, calc(var(--glow-intensity) * 0.4)) 30%,
+    transparent 60%
+  );
+}
+
+html:not(.dark) .magic-bento-card--border-glow:hover {
+  box-shadow:
+    0 4px 20px rgba(33, 91, 228, 0.15),
+    0 0 30px rgba(41, 212, 255, 0.15);
+}
+
+/* Light theme particle effects */
+html:not(.dark) .particle::before {
+  background: rgba(41, 212, 255, 0.3);
+}
+
+html:not(.dark) .particle-container:hover {
+  box-shadow:
+    0 4px 20px rgba(33, 91, 228, 0.1),
+    0 0 30px rgba(41, 212, 255, 0.15);
+}
+
+/* Theme-specific symbol colors */
+html.dark .text-theme-symbol {
+  color: #a78bfa !important; /* 紫色，深色主题 */
+}
+
+html:not(.dark) .text-theme-symbol {
+  color: #215be4 !important; /* 蓝色，白色主题 */
 }

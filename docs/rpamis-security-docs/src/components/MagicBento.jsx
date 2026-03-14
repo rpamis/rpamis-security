@@ -102,9 +102,12 @@ const ParticleCard = ({
   const initializeParticles = useCallback(() => {
     if (particlesInitialized.current || !cardRef.current) return;
 
+    const isDark = document.documentElement.classList.contains('dark');
+    const currentGlowColor = isDark ? glowColor : '41, 212, 255';
+
     const { width, height } = cardRef.current.getBoundingClientRect();
     memoizedParticles.current = Array.from({ length: particleCount }, () =>
-      createParticleElement(Math.random() * width, Math.random() * height, glowColor)
+      createParticleElement(Math.random() * width, Math.random() * height, currentGlowColor)
     );
     particlesInitialized.current = true;
   }, [particleCount, glowColor]);
@@ -252,6 +255,8 @@ const ParticleCard = ({
       const rect = element.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
+      const isDark = document.documentElement.classList.contains('dark');
+      const currentGlowColor = isDark ? glowColor : '41, 212, 255';
 
       const maxDistance = Math.max(
         Math.hypot(x, y),
@@ -266,7 +271,7 @@ const ParticleCard = ({
         width: ${maxDistance * 2}px;
         height: ${maxDistance * 2}px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(${glowColor}, 0.4) 0%, rgba(${glowColor}, 0.2) 30%, transparent 70%);
+        background: radial-gradient(circle, rgba(${currentGlowColor}, 0.4) 0%, rgba(${currentGlowColor}, 0.2) 30%, transparent 70%);
         left: ${x - maxDistance}px;
         top: ${y - maxDistance}px;
         pointer-events: none;
@@ -330,6 +335,9 @@ const GlobalSpotlight = ({
   useEffect(() => {
     if (disableAnimations || !gridRef?.current || !enabled) return;
 
+    const isDark = document.documentElement.classList.contains('dark');
+    const currentGlowColor = isDark ? glowColor : '41, 212, 255';
+
     const spotlight = document.createElement('div');
     spotlight.className = 'global-spotlight';
     spotlight.style.cssText = `
@@ -339,11 +347,11 @@ const GlobalSpotlight = ({
       border-radius: 50%;
       pointer-events: none;
       background: radial-gradient(circle,
-        rgba(${glowColor}, 0.15) 0%,
-        rgba(${glowColor}, 0.08) 15%,
-        rgba(${glowColor}, 0.04) 25%,
-        rgba(${glowColor}, 0.02) 40%,
-        rgba(${glowColor}, 0.01) 65%,
+        rgba(${currentGlowColor}, 0.15) 0%,
+        rgba(${currentGlowColor}, 0.08) 15%,
+        rgba(${currentGlowColor}, 0.04) 25%,
+        rgba(${currentGlowColor}, 0.02) 40%,
+        rgba(${currentGlowColor}, 0.01) 65%,
         transparent 70%
       );
       z-index: 200;

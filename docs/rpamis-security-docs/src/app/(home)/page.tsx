@@ -375,7 +375,7 @@ export default function HomePage() {
                           {/* @ts-ignore - CountUp component */}
                           <CountUp from={0} to={78} separator="" duration={2} onStart={null} onEnd={null} />
                         </span>
-                        <span className="text-5xl md:text-6xl font-bold text-purple-400 ml-1">+</span>
+                        <span className="text-5xl md:text-6xl font-bold text-theme-symbol ml-1">+</span>
                       </div>
                       <h3 className="stats-title">生产级单测场景</h3>
                       <p className="stats-desc">全面覆盖各种使用场景</p>
@@ -391,7 +391,7 @@ export default function HomePage() {
                           {/* @ts-ignore - CountUp component */}
                           <CountUp from={0} to={9} separator="" duration={2} onStart={null} onEnd={null} />
                         </span>
-                        <span className="text-3xl md:text-4xl font-bold text-purple-400 ml-1">种</span>
+                        <span className="text-3xl md:text-4xl font-bold text-theme-symbol ml-1">种</span>
                       </div>
                       <h3 className="stats-title">内置脱敏规则</h3>
                       <p className="stats-desc">满足各种脱敏需求</p>
@@ -407,7 +407,7 @@ export default function HomePage() {
                           {/* @ts-ignore - CountUp component */}
                           <CountUp from={0} to={82} separator="" duration={2} onStart={null} onEnd={null} />
                         </span>
-                        <span className="text-5xl md:text-6xl font-bold text-purple-400 ml-1">%</span>
+                        <span className="text-5xl md:text-6xl font-bold text-theme-symbol ml-1">%</span>
                       </div>
                       <h3 className="stats-title">单测覆盖率</h3>
                       <p className="stats-desc">高质量的代码保障</p>
@@ -423,7 +423,7 @@ export default function HomePage() {
                           {/* @ts-ignore - CountUp component */}
                           <CountUp from={0} to={100} separator="" duration={2} onStart={null} onEnd={null} />
                         </span>
-                        <span className="text-5xl md:text-6xl font-bold text-purple-400 ml-1">%</span>
+                        <span className="text-5xl md:text-6xl font-bold text-theme-symbol ml-1">%</span>
                       </div>
                       <h3 className="stats-title">免费开源</h3>
                       <p className="stats-desc">完全开源，社区驱动</p>
