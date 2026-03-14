@@ -184,6 +184,8 @@ public class OrderController {
 
 ### 1. 嵌套实体脱敏
 
+采用`@NestedMasked`标记嵌套脱敏实体，如`UserDetailVO`中包含`ContactInfoVO`实体，`ContactInfoVO`中包含`@Masked`标记需要脱敏字段
+
 ```java
 @Data
 public class UserDetailVO implements Serializable {
@@ -520,101 +522,6 @@ public class OrderController {
 }
 ```
 
-### 2. 用户管理系统
-
-```java
-@Data
-@TableName(value ="users")
-public class UserDO implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
-
-    @TableField(value = "username")
-    private String username;
-
-    @TableField(value = "password")
-    @SecurityField
-    private String password;
-
-    @TableField(value = "email")
-    @SecurityField
-    private String email;
-
-    @TableField(value = "phone")
-    @SecurityField
-    private String phone;
-
-    @TableField(value = "id_card")
-    @SecurityField
-    private String idCard;
-
-    @TableField(value = "create_time")
-    private LocalDateTime createTime;
-}
-
-@Data
-public class UserProfileVO implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    private Long id;
-    private String username;
-
-    @Masked(type = MaskType.EMAIL_MASK)
-    private String email;
-
-    @Masked(type = MaskType.PHONE_MASK)
-    private String phone;
-
-    @Masked(type = MaskType.IDCARD_MASK)
-    private String idCard;
-
-    private String createTime;
-}
-
-@RestController
-@RequestMapping("/api/users")
-public class UserController {
-
-    @Autowired
-    private UserService userService;
-
-    @PostMapping("/register")
-    public void register(@RequestBody UserDO user) {
-        user.setCreateTime(LocalDateTime.now());
-        userService.saveUser(user);
-    }
-
-    @GetMapping("/profile/{id}")
-    @Desensitizationed
-    public UserProfileVO getProfile(@PathVariable Long id) {
-        UserDO userDO = userService.getUser(id);
-        UserProfileVO vo = new UserProfileVO();
-        vo.setId(userDO.getId());
-        vo.setUsername(userDO.getUsername());
-        vo.setEmail(userDO.getEmail());
-        vo.setPhone(userDO.getPhone());
-        vo.setIdCard(userDO.getIdCard());
-        vo.setCreateTime(userDO.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        return vo;
-    }
-}
-```
-
-**返回结果：**
-
-```json
-{
-  "id": 2,
-  "username": "john_doe",
-  "email": "joh****@example.com",
-  "phone": "136****5678",
-  "idCard": "110***********3329",
-  "createTime": "2024-01-15"
-}
-```
-
 ## ⚡ 高级用法示例
 
 ### 1. 自定义切点表达式
@@ -683,59 +590,3 @@ public class SecurityConfig {
     }
 }
 ```
-
-## 🚀 性能优化示例
-
-### 1. 批量操作优化
-
-```java
-@Service
-public class BatchService {
-
-    @Autowired
-    private BatchMapper batchMapper;
-
-    @Transactional
-    public void batchInsert(List<DataDO> dataList) {
-        // 使用 MyBatis 的 foreach 批量插入
-        batchMapper.batchInsert(dataList);
-    }
-}
-
-@Mapper
-public interface BatchMapper {
-    void batchInsert(@Param("list") List<DataDO> dataList);
-}
-```
-
-```xml
-<mapper namespace="com.example.mapper.BatchMapper">
-    <insert id="batchInsert">
-        INSERT INTO data_table (field1, field2, field3)
-        VALUES
-        <foreach collection="list" item="item" separator=",">
-            (#{item.field1}, #{item.field2}, #{item.field3})
-        </foreach>
-    </insert>
-</mapper>
-```
-
-### 2. 查询优化
-
-```java
-@Service
-public class QueryService {
-
-    @Autowired
-    private QueryMapper queryMapper;
-
-    public List<DataVO> queryByCondition(String keyword) {
-        List<DataDO> dataList = queryMapper.selectByKeyword(keyword);
-        return dataList.stream()
-                .map(this::convertToVO)
-                .collect(Collectors.toList());
-    }
-}
-```
-
-**说明：** 加解密操作会带来一定的性能开销，建议合理使用。

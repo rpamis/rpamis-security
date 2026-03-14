@@ -5,6 +5,8 @@ import GradientText from '@/components/GradientText';
 import SpotlightCard from '@/components/SpotlightCard';
 import Dither from '@/components/Dither';
 import PixelBlast from '@/components/PixelBlast';
+import MagicBento from '@/components/MagicBento';
+import CountUp from '@/components/CountUp';
 import { getAssetPath } from '@/lib/asset-utils';
 import { Cards, Card } from '@/components/card';
 import { Callout } from '@/components/callout';
@@ -343,6 +345,101 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* Stats Section */}
+        <div className="mb-24">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+              数据安全核心指标 ⚡
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              生产级单测场景，全方位覆盖各种使用场景，保障您的数据安全
+            </p>
+          </div>
+
+          <div className="relative">
+            {/* @ts-ignore - MagicBento with custom cards */}
+            <MagicBento
+              textAutoHide={true}
+              enableStars
+              enableSpotlight
+              enableBorderGlow={true}
+              enableTilt={false}
+              enableMagnetism={false}
+              clickEffect
+              spotlightRadius={400}
+              particleCount={12}
+              glowColor="132, 0, 255"
+              disableAnimations={false}
+              cards={[
+                {
+                  color: '#060010',
+                  content: (
+                    <div className="h-full flex flex-col justify-center items-start">
+                      <div className="flex items-baseline justify-start">
+                        <span className="stats-number">
+                          {/* @ts-ignore - CountUp component */}
+                          <CountUp from={0} to={78} separator="" duration={2} onStart={null} onEnd={null} />
+                        </span>
+                        <span className="text-5xl md:text-6xl font-bold text-purple-400 ml-1">+</span>
+                      </div>
+                      <h3 className="stats-title">生产级单测场景</h3>
+                      <p className="stats-desc">全面覆盖各种使用场景</p>
+                    </div>
+                  )
+                },
+                {
+                  color: '#060010',
+                  content: (
+                    <div className="h-full flex flex-col justify-center items-start">
+                      <div className="flex items-baseline justify-start">
+                        <span className="stats-number">
+                          {/* @ts-ignore - CountUp component */}
+                          <CountUp from={0} to={9} separator="" duration={2} onStart={null} onEnd={null} />
+                        </span>
+                        <span className="text-3xl md:text-4xl font-bold text-purple-400 ml-1">种</span>
+                      </div>
+                      <h3 className="stats-title">内置脱敏规则</h3>
+                      <p className="stats-desc">满足各种脱敏需求</p>
+                    </div>
+                  )
+                },
+                {
+                  color: '#060010',
+                  content: (
+                    <div className="h-full flex flex-col justify-center items-start">
+                      <div className="flex items-baseline justify-start">
+                        <span className="stats-number">
+                          {/* @ts-ignore - CountUp component */}
+                          <CountUp from={0} to={82} separator="" duration={2} onStart={null} onEnd={null} />
+                        </span>
+                        <span className="text-5xl md:text-6xl font-bold text-purple-400 ml-1">%</span>
+                      </div>
+                      <h3 className="stats-title">单测覆盖率</h3>
+                      <p className="stats-desc">高质量的代码保障</p>
+                    </div>
+                  )
+                },
+                {
+                  color: '#060010',
+                  content: (
+                    <div className="h-full flex flex-col justify-center items-start">
+                      <div className="flex items-baseline justify-start">
+                        <span className="stats-number">
+                          {/* @ts-ignore - CountUp component */}
+                          <CountUp from={0} to={100} separator="" duration={2} onStart={null} onEnd={null} />
+                        </span>
+                        <span className="text-5xl md:text-6xl font-bold text-purple-400 ml-1">%</span>
+                      </div>
+                      <h3 className="stats-title">免费开源</h3>
+                      <p className="stats-desc">完全开源，社区驱动</p>
+                    </div>
+                  )
+                }
+              ]}
+            />
+          </div>
+        </div>
+
         {/* Quick Start & Features Section */}
         <div className="mb-24">
           <div className="text-center mb-16">
@@ -595,16 +692,6 @@ export default function HomePage() {
                   >
                     <Star className="size-4 fill-current" />
                     Star 项目
-                  </a>
-                  <a
-                    href="https://github.com/rpamis/rpamis-security"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700 bg-transparent text-gray-900 dark:text-white rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
-                    onClick={handleGitHubClick}
-                  >
-                    <Github className="size-4" />
-                    打开 GitHub
                   </a>
                 </div>
               </div>
