@@ -77,7 +77,7 @@ const faqs = [
     title: '🤔 什么是 Rpamis-Security？',
     content: (
       <p>
-        Rpamis-security 是一个基于 MyBatis 插件开发的安全组件，提供注解式的数据脱敏、数据库自动加解密功能，旨在提供优于同类组件的企业级数据安全解决方案。
+        Rpamis-security 是基于 MyBatis 插件开发的安全组件，提供注解式的数据脱敏、数据库自动加解密功能，旨在提供优于同类组件的企业级数据安全解决方案。
       </p>
     ),
   },
@@ -111,12 +111,13 @@ const faqs = [
 ];
 
 export default function HomePage() {
-  const logoSrc = getAssetPath('/logo.png');
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900 relative overflow-hidden">
-      {/* Canvas 粒子背景 */}
-      <HeroCanvas />
+      {/* Canvas 粒子背景 - 移动端隐藏 */}
+      <div className="hidden md:block">
+        <HeroCanvas />
+      </div>
 
       {/* 渐变光晕效果 - 与页面背景协调 */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -132,17 +133,13 @@ export default function HomePage() {
             <Zap className="size-4" />
             <span>企业级数据安全组件</span>
           </div>
-          <div className="flex flex-col items-center gap-4 mb-6 relative">
-            {/* 蓝色粒子效果 - 位于 logo 底下 */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-blue-400 rounded-full blur-3xl opacity-20 animate-pulse"></div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-blue-500 rounded-full blur-2xl opacity-10 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-            <img src={logoSrc} alt="Rpamis-Security Logo" className="h-40 w-40 rounded-3xl relative z-10" />
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight relative z-10">
+          <div className="flex flex-col items-center gap-4 mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
               Rpamis-Security
             </h1>
           </div>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-            一个基于 MyBatis 插件开发的企业级数据安全组件，
+            基于 MyBatis 插件开发的企业级数据安全组件，
             提供<strong className="text-gray-900 dark:text-white">注解式数据脱敏</strong>和
             <strong className="text-gray-900 dark:text-white">数据库自动加解密</strong>功能
           </p>
@@ -420,8 +417,8 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Community Card */}
             <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg">
-              {/* Aurora Background */}
-              <div className="absolute inset-0 overflow-hidden rounded-2xl">
+              {/* Aurora Background - 移动端隐藏 */}
+              <div className="absolute inset-0 overflow-hidden rounded-2xl hidden md:block">
                 <div className="absolute -inset-[10px] opacity-30 dark:opacity-20">
                   <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-300 via-cyan-200 to-blue-300 rounded-full blur-3xl animate-aurora-1"></div>
                   <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-r from-cyan-200 via-blue-300 to-cyan-200 rounded-full blur-3xl animate-aurora-2"></div>
@@ -493,8 +490,8 @@ export default function HomePage() {
 
             {/* Features Card */}
             <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg">
-              {/* Aurora Background */}
-              <div className="absolute inset-0 overflow-hidden rounded-2xl">
+              {/* Aurora Background - 移动端隐藏 */}
+              <div className="absolute inset-0 overflow-hidden rounded-2xl hidden md:block">
                 <div className="absolute -inset-[10px] opacity-30 dark:opacity-20">
                   <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-r from-cyan-300 via-blue-200 to-cyan-300 rounded-full blur-3xl animate-aurora-2"></div>
                   <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-200 via-cyan-300 to-blue-200 rounded-full blur-3xl animate-aurora-1"></div>
@@ -569,7 +566,7 @@ export default function HomePage() {
         {/* Footer */}
         <footer className="border-t border-gray-200 dark:border-gray-800 pt-8 pb-8">
           <div className="text-center text-gray-600 dark:text-gray-400 text-sm">
-            <p>© 2026 Rpamis. All rights reserved.</p>
+            <p>© 2023-2026 Rpamis. All rights reserved.</p>
           </div>
         </footer>
       </div>
