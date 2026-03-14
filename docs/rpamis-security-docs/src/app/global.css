@@ -2,77 +2,93 @@
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
 
-/* 自定义动画 */
+/* 自定义动画 - GPU 加速优化版本 */
 @keyframes flow {
   0% {
-    transform: translate(0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate(5px, -5px) scale(1.02);
+    transform: translate3d(5px, -5px, 0) scale(1.02);
   }
   100% {
-    transform: translate(0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
 .animate-flow {
   animation: flow 12s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
-/* 极光动画 */
+/* 极光动画 - GPU 加速优化版本 */
 @keyframes aurora-1 {
   0%, 100% {
-    transform: translate(0, 0) rotate(0deg) scale(1);
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
     opacity: 0.3;
   }
   25% {
-    transform: translate(30px, -30px) rotate(90deg) scale(1.1);
+    transform: translate3d(30px, -30px, 0) rotate(90deg) scale(1.1);
     opacity: 0.5;
   }
   50% {
-    transform: translate(-20px, 20px) rotate(180deg) scale(0.9);
+    transform: translate3d(-20px, 20px, 0) rotate(180deg) scale(0.9);
     opacity: 0.4;
   }
   75% {
-    transform: translate(20px, 30px) rotate(270deg) scale(1.05);
+    transform: translate3d(20px, 30px, 0) rotate(270deg) scale(1.05);
     opacity: 0.35;
   }
 }
 
 @keyframes aurora-2 {
   0%, 100% {
-    transform: translate(0, 0) rotate(0deg) scale(1);
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
     opacity: 0.3;
   }
   33% {
-    transform: translate(-40px, 20px) rotate(120deg) scale(1.15);
+    transform: translate3d(-40px, 20px, 0) rotate(120deg) scale(1.15);
     opacity: 0.45;
   }
   66% {
-    transform: translate(30px, -40px) rotate(240deg) scale(0.95);
+    transform: translate3d(30px, -40px, 0) rotate(240deg) scale(0.95);
     opacity: 0.35;
   }
 }
 
 @keyframes aurora-3 {
   0%, 100% {
-    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    transform: translate3d(-50%, -50%, 0) rotate(0deg) scale(1);
     opacity: 0.3;
   }
   50% {
-    transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+    transform: translate3d(-50%, -50%, 0) rotate(180deg) scale(1.2);
     opacity: 0.5;
   }
 }
 
 .animate-aurora-1 {
   animation: aurora-1 20s ease-in-out infinite;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .animate-aurora-2 {
   animation: aurora-2 25s ease-in-out infinite;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .animate-aurora-3 {
   animation: aurora-3 18s ease-in-out infinite;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }

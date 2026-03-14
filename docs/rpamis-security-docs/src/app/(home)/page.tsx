@@ -8,7 +8,7 @@ import { Accordions, Accordion } from '@/components/accordion';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/tabs';
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
 import { Steps, Step } from 'fumadocs-ui/components/steps';
-import { HeroCanvas } from '@/components/hero-canvas';
+import dynamic from 'next/dynamic';
 import { CopyButton } from '@/components/copy-button';
 import {
   Shield,
@@ -28,7 +28,17 @@ import {
   Download,
   Code2,
 } from 'lucide-react';
+import { useMemo, useCallback, memo } from 'react';
 
+// 懒加载 Canvas 组件，避免阻塞首屏
+const HeroCanvas = dynamic(() => import('@/components/hero-canvas').then((mod) => ({
+  default: mod.HeroCanvas,
+})), {
+  ssr: false,
+  loading: () => null,
+});
+
+// 优化后的静态数据，使用 useMemo 缓存
 const features = [
   {
     icon: <Shield className="size-5" />,
@@ -110,11 +120,88 @@ const faqs = [
   },
 ];
 
+// 使用 memo 包装静态组件，避免不必要的重渲染
+const FeatureCard = memo(({ feature, index }: { feature: any; index: number }) => {
+  const gradients = useMemo(() => [
+    'bg-gradient-to-br from-blue-500 to-purple-600',
+    'bg-gradient-to-br from-purple-500 to-pink-600',
+    'bg-gradient-to-br from-pink-500 to-orange-600',
+    'bg-gradient-to-br from-orange-500 to-yellow-600',
+    'bg-gradient-to-br from-green-500 to-blue-600',
+    'bg-gradient-to-br from-teal-500 to-cyan-600',
+    'bg-gradient-to-br from-cyan-500 to-blue-600',
+    'bg-gradient-to-br from-indigo-500 to-purple-600',
+  ], []);
+
+  const gradient = useMemo(() => gradients[index % gradients.length], [gradients, index]);
+
+  return (
+    <div
+      key={index}
+      className="group relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-xl border border-gray-200 dark:border-gray-700 p-6 transition-all duration-300 hover:shadow-xl"
+    >
+      <div className={`absolute inset-0 rounded-xl ${gradient} opacity-0 group-hover:opacity-10 transition-all duration-300`}></div>
+      <div className="relative">
+        <div className={`flex items-center justify-center w-12 h-12 rounded-lg ${gradient} text-white mb-5 group-hover:scale-110 transition-transform duration-300`}>
+          {feature.icon}
+        </div>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          {feature.title}
+        </h3>
+        <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+          {feature.description}
+        </p>
+      </div>
+    </div>
+  );
+});
+
+FeatureCard.displayName = 'FeatureCard';
+
+const FAQItem = memo(({ faq, index }: { faq: any; index: number }) => {
+  return (
+    <Accordion key={index} title={faq.title} className="border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+      <div className="p-6">
+        {faq.content}
+      </div>
+    </Accordion>
+  );
+});
+
+FAQItem.displayName = 'FAQItem';
+
 export default function HomePage() {
+  // 缓存渐变数组，避免每次渲染重新创建
+  const gradients = useMemo(() => [
+    'bg-gradient-to-br from-blue-500 to-purple-600',
+    'bg-gradient-to-br from-purple-500 to-pink-600',
+    'bg-gradient-to-br from-pink-500 to-orange-600',
+    'bg-gradient-to-br from-orange-500 to-yellow-600',
+    'bg-gradient-to-br from-green-500 to-blue-600',
+    'bg-gradient-to-br from-teal-500 to-cyan-600',
+    'bg-gradient-to-br from-cyan-500 to-blue-600',
+    'bg-gradient-to-br from-indigo-500 to-purple-600',
+  ], []);
+
+  // 使用 useCallback 优化事件处理
+  const handleStarClick = useCallback(() => {
+    window.open('https://github.com/rpamis/rpamis-security/stargazers', '_blank');
+  }, []);
+
+  const handleGitHubClick = useCallback(() => {
+    window.open('https://github.com/rpamis/rpamis-security', '_blank');
+  }, []);
+
+  const handleDocsClick = useCallback(() => {
+    window.location.href = '/docs/quick-start';
+  }, []);
+
+  const memoizedFeatures = useMemo(() => features, []);
+  const memoizedFaqs = useMemo(() => faqs, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900 relative overflow-hidden">
-      {/* Canvas 粒子背景 - 移动端隐藏 */}
+      {/* Canvas 粒子背景 - 懒加载优化 */}
       <div className="hidden md:block">
         <HeroCanvas />
       </div>
@@ -161,6 +248,7 @@ export default function HomePage() {
             <Link
               href="/docs/quick-start"
               className="inline-flex items-center px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors font-medium transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl"
+              onClick={handleDocsClick}
             >
               快速开始
               <ArrowRight className="size-4 ml-2" />
@@ -170,6 +258,7 @@ export default function HomePage() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center px-8 py-4 border border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors transform hover:-translate-y-0.5 shadow-md hover:shadow-lg"
+              onClick={handleGitHubClick}
             >
               <Github className="size-4 mr-2" />
               GitHub
@@ -188,40 +277,9 @@ export default function HomePage() {
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, index) => {
-              const gradients = [
-                'bg-gradient-to-br from-blue-500 to-purple-600',
-                'bg-gradient-to-br from-purple-500 to-pink-600',
-                'bg-gradient-to-br from-pink-500 to-orange-600',
-                'bg-gradient-to-br from-orange-500 to-yellow-600',
-                'bg-gradient-to-br from-green-500 to-blue-600',
-                'bg-gradient-to-br from-teal-500 to-cyan-600',
-                'bg-gradient-to-br from-cyan-500 to-blue-600',
-                'bg-gradient-to-br from-indigo-500 to-purple-600',
-              ];
-
-              const gradient = gradients[index % gradients.length];
-
-              return (
-                <div
-                  key={index}
-                  className="group relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-xl border border-gray-200 dark:border-gray-700 p-6 transition-all duration-300 hover:shadow-xl"
-                >
-                  <div className={`absolute inset-0 rounded-xl ${gradient} opacity-0 group-hover:opacity-10 transition-all duration-300`}></div>
-                  <div className="relative">
-                    <div className={`flex items-center justify-center w-12 h-12 rounded-lg ${gradient} text-white mb-5 group-hover:scale-110 transition-transform duration-300`}>
-                      {feature.icon}
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+            {memoizedFeatures.map((feature, index) => (
+              <FeatureCard key={index} feature={feature} index={index} />
+            ))}
           </div>
         </div>
 
@@ -332,7 +390,7 @@ export default function HomePage() {
     private Long id;
 
     private String username;
-    
+
     `}<span className="relative inline-block px-2 py-0.5 rounded-md transition-all duration-200 hover:shadow-md">
                           <span className="absolute inset-0 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/40 dark:to-purple-900/40 rounded-md transition-all duration-200 hover:from-blue-200 hover:to-purple-200 dark:hover:from-blue-800/50 dark:hover:to-purple-800/50"></span>
                           <span className="relative bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-purple-700 dark:from-blue-300 dark:to-purple-300 font-medium transition-all duration-200 hover:from-blue-800 hover:to-purple-800 dark:hover:from-blue-200 dark:hover:to-purple-200">@SecurityField</span>
@@ -354,7 +412,7 @@ export default function HomePage() {
     private Long id;
 
     private String username;
-    
+
     `}<span className="relative inline-block px-2 py-0.5 rounded-md transition-all duration-200 hover:shadow-md">
                           <span className="absolute inset-0 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/40 dark:to-red-900/40 rounded-md transition-all duration-200 hover:from-orange-200 hover:to-red-200 dark:hover:from-orange-800/50 dark:hover:to-red-800/50"></span>
                           <span className="relative bg-clip-text text-transparent bg-gradient-to-r from-orange-700 to-red-700 dark:from-orange-300 dark:to-red-300 font-medium transition-all duration-200 hover:from-orange-800 hover:to-red-800 dark:hover:from-orange-200 dark:hover:to-red-200">@Masked(type = MaskType.NAME_MASK)</span>
@@ -382,12 +440,8 @@ export default function HomePage() {
           </div>
           <div className="max-w-3xl mx-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-lg">
             <Accordions type="single">
-              {faqs.map((faq, index) => (
-                <Accordion key={index} title={faq.title} className="border-b border-gray-200 dark:border-gray-700 last:border-b-0">
-                  <div className="p-6">
-                    {faq.content}
-                  </div>
-                </Accordion>
+              {memoizedFaqs.map((faq, index) => (
+                <FAQItem key={index} faq={faq} index={index} />
               ))}
               <Accordion title="🧪 测试场景覆盖情况如何？" className="border-b border-gray-200 dark:border-gray-700 last:border-b-0">
                 <div className="p-6">
@@ -417,7 +471,6 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Community Card */}
             <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg">
-              {/* Aurora Background - 移动端隐藏 */}
               <div className="absolute inset-0 overflow-hidden rounded-2xl hidden md:block">
                 <div className="absolute -inset-[10px] opacity-30 dark:opacity-20">
                   <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-300 via-cyan-200 to-blue-300 rounded-full blur-3xl animate-aurora-1"></div>
@@ -425,7 +478,7 @@ export default function HomePage() {
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-sky-200 via-blue-200 to-cyan-200 rounded-full blur-3xl animate-aurora-3"></div>
                 </div>
               </div>
-              
+
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
@@ -471,6 +524,7 @@ export default function HomePage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md"
+                    onClick={handleStarClick}
                   >
                     <Star className="size-4 fill-current" />
                     Star 项目
@@ -480,6 +534,7 @@ export default function HomePage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700 bg-transparent text-gray-900 dark:text-white rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+                    onClick={handleGitHubClick}
                   >
                     <Github className="size-4" />
                     打开 GitHub
@@ -490,7 +545,6 @@ export default function HomePage() {
 
             {/* Features Card */}
             <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg">
-              {/* Aurora Background - 移动端隐藏 */}
               <div className="absolute inset-0 overflow-hidden rounded-2xl hidden md:block">
                 <div className="absolute -inset-[10px] opacity-30 dark:opacity-20">
                   <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-r from-cyan-300 via-blue-200 to-cyan-300 rounded-full blur-3xl animate-aurora-2"></div>
@@ -498,7 +552,7 @@ export default function HomePage() {
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-cyan-200 via-sky-200 to-blue-200 rounded-full blur-3xl animate-aurora-3"></div>
                 </div>
               </div>
-              
+
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
@@ -553,6 +607,7 @@ export default function HomePage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700 bg-transparent text-gray-900 dark:text-white rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+                    onClick={handleGitHubClick}
                   >
                     <Github className="size-4" />
                     打开 GitHub

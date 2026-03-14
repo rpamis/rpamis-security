@@ -25,6 +25,16 @@ const config = {
     // 临时禁用类型检查以避免构建失败
     ignoreBuildErrors: true,
   },
+  // 性能优化配置
+  compress: true,
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60,
+    unoptimized: true, // 静态导出模式需要
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
 };
 
 export default withMDX(config);
