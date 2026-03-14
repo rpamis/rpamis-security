@@ -15,6 +15,7 @@ import { useEffect, useRef } from 'react';
  * - 中心光晕有脉冲动画
  * - 整体色调为暖橙色系和蓝色系的结合
  * - 响应式设计，支持窗口大小变化
+ * - 移动端自动禁用以优化性能
  */
 export function HeroCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
