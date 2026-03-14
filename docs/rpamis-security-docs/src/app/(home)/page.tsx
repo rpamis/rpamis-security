@@ -4,6 +4,7 @@ import Link from 'next/link';
 import GradientText from '@/components/GradientText';
 import SpotlightCard from '@/components/SpotlightCard';
 import Dither from '@/components/Dither';
+import PixelBlast from '@/components/PixelBlast';
 import { getAssetPath } from '@/lib/asset-utils';
 import { Cards, Card } from '@/components/card';
 import { Callout } from '@/components/callout';
@@ -356,7 +357,25 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Quick Installation Card */}
             <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg transition-all duration-300 group">
-              <div className="relative">
+              {/* PixelBlast 背景 */}
+              <div className="absolute inset-0 z-0">
+                <PixelBlast
+                  variant="square"
+                  pixelSize={4}
+                  color={isDarkTheme ? "#f39649" : "#f39649"}
+                  patternScale={2}
+                  patternDensity={1}
+                  enableRipples
+                  rippleSpeed={0.3}
+                  rippleThickness={0.1}
+                  rippleIntensityScale={1}
+                  speed={0.5}
+                  transparent
+                  edgeFade={0.25}
+                />
+              </div>
+
+              <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/25">
                     <Download className="size-6 text-white" />
@@ -364,14 +383,14 @@ export default function HomePage() {
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white">快速安装</h3>
                 </div>
 
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 dark:border-gray-700/50 rounded-lg p-4 mb-6 backdrop-blur-md shadow-sm">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="w-5 h-5 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center">
-                      <span className="text-blue-600 dark:text-blue-400 text-xs">💡</span>
+                    <div className="w-5 h-5 bg-amber-100 dark:bg-amber-900/40 rounded-full flex items-center justify-center">
+                      <span className="text-amber-600 dark:text-amber-400 text-xs">💡</span>
                     </div>
-                    <h4 className="text-sm font-medium text-blue-700 dark:text-blue-300">版本说明</h4>
+                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">版本说明</h4>
                   </div>
-                  <p className="text-sm text-blue-600 dark:text-blue-400">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     请根据您的 JDK 版本选择合适的组件版本。JDK 17+ 请使用 1.1.2 版本，JDK 8-17 请使用 1.0.5 版本。
                   </p>
                 </div>
