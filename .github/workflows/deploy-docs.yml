@@ -21,6 +21,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_DEPLOY_ENV: github
     defaults:
       run:
         working-directory: docs/rpamis-security-docs
