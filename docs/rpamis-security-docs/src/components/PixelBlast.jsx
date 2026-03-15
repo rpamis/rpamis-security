@@ -498,6 +498,8 @@ const PixelBlast = ({
       });
       let raf = 0;
       const animate = () => {
+        // 组件卸载后 cleanup 会清空 threeRef，避免在已 dispose 的 renderer 上调用 render
+        if (!threeRef.current) return;
         if (autoPauseOffscreen && !visibilityRef.current.visible) {
           raf = requestAnimationFrame(animate);
           return;
@@ -563,6 +565,7 @@ const PixelBlast = ({
       if (threeRef.current && mustReinit) return;
       if (!threeRef.current) return;
       const t = threeRef.current;
+      threeRef.current = null; // 先清空，防止尚未取消的 requestAnimationFrame 再次执行 animate 时使用已 dispose 的对象
       t.resizeObserver?.disconnect();
       cancelAnimationFrame(t.raf);
       t.quad?.geometry.dispose();
@@ -571,7 +574,6 @@ const PixelBlast = ({
       t.renderer.dispose();
       t.renderer.forceContextLoss();
       if (t.renderer.domElement.parentElement === container) container.removeChild(t.renderer.domElement);
-      threeRef.current = null;
     };
   }, [
     antialias,
