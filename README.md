@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <a href="https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.1.2">
+  <a href="https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.1.3">
     <img alt="maven" src="https://img.shields.io/maven-central/v/com.rpamis/rpamis-security-spring-boot-starter?style=flat-square">
   </a>
   <a href="https://www.apache.org/licenses/LICENSE-2.0">
@@ -58,8 +58,8 @@
 ## 📦 Quick Installation
 
 > 💡 **Version Note**: Choose the appropriate version based on your JDK
-> - JDK 17+ use version `1.1.2`
-> - JDK 8-17 use version `1.0.5`
+> - JDK 17+ use version `1.1.3`
+> - JDK 8-17 use version `1.0.6`
 
 ### ☕ JDK 17 and above
 
@@ -67,7 +67,7 @@
 <dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
 </dependency>
 ```
 
@@ -77,7 +77,7 @@
 <dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 </dependency>
 ```
 

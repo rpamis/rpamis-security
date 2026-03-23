@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <a href="https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.1.2">
+  <a href="https://central.sonatype.com/artifact/com.rpamis/rpamis-security-spring-boot-starter/1.1.3">
     <img alt="maven" src="https://img.shields.io/maven-central/v/com.rpamis/rpamis-security-spring-boot-starter?style=flat-square">
   </a>
   <a href="https://www.apache.org/licenses/LICENSE-2.0">
@@ -59,8 +59,8 @@
 ## 📦 快速安装
 
 > 💡 **版本说明**：请根据您的 JDK 版本选择合适的组件版本
-> - JDK 17+ 请使用 `1.1.2` 版本
-> - JDK 8-17 请使用 `1.0.5` 版本
+> - JDK 17+ 请使用 `1.1.3` 版本
+> - JDK 8-17 请使用 `1.0.6` 版本
 
 ### ☕ JDK 17 及以上
 
@@ -68,7 +68,7 @@
 <dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
 </dependency>
 ```
 
@@ -78,7 +78,7 @@
 <dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 </dependency>
 ```
 
