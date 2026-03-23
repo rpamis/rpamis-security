@@ -117,7 +117,7 @@ public class MybatisEncryptInterceptor implements Interceptor {
 							}
 						}
 						catch (NoSuchFieldException | SecurityException ex) {
-							LOGGER.warn("无法设置 parameterObject，加密可能失效", ex);
+							LOGGER.warn("Failed to set parameterObject, encryption may be invalid", ex);
 						}
 					}
 					if (setSuccess) {
