@@ -13,7 +13,9 @@ spring:
     url: jdbc:mysql://${MYSQL_HOST}/securityTest?allowMultiQueries=true&useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
     username: ${MYSQL_USERNAME:username}
     password: ${MYSQL_PASSWORD:password}
-    initialization-mode: never
+  sql:
+    init:
+      mode: never
 
 # mybaits-plus配置
 mybatis-plus:
