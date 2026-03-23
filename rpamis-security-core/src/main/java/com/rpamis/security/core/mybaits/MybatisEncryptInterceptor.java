@@ -10,6 +10,7 @@ import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
+import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,11 +85,36 @@ public class MybatisEncryptInterceptor implements Interceptor {
                 // mybatis处理
                 Object deepCloneEntity = SerializationUtils.deepClone(parameterObject);
                 if (Objects.nonNull(deepCloneEntity)) {
-                    Field field = parameterHandler.getClass().getDeclaredField("parameterObject");
-                    field.setAccessible(true);
-                    field.set(parameterHandler, deepCloneEntity);
-                    // 进行加密
-                    Object encryptObject = securityResolver.encryptFiled(deepCloneEntity);
+                    // 兼容 MyBatis Plus 3.5.7+（移除了子类 parameterObject 字段）
+                    // 3.5.6-：子类有自己的 parameterObject，getParameterObject() 返回子类字段，必须设置子类
+                    // 3.5.7+：子类无此字段，getParameterObject() 返回父类字段，必须设置父类
+                    boolean setSuccess = false;
+                    try {
+                        // 优先尝试子类的 parameterObject（兼容 3.5.6 及以下）
+                        Field field = parameterHandler.getClass().getDeclaredField("parameterObject");
+                        field.setAccessible(true);
+                        field.set(parameterHandler, deepCloneEntity);
+                        setSuccess = true;
+                    }
+                    catch (NoSuchFieldException | SecurityException e) {
+                        // 子类无此字段，尝试父类（兼容 3.5.7+）
+                        try {
+                            Class<?> superclass = parameterHandler.getClass().getSuperclass();
+                            if (DefaultParameterHandler.class.equals(superclass)) {
+                                Field superField = superclass.getDeclaredField("parameterObject");
+                                superField.setAccessible(true);
+                                superField.set(parameterHandler, deepCloneEntity);
+                                setSuccess = true;
+                            }
+                        }
+                        catch (NoSuchFieldException | SecurityException ex) {
+                            LOGGER.warn("Failed to set parameterObject, encryption may be invalid", ex);
+                        }
+                    }
+                    if (setSuccess) {
+                        // 进行加密
+                        Object encryptObject = securityResolver.encryptFiled(deepCloneEntity);
+                    }
                 }
             }
             return invocation.proceed();
