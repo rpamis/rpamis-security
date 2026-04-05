@@ -12,7 +12,7 @@
   &nbsp;|&nbsp;
   <a href="README.md">English</a>
   &nbsp;|&nbsp;
-  <a href="https://rpamis.github.io/rpamis-security/">📖 文档</a>
+  <a href="https://docs.security.rpamis.com">📖 文档</a>
 </p>
 
 <p align="center">
@@ -114,11 +114,11 @@ public class User {
 
 | 资源 | 链接 |
 |------|------|
-| 📖 **完整文档** | [网站文档](https://rpamis.github.io/rpamis-security/) |
-| 🚀 **快速开始** | [快速开始指南](https://rpamis.github.io/rpamis-security/docs/quick-start) |
-| 📐 **架构设计** | [架构设计文档](https://rpamis.github.io/rpamis-security/docs/architecture) |
-| 💡 **使用示例** | [示例代码](https://rpamis.github.io/rpamis-security/docs/examples) |
-| 🔧 **API 参考** | [API 文档](https://rpamis.github.io/rpamis-security/docs/api) |
+| 📖 **完整文档** | [网站文档](https://docs.security.rpamis.com) |
+| 🚀 **快速开始** | [快速开始指南](https://docs.security.rpamis.com/docs/quick-start) |
+| 📐 **架构设计** | [架构设计文档](https://docs.security.rpamis.com/docs/architecture) |
+| 💡 **使用示例** | [示例代码](https://docs.security.rpamis.com/docs/examples) |
+| 🔧 **API 参考** | [API 文档](https://docs.security.rpamis.com/docs/api) |
 | 🧠 **原理解析** | [技术背景](https://benym.cn/notes/08-open-source-project/01-rpamis/03-security/02-rpamis-security-technical-background) / [原理分析](https://benym.cn/notes/08-open-source-project/01-rpamis/03-security/03-rpamis-security-principle-analysis) |
 
 ## 🏆 组件优势

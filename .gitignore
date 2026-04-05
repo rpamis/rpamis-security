@@ -35,3 +35,5 @@ build/
 .DS_Store
 .claude/
 .trae/
+*/.flattened-pom.xml
+.flattened-pom.xml

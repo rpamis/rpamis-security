@@ -12,7 +12,7 @@
   &nbsp;|&nbsp;
   <a href="README.md">English</a>
   &nbsp;|&nbsp;
-  <a href="https://rpamis.github.io/rpamis-security/">📖 Documentation</a>
+  <a href="https://docs.security.rpamis.com">📖 Documentation</a>
 </p>
 
 <p align="center">
@@ -113,11 +113,11 @@ public class User {
 
 | Resource | Link |
 |----------|------|
-| 📖 **Full Documentation** | [Documentation Website](https://rpamis.github.io/rpamis-security/) |
-| 🚀 **Quick Start** | [Quick Start Guide](https://rpamis.github.io/rpamis-security/docs/quick-start) |
-| 📐 **Architecture** | [Architecture Design](https://rpamis.github.io/rpamis-security/docs/architecture) |
-| 💡 **Examples** | [Code Examples](https://rpamis.github.io/rpamis-security/docs/examples) |
-| 🔧 **API Reference** | [API Documentation](https://rpamis.github.io/rpamis-security/docs/api) |
+| 📖 **Full Documentation** | [Documentation Website](https://docs.security.rpamis.com) |
+| 🚀 **Quick Start** | [Quick Start Guide](https://docs.security.rpamis.com/docs/quick-start) |
+| 📐 **Architecture** | [Architecture Design](https://docs.security.rpamis.com/docs/architecture) |
+| 💡 **Examples** | [Code Examples](https://docs.security.rpamis.com/docs/examples) |
+| 🔧 **API Reference** | [API Documentation](https://docs.security.rpamis.com/docs/api) |
 | 🧠 **Principle Analysis** | [Technical Background](https://benym.cn/notes/08-open-source-project/01-rpamis/03-security/02-rpamis-security-technical-background) / [Principle Analysis](https://benym.cn/notes/08-open-source-project/01-rpamis/03-security/03-rpamis-security-principle-analysis) |
 
 ## 🏆 Advantages
