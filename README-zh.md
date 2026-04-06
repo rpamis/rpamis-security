@@ -137,7 +137,7 @@ public class User {
 
 <p align="center">
   <b>Rpamis-Security 100% 由开源社区的热情驱动</b><br>
-  <sub>欢迎您的贡献和反馈！查看 <a href="https://github.com/rpamis/rpamis-security/blob/master/.github/CONTRIBUTING.md">贡献指南</a> 了解更多</sub>
+  <sub>欢迎您的贡献和反馈！查看 <a href="https://github.com/rpamis/rpamis-security/blob/master/CONTRIBUTING.md">贡献指南</a> 了解更多</sub>
 </p>
 
 ## 📄 开源协议

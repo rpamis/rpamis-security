@@ -136,7 +136,7 @@ public class User {
 
 <p align="center">
   <b>Rpamis-Security is 100% driven by the open source community</b><br>
-  <sub>Contributions and feedback are welcome! Check out the <a href="https://github.com/rpamis/rpamis-security/blob/master/.github/CONTRIBUTING.md">Contributing Guide</a> for more details</sub>
+  <sub>Contributions and feedback are welcome! Check out the <a href="https://github.com/rpamis/rpamis-security/blob/master/CONTRIBUTING.md">Contributing Guide</a> for more details</sub>
 </p>
 
 ## 📄 License
