@@ -339,4 +339,73 @@ public class UtilsTest {
 
 	}
 
+	/**
+	 * 测试FieldUtils处理null对象
+	 */
+	@Test
+	@DisplayName("FieldUtils null对象测试")
+	public void testFieldUtilsGetAllFieldsWithNull() {
+		java.lang.reflect.Field[] fields = FieldUtils.getAllFields(new Object());
+		assertThat(fields).isNotNull();
+	}
+
+	/**
+	 * 测试MaskAnnotationResolver处理null引用计数器
+	 */
+	@Test
+	@DisplayName("MaskAnnotationResolver null引用计数器测试")
+	public void testMaskAnnotationResolverWithNullReferenceCounter() {
+		boolean result = MaskAnnotationResolver.isNotBaseType(String.class, "test", null);
+		assertThat(result).isFalse();
+	}
+
+	/**
+	 * 测试MaskAnnotationResolver处理数组类型
+	 */
+	@Test
+	@DisplayName("MaskAnnotationResolver 数组类型测试")
+	public void testMaskAnnotationResolverWithArrayType() {
+		Set<Object> referenceCounter = Collections.newSetFromMap(new IdentityHashMap<>());
+		String[] array = new String[] { "test" };
+		boolean result = MaskAnnotationResolver.isNotBaseType(String[].class, array, referenceCounter);
+		assertThat(result).isFalse();
+	}
+
+	/**
+	 * 测试MaskAnnotationResolver处理Map类型
+	 */
+	@Test
+	@DisplayName("MaskAnnotationResolver Map类型测试")
+	public void testMaskAnnotationResolverWithMapType() {
+		Set<Object> referenceCounter = Collections.newSetFromMap(new IdentityHashMap<>());
+		Map<String, String> map = new HashMap<>();
+		map.put("key", "value");
+		boolean result = MaskAnnotationResolver.isNotBaseType(Map.class, map, referenceCounter);
+		assertThat(result).isFalse();
+	}
+
+	/**
+	 * 测试MaskAnnotationResolver处理Collection类型
+	 */
+	@Test
+	@DisplayName("MaskAnnotationResolver Collection类型测试")
+	public void testMaskAnnotationResolverWithCollectionType() {
+		Set<Object> referenceCounter = Collections.newSetFromMap(new IdentityHashMap<>());
+		List<String> list = new ArrayList<>();
+		list.add("test");
+		boolean result = MaskAnnotationResolver.isNotBaseType(List.class, list, referenceCounter);
+		assertThat(result).isFalse();
+	}
+
+	/**
+	 * 测试MaskAnnotationResolver处理null值
+	 */
+	@Test
+	@DisplayName("MaskAnnotationResolver null值测试")
+	public void testMaskAnnotationResolverWithNullValue() {
+		Set<Object> referenceCounter = Collections.newSetFromMap(new IdentityHashMap<>());
+		boolean result = MaskAnnotationResolver.isNotBaseType(Object.class, null, referenceCounter);
+		assertThat(result).isFalse();
+	}
+
 }

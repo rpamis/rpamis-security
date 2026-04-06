@@ -309,4 +309,123 @@ public class SecurityUtilsTest {
 		assertEquals(decrypted, result);
 	}
 
+	/**
+	 * 测试sm4Config为null时的初始化
+	 */
+	@Test
+	@DisplayName("测试sm4Config为null时的初始化")
+	public void testInitWithSm4ConfigNull() {
+		SecurityAlgorithm customSecurityAlgorithm = Mockito.mock(SecurityAlgorithm.class);
+		SecurityConfigProvider customSecurityConfigProvider = Mockito.mock(SecurityConfigProvider.class);
+		Algorithm customAlgorithm = Mockito.mock(Algorithm.class);
+
+		when(customSecurityConfigProvider.getAlgorithm()).thenReturn(customAlgorithm);
+		when(customAlgorithm.getSm4()).thenReturn(null);
+		when(customAlgorithm.getEnumActive()).thenReturn(DefaultPrefix.SM4);
+
+		SecurityUtils securityUtils = new SecurityUtils(customSecurityAlgorithm, customSecurityConfigProvider);
+		String encrypted = "encrypted";
+		when(customSecurityAlgorithm.encrypt("test")).thenReturn(encrypted);
+
+		String result = securityUtils.encryptWithPrefix("test");
+		assertEquals(DefaultPrefix.SM4.getPrefix() + encrypted, result);
+	}
+
+	/**
+	 * 测试加密返回空字符串时的处理
+	 */
+	@Test
+	@DisplayName("测试加密返回空字符串时的处理")
+	public void testEncryptReturnsEmptyString() {
+		SecurityAlgorithm customSecurityAlgorithm = Mockito.mock(SecurityAlgorithm.class);
+		SecurityConfigProvider customSecurityConfigProvider = Mockito.mock(SecurityConfigProvider.class);
+		Algorithm customAlgorithm = Mockito.mock(Algorithm.class);
+		Sm4Config customSm4Config = Mockito.mock(Sm4Config.class);
+
+		when(customSecurityConfigProvider.getAlgorithm()).thenReturn(customAlgorithm);
+		when(customAlgorithm.getSm4()).thenReturn(customSm4Config);
+		when(customAlgorithm.getEnumActive()).thenReturn(DefaultPrefix.SM4);
+		when(customSm4Config.getPrefix()).thenReturn(DefaultPrefix.SM4.getPrefix());
+
+		SecurityUtils securityUtils = new SecurityUtils(customSecurityAlgorithm, customSecurityConfigProvider);
+		when(customSecurityAlgorithm.encrypt("test")).thenReturn("");
+
+		String result = securityUtils.encryptWithPrefix("test");
+		assertEquals("", result);
+	}
+
+	/**
+	 * 测试自定义前缀解密
+	 */
+	@Test
+	@DisplayName("测试自定义前缀解密")
+	public void testDecryptWithCustomPrefix() {
+		SecurityAlgorithm customSecurityAlgorithm = Mockito.mock(SecurityAlgorithm.class);
+		SecurityConfigProvider customSecurityConfigProvider = Mockito.mock(SecurityConfigProvider.class);
+		Algorithm customAlgorithm = Mockito.mock(Algorithm.class);
+		Sm4Config customSm4Config = Mockito.mock(Sm4Config.class);
+
+		String customPrefix = "CUSTOM_PREFIX_";
+		when(customSecurityConfigProvider.getAlgorithm()).thenReturn(customAlgorithm);
+		when(customAlgorithm.getSm4()).thenReturn(customSm4Config);
+		when(customAlgorithm.getEnumActive()).thenReturn(DefaultPrefix.SM4);
+		when(customSm4Config.getPrefix()).thenReturn(customPrefix);
+
+		SecurityUtils securityUtils = new SecurityUtils(customSecurityAlgorithm, customSecurityConfigProvider);
+		String encrypted = "encrypted";
+		String decrypted = "decrypted";
+		when(customSecurityAlgorithm.decrypt(encrypted)).thenReturn(decrypted);
+
+		String result = securityUtils.decryptWithPrefix(customPrefix + encrypted);
+		assertEquals(decrypted, result);
+	}
+
+	/**
+	 * 测试自定义前缀与默认前缀相同时的初始化
+	 */
+	@Test
+	@DisplayName("测试自定义前缀与默认前缀相同时的初始化")
+	public void testInitWithSamePrefixAsDefault() {
+		SecurityAlgorithm customSecurityAlgorithm = Mockito.mock(SecurityAlgorithm.class);
+		SecurityConfigProvider customSecurityConfigProvider = Mockito.mock(SecurityConfigProvider.class);
+		Algorithm customAlgorithm = Mockito.mock(Algorithm.class);
+		Sm4Config customSm4Config = Mockito.mock(Sm4Config.class);
+
+		when(customSecurityConfigProvider.getAlgorithm()).thenReturn(customAlgorithm);
+		when(customAlgorithm.getSm4()).thenReturn(customSm4Config);
+		when(customAlgorithm.getEnumActive()).thenReturn(DefaultPrefix.SM4);
+		when(customSm4Config.getPrefix()).thenReturn(DefaultPrefix.SM4.getPrefix());
+
+		SecurityUtils securityUtils = new SecurityUtils(customSecurityAlgorithm, customSecurityConfigProvider);
+		String encrypted = "encrypted";
+		when(customSecurityAlgorithm.encrypt("test")).thenReturn(encrypted);
+
+		String result = securityUtils.encryptWithPrefix("test");
+		assertEquals(DefaultPrefix.SM4.getPrefix() + encrypted, result);
+	}
+
+	/**
+	 * 测试自定义前缀为空字符串时的初始化
+	 */
+	@Test
+	@DisplayName("测试自定义前缀为空字符串时的初始化")
+	public void testInitWithEmptyCustomPrefix() {
+		SecurityAlgorithm customSecurityAlgorithm = Mockito.mock(SecurityAlgorithm.class);
+		SecurityConfigProvider customSecurityConfigProvider = Mockito.mock(SecurityConfigProvider.class);
+		Algorithm customAlgorithm = Mockito.mock(Algorithm.class);
+		Sm4Config customSm4Config = Mockito.mock(Sm4Config.class);
+
+		when(customSecurityConfigProvider.getAlgorithm()).thenReturn(customAlgorithm);
+		when(customAlgorithm.getSm4()).thenReturn(customSm4Config);
+		when(customAlgorithm.getEnumActive()).thenReturn(DefaultPrefix.SM4);
+		when(customSm4Config.getPrefix()).thenReturn("");
+
+		SecurityUtils securityUtils = new SecurityUtils(customSecurityAlgorithm, customSecurityConfigProvider);
+		String encrypted = "encrypted";
+		when(customSecurityAlgorithm.encrypt("test")).thenReturn(encrypted);
+
+		String result = securityUtils.encryptWithPrefix("test");
+		assertEquals(DefaultPrefix.SM4.getPrefix() + encrypted, result);
+	}
+
 }
