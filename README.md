@@ -119,6 +119,7 @@ public class User {
 | 💡 **Examples** | [Code Examples](https://docs.security.rpamis.com/docs/examples) |
 | 🔧 **API Reference** | [API Documentation](https://docs.security.rpamis.com/docs/api) |
 | 🧠 **Principle Analysis** | [Technical Background](https://benym.cn/notes/08-open-source-project/01-rpamis/03-security/02-rpamis-security-technical-background) / [Principle Analysis](https://benym.cn/notes/08-open-source-project/01-rpamis/03-security/03-rpamis-security-principle-analysis) |
+| 🤖 **Agent Skill** | [AI Agent Integration Guide](skill/rpamis-security/SKILL.md) - For AI-powered development assistance |
 
 ## 🏆 Advantages
 

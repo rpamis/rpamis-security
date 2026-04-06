@@ -120,6 +120,7 @@ public class User {
 | 💡 **使用示例** | [示例代码](https://docs.security.rpamis.com/docs/examples) |
 | 🔧 **API 参考** | [API 文档](https://docs.security.rpamis.com/docs/api) |
 | 🧠 **原理解析** | [技术背景](https://benym.cn/notes/08-open-source-project/01-rpamis/03-security/02-rpamis-security-technical-background) / [原理分析](https://benym.cn/notes/08-open-source-project/01-rpamis/03-security/03-rpamis-security-principle-analysis) |
+| 🤖 **Agent Skill** | [AI Agent 集成指南](skill/rpamis-security/SKILL.md) - 用于 AI 辅助开发 |
 
 ## 🏆 组件优势
 
