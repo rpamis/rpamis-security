@@ -101,8 +101,8 @@ const faqs = [
     title: '📦 它支持哪些JDK版本？',
     content: (
       <p>
-        对于 <strong>JDK 17+</strong> 使用版本 <code>1.1.3</code>，
-        对于 <strong>JDK 8-JDK 17</strong> 使用版本 <code>1.0.6</code>。
+        对于 <strong>JDK 17+</strong> 使用版本 <code>1.1.4</code>，
+        对于 <strong>JDK 8-JDK 17</strong> 使用版本 <code>1.0.7</code>。
       </p>
     ),
   },
@@ -291,7 +291,7 @@ export default function HomePage() {
           <div className="flex justify-center gap-4 mb-12 flex-wrap">
             <span className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-full text-sm font-medium bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
               <Star className="size-4 inline-block mr-1 fill-yellow-400 text-yellow-400" />
-              v1.1.3
+              v1.1.4
             </span>
             <span className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-full text-sm font-medium bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
               <CheckCircle2 className="size-4 inline-block mr-1 text-green-500" />
@@ -483,7 +483,7 @@ export default function HomePage() {
                     <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">版本说明</h4>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    请根据您的 JDK 版本选择合适的组件版本。JDK 17+ 请使用 1.1.3 版本，JDK 8-17 请使用 1.0.6 版本。
+                    请根据您的 JDK 版本选择合适的组件版本。JDK 17+ 请使用 1.1.4 版本，JDK 8-17 请使用 1.0.7 版本。
                   </p>
                 </div>
 
@@ -498,14 +498,14 @@ export default function HomePage() {
                           <code className="text-gray-800 dark:text-gray-200">{`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
 </dependency>`}</code>
                         </pre>
                       </div>
                       <CopyButton code={`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
 </dependency>`} />
                     </div>
                   </div>
@@ -519,14 +519,14 @@ export default function HomePage() {
                           <code className="text-gray-800 dark:text-gray-200">{`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 </dependency>`}</code>
                         </pre>
                       </div>
                       <CopyButton code={`<dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 </dependency>`} />
                     </div>
                   </div>

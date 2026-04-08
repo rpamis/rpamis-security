@@ -28,7 +28,7 @@ Enterprise-grade MyBatis data security component providing annotation-based data
 <dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
 </dependency>
 ```
 
@@ -37,7 +37,7 @@ Enterprise-grade MyBatis data security component providing annotation-based data
 <dependency>
     <groupId>com.rpamis</groupId>
     <artifactId>rpamis-security-spring-boot-starter</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 </dependency>
 ```
 
@@ -635,11 +635,11 @@ public class UserDO {
 ### From Version 1.0.x to 1.1.x
 
 **Breaking Changes:**
-- JDK 17+ required for 1.1.3
+- JDK 17+ required for 1.1.4
 - SM4 prefix added (`ENC_SM4_`)
 
 **Migration Steps:**
-1. Update Maven dependency to 1.1.3
+1. Update Maven dependency to 1.1.4
 2. Configure SM4 prefix in application.yml
 3. Existing encrypted data automatically compatible
 4. Test all encryption/decryption scenarios
