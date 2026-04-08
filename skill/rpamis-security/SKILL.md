@@ -773,7 +773,7 @@ rpamis-security/
 │   ├── SecurityAutoConfiguration
 │   └── SecurityProperties
 └── rpamis-security-test/
-    └── 130+ test scenarios (88%+ coverage)
+    └── 130+ test scenarios (89%+ coverage)
 ```
 
 ## 📖 Resources
@@ -796,7 +796,7 @@ rpamis-security/
 | SM4 encryption | ✅ Supported                  | Partial support |
 | Encryption failure handling | ✅ Return original value      | ❌ Not supported |
 | Deep copy design | ✅ Preserves source reference | ❌ Not supported |
-| Test coverage | ✅ 88%+ / 130+ scenarios       | ❌ None |
+| Test coverage | ✅ 89%+ / 130+ scenarios       | ❌ None |
 
 ## 💡 Pro Tips
 

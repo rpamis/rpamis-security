@@ -112,7 +112,7 @@ const faqs = [
       <div>
         <p className="mb-2">
           支持任意实体类型、嵌套脱敏、动态SQL加解密、自定义加密算法、零影响配置、深拷贝设计等高可扩展性，
-          并且有完整的 <strong>88% 单测覆盖率</strong>。
+          并且有完整的 <strong>89% 单测覆盖率</strong>。
         </p>
         <ul className="list-disc pl-5 space-y-1">
           <li>✅ 任意实体类型脱敏</li>
@@ -295,7 +295,7 @@ export default function HomePage() {
             </span>
             <span className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-full text-sm font-medium bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
               <CheckCircle2 className="size-4 inline-block mr-1 text-green-500" />
-              88% 单测覆盖率
+              89% 单测覆盖率
             </span>
             <span className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-full text-sm font-medium bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
               <CheckCircle2 className="size-4 inline-block mr-1 text-blue-500" />

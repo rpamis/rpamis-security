@@ -131,7 +131,7 @@ public class User {
 | SM4 encryption | ✅ Supported                       | Partial support |
 | Encryption failure handling | ✅ Return original value           | ❌ Not supported |
 | Deep copy design | ✅ Preserves source reference      | ❌ Not supported |
-| Test coverage | ✅ 88%+ / 130+ scenarios           | ❌ None |
+| Test coverage | ✅ 89%+ / 130+ scenarios           | ❌ None |
 
 ## 🤝 Contributing
 
