@@ -3,9 +3,9 @@ import { sync, type DocumentRecord } from 'fumadocs-core/search/algolia';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-const appId = process.env.ALGOLIA_APP_ID ?? '';
-const apiKey = process.env.ALGOLIA_API_KEY ?? '';
-const indexName = process.env.ALGOLIA_INDEX_NAME ?? 'rpamis-security-docs';
+const appId = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? '';
+const apiKey = process.env.NEXT_PUBLIC_ALGOLIA_API_KEY ?? '';
+const indexName = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? 'rpamis-security-docs';
 
 // After `next build` with output: 'export', the static JSON can be at:
 // - out/static.json                        (output: 'export')
