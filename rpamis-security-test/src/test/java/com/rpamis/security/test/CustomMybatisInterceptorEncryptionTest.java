@@ -43,8 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @SpringBootTest(classes = SecurityDemoWebApplication.class,
 		properties = { "rpamis.security.enable=true", "rpamis.security.algorithm.active=sm4",
-				"rpamis.security.algorithm.sm4.key=1234567890123456",
-				"rpamis.security.algorithm.sm4.prefix=ENC_SM4_" })
+				"rpamis.security.algorithm.sm4.key=1234567890123456", "rpamis.security.algorithm.sm4.prefix=ENC_SM4_" })
 @ActiveProfiles("h2")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @Import(CustomMybatisInterceptorEncryptionTest.CustomMybatisInterceptorTestConfiguration.class)

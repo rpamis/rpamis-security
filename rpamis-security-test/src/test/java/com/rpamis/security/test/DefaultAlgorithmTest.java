@@ -45,7 +45,6 @@ public class DefaultAlgorithmTest {
 	@Autowired
 	private TestVersionV2Mapper testVersionV2Mapper;
 
-
 	/**
 	 * 测试默认安全算法-插入数据返回原值 验证当安全算法设置为"no"时，插入的数据会原样返回
 	 */
