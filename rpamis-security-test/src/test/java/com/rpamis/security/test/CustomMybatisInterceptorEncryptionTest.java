@@ -60,7 +60,7 @@ class CustomMybatisInterceptorEncryptionTest {
 	@DisplayName("加解密-启用CustomMybatisInterceptor时仍正常加密")
 	void shouldEncryptNormallyWhenCustomMybatisInterceptorEnabled() {
 		TestVersionDO testVersionDO = new TestVersionDO();
-		testVersionDO.setName("王五");
+		testVersionDO.setName("张三");
 		testVersionDO.setIdCard("500101111118181952");
 		testVersionDO.setPhone("12345678965");
 		testVersionMapper.insertSelective(testVersionDO);
@@ -68,7 +68,7 @@ class CustomMybatisInterceptorEncryptionTest {
 		String nameInDb = selectResult.getName();
 		String idCard = selectResult.getIdCard();
 		String phone = selectResult.getPhone();
-		Assert.isTrue("ENC_SM4_672e3c4a50acbfabe194221f19a5a686".equals(nameInDb), "数据库姓名校验失败");
+		Assert.isTrue("ENC_SM4_4e123e9554b4a5b30b53b5b27c4deb59".equals(nameInDb), "数据库姓名校验失败");
 		Assert.isTrue("ENC_SM4_afea507cb1a88c25807d29b905b49bec5222893c3ff712bf9841e10d0ec1ac12".equals(idCard),
 				"数据库姓名校验失败");
 		Assert.isTrue("ENC_SM4_93250b1e19518cc1b36af85c54066051".equals(phone), "数据库姓名校验失败");
