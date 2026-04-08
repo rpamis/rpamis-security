@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "build:search": "next build && tsx scripts/sync-algolia.ts",
+    "build:search": "next build && bun scripts/sync-algolia.ts",
     "dev": "next dev",
     "start": "next start",
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",

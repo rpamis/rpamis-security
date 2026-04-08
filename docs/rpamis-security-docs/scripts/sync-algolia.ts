@@ -1,10 +1,10 @@
-import { client } from 'algoliasearch';
+import { algoliasearch } from 'algoliasearch';
 import { sync, type DocumentRecord } from 'fumadocs-core/search/algolia';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
 const appId = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? '';
-const apiKey = process.env.NEXT_PUBLIC_ALGOLIA_API_KEY ?? '';
+const apiKey = process.env.NEXT_PUBLIC_ALGOLIA_WRITE_API_KEY ?? '';
 const indexName = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? 'rpamis-security-docs';
 
 // After `next build` with output: 'export', the static JSON can be at:
@@ -42,7 +42,7 @@ async function main() {
   const content = JSON.parse(fs.readFileSync(filePath, 'utf-8')) as DocumentRecord[];
   console.log(`Found ${content.length} documents to sync.`);
 
-  const algoliaClient = client(appId, apiKey);
+  const algoliaClient = algoliasearch(appId, apiKey);
 
   await sync(algoliaClient, {
     indexName,
