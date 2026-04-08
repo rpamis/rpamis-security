@@ -68,7 +68,7 @@ public class MybatisEncryptInterceptor implements Interceptor {
 			if (SqlCommandType.SELECT.equals(mappedStatement.getSqlCommandType())) {
 				return invocation.proceed();
 			}
-			ParameterHandler parameterHandler = (ParameterHandler) invocation.getTarget();
+			ParameterHandler parameterHandler = PluginUtils.realTarget(invocation.getTarget());
 			Object parameterObject = parameterHandler.getParameterObject();
 			if (Objects.isNull(parameterObject)) {
 				return invocation.proceed();
