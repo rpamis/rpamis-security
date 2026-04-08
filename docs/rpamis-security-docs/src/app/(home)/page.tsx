@@ -405,7 +405,7 @@ export default function HomePage() {
                       <div className="flex items-baseline justify-start">
                         <span className="stats-number">
                           {/* @ts-ignore - CountUp component */}
-                          <CountUp from={0} to={88} separator="" duration={2} onStart={null} onEnd={null} />
+                          <CountUp from={0} to={89} separator="" duration={2} onStart={null} onEnd={null} />
                         </span>
                         <span className="text-5xl md:text-6xl font-bold text-theme-symbol ml-1">%</span>
                       </div>
