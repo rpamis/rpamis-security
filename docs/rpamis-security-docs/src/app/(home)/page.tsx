@@ -299,7 +299,7 @@ export default function HomePage() {
             </span>
             <span className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-full text-sm font-medium bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
               <CheckCircle2 className="size-4 inline-block mr-1 text-blue-500" />
-              129+生产级单测场景
+              130+生产级单测场景
             </span>
           </div>
           <div className="flex flex-wrap justify-center gap-6">
@@ -373,7 +373,7 @@ export default function HomePage() {
                       <div className="flex items-baseline justify-start">
                         <span className="stats-number">
                           {/* @ts-ignore - CountUp component */}
-                          <CountUp from={0} to={129} separator="" duration={2} onStart={null} onEnd={null} />
+                          <CountUp from={0} to={130} separator="" duration={2} onStart={null} onEnd={null} />
                         </span>
                         <span className="text-5xl md:text-6xl font-bold text-theme-symbol ml-1">+</span>
                       </div>
@@ -612,7 +612,7 @@ export default function HomePage() {
               <Accordion title="🧪 测试场景覆盖情况如何？" className="border-b border-gray-200 dark:border-gray-700 last:border-b-0">
                 <div className="p-6">
                   <p className="mb-4">
-                    Rpamis-Security 包含 <strong>129 个生产级单测场景</strong>，覆盖了各种实际使用场景，确保组件在不同环境下的稳定性和可靠性。
+                    Rpamis-Security 包含 <strong>130 个生产级单测场景</strong>，覆盖了各种实际使用场景，确保组件在不同环境下的稳定性和可靠性。
                   </p>
                   <p>
                     测试场景包括但不限于：各种实体类型的脱敏、嵌套对象脱敏、不同加密算法的使用、异常处理、边界情况等，确保组件在生产环境中能够稳定运行。

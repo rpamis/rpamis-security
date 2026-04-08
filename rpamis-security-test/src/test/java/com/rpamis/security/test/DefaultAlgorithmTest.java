@@ -24,8 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
 /**
@@ -34,7 +33,9 @@ import org.springframework.util.Assert;
  * @author benym
  * @since 2026/1/14 17:35
  */
-@SpringBootTest
+@SpringBootTest(classes = SecurityDemoWebApplication.class,
+		properties = { "rpamis.security.enable=true", "rpamis.security.algorithm.active=no" })
+@ActiveProfiles("h2")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class DefaultAlgorithmTest {
 
@@ -44,13 +45,6 @@ public class DefaultAlgorithmTest {
 	@Autowired
 	private TestVersionV2Mapper testVersionV2Mapper;
 
-	/**
-	 * Dynamically configure properties
-	 */
-	@DynamicPropertySource
-	static void registerProperties(DynamicPropertyRegistry registry) {
-		registry.add("rpamis.security.algorithm.active", () -> "no");
-	}
 
 	/**
 	 * 测试默认安全算法-插入数据返回原值 验证当安全算法设置为"no"时，插入的数据会原样返回

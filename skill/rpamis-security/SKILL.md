@@ -773,7 +773,7 @@ rpamis-security/
 │   ├── SecurityAutoConfiguration
 │   └── SecurityProperties
 └── rpamis-security-test/
-    └── 129+ test scenarios (88%+ coverage)
+    └── 130+ test scenarios (88%+ coverage)
 ```
 
 ## 📖 Resources
@@ -788,15 +788,15 @@ rpamis-security/
 
 ## 🎓 Key Advantages
 
-| Feature | Rpamis-Security | Similar Projects |
-|---------|-----------------|------------------|
-| Any entity type masking | ✅ List, Map, non-generic | ❌ Single entity only |
-| Nested masking | ✅ Multi-level nesting | ❌ Not supported |
-| Auto encryption/decryption | ✅ Dynamic SQL support | ❌ Limited functionality |
-| SM4 encryption | ✅ Supported | Partial support |
-| Encryption failure handling | ✅ Return original value | ❌ Not supported |
+| Feature | Rpamis-Security              | Similar Projects |
+|---------|------------------------------|------------------|
+| Any entity type masking | ✅ List, Map, non-generic     | ❌ Single entity only |
+| Nested masking | ✅ Multi-level nesting        | ❌ Not supported |
+| Auto encryption/decryption | ✅ Dynamic SQL support        | ❌ Limited functionality |
+| SM4 encryption | ✅ Supported                  | Partial support |
+| Encryption failure handling | ✅ Return original value      | ❌ Not supported |
 | Deep copy design | ✅ Preserves source reference | ❌ Not supported |
-| Test coverage | ✅ 88%+ / 129+ scenarios | ❌ None |
+| Test coverage | ✅ 88%+ / 130+ scenarios       | ❌ None |
 
 ## 💡 Pro Tips
 

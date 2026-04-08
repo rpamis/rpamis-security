@@ -123,15 +123,15 @@ public class User {
 
 ## 🏆 Advantages
 
-| Feature | Rpamis-Security | Similar Projects |
-|---------|-----------------|------------------|
+| Feature | Rpamis-Security                   | Similar Projects |
+|---------|-----------------------------------|------------------|
 | Any entity type masking | ✅ List, Map, non-generic entities | ❌ Single entity only |
-| Nested masking | ✅ Multi-level nesting | ❌ Not supported |
-| Auto encryption/decryption | ✅ Dynamic SQL support | ❌ Limited functionality |
-| SM4 encryption | ✅ Supported | Partial support |
-| Encryption failure handling | ✅ Return original value | ❌ Not supported |
-| Deep copy design | ✅ Preserves source reference | ❌ Not supported |
-| Test coverage | ✅ 88%+ / 129+ scenarios | ❌ None |
+| Nested masking | ✅ Multi-level nesting             | ❌ Not supported |
+| Auto encryption/decryption | ✅ Dynamic SQL support             | ❌ Limited functionality |
+| SM4 encryption | ✅ Supported                       | Partial support |
+| Encryption failure handling | ✅ Return original value           | ❌ Not supported |
+| Deep copy design | ✅ Preserves source reference      | ❌ Not supported |
+| Test coverage | ✅ 88%+ / 130+ scenarios           | ❌ None |
 
 ## 🤝 Contributing
 
