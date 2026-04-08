@@ -1,4 +1,4 @@
-package com.rpamis.security.core.mybaits;
+package com.rpamis.security.core.mybatis;
 
 import com.rpamis.security.core.mybatisplus.Constants;
 import com.rpamis.security.core.mybatisplus.PluginUtils;

@@ -1,4 +1,4 @@
-package com.rpamis.security.core.mybaits;
+package com.rpamis.security.core.mybatis;
 
 import com.rpamis.security.core.utils.SecurityResolver;
 import org.apache.ibatis.executor.Executor;
