@@ -29,6 +29,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -40,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author benym
  */
 @SpringBootTest(classes = SecurityDemoWebApplication.class)
+@ActiveProfiles("h2")
 @Import(CustomMybatisInterceptorEncryptionTest.CustomMybatisInterceptorTestConfiguration.class)
 @Transactional
 @Rollback
