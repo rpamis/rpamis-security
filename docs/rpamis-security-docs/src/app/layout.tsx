@@ -1,4 +1,5 @@
 import { RootProvider } from 'fumadocs-ui/provider/next';
+import AlgoliaSearchDialog from '@/components/algolia-search';
 import './global.css';
 import { Inter, Geist } from 'next/font/google';
 import { cn } from "@/lib/utils";
@@ -29,9 +30,7 @@ export default function Layout({ children }: LayoutProps<'/'>) {
       <body className="flex flex-col min-h-screen">
         <RootProvider
           search={{
-            options: {
-              type: 'static',
-            },
+            SearchDialog: AlgoliaSearchDialog,
           }}
         >
           {children}

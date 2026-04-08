@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
+    "build:search": "next build && tsx scripts/sync-algolia.ts",
     "dev": "next dev",
     "start": "next start",
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
@@ -22,6 +23,7 @@
     "@react-three/postprocessing": "^3.0.4",
     "@takumi-rs/image-response": "^0.70.4",
     "ai": "^6.0.116",
+    "algoliasearch": "^5.50.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "d3-force": "^3.0.0",
@@ -60,6 +62,7 @@
     "eslint-config-next": "16.1.6",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
 }
