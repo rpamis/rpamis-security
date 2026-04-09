@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "build:search": "next build && bun scripts/sync-algolia.ts",
     "dev": "next dev",
     "start": "next start",
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
@@ -14,6 +13,8 @@
   "dependencies": {
     "@ai-sdk/openai-compatible": "^2.0.35",
     "@ai-sdk/react": "^3.0.118",
+    "@docsearch/css": "^4.6.2",
+    "@docsearch/react": "^4.6.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-collapsible": "^1.1.12",
     "@radix-ui/react-popover": "^1.1.15",
@@ -23,7 +24,6 @@
     "@react-three/postprocessing": "^3.0.4",
     "@takumi-rs/image-response": "^0.70.4",
     "ai": "^6.0.116",
-    "algoliasearch": "^5.50.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "d3-force": "^3.0.0",
