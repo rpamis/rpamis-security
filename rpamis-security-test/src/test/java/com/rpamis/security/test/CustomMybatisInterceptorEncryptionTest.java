@@ -28,7 +28,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +44,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 		properties = { "rpamis.security.enable=true", "rpamis.security.algorithm.active=sm4",
 				"rpamis.security.algorithm.sm4.key=1234567890123456", "rpamis.security.algorithm.sm4.prefix=ENC_SM4_" })
 @ActiveProfiles("h2")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @Import(CustomMybatisInterceptorEncryptionTest.CustomMybatisInterceptorTestConfiguration.class)
 @Transactional
 @Rollback

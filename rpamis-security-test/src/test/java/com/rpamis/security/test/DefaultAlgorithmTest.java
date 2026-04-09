@@ -23,7 +23,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
@@ -36,7 +35,6 @@ import org.springframework.util.Assert;
 @SpringBootTest(classes = SecurityDemoWebApplication.class,
 		properties = { "rpamis.security.enable=true", "rpamis.security.algorithm.active=no" })
 @ActiveProfiles("h2")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class DefaultAlgorithmTest {
 
 	@Autowired

@@ -165,6 +165,8 @@
                             --add-opens java.base/java.math=ALL-UNNAMED
                             --add-opens java.base/java.lang.reflect=ALL-UNNAMED
                         </argLine>
+                        <!-- 每个测试类独立 JVM 进程，避免静态字段跨上下文污染 -->
+                        <reuseForks>false</reuseForks>
                     </configuration>
                 </plugin>
             </plugins>
