@@ -571,22 +571,3 @@ public class CardVO implements Serializable {
     private String cardNumber;
 }
 ```
-
-### 4. 集成其他安全框架
-
-```java
-@Configuration
-public class SecurityConfig {
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-}
-```
