@@ -51,7 +51,7 @@
         <commons-lang.version>2.6</commons-lang.version>
         <lombok.version>1.18.20</lombok.version>
         <hutool.version>5.8.9</hutool.version>
-        <disruptor.version>3.4.4</disruptor.version>
+        <disruptor.version>4.0.0</disruptor.version>
         <bcprov-jdk15to18.version>1.76</bcprov-jdk15to18.version>
         <!-- 开源相关 -->
         <jacoco.version>0.8.10</jacoco.version>
